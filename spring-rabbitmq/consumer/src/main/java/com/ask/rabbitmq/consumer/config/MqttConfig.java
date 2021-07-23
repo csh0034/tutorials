@@ -25,6 +25,10 @@ public class MqttConfig {
     MqttConnectOptions options = new MqttConnectOptions();
 //    options.setUserName(MQTT_USERNAME);
 //    options.setPassword(MQTT_PASSWORD.toCharArray());
+
+//    MqttPahoMessageDrivenChannelAdapter getConnectionInfo() 참고
+//    세팅 되어있지 않을 경우 Adapter Url 사용
+//    options.setServerURIs();
     options.setCleanSession(true);
     return options;
   }

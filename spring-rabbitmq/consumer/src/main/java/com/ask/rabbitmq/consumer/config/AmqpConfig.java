@@ -147,11 +147,13 @@ public class AmqpConfig {
   }
 
   private MqttPahoMessageDrivenChannelAdapter mqttChannelAdapter() {
+    //BROKER_URL 없을 경우 MqttConnectOptions serverURIs 사용
     MqttPahoMessageDrivenChannelAdapter adapter =
         new MqttPahoMessageDrivenChannelAdapter(BROKER_URL, MQTT_CLIENT_ID, mqttClientFactory, MQTT_TOPIC);
     adapter.setCompletionTimeout(5000);
     adapter.setConverter(new DefaultPahoMessageConverter());
     adapter.setQos(1);
+    //adapter.setOutputChannel();
     return adapter;
   }
 
