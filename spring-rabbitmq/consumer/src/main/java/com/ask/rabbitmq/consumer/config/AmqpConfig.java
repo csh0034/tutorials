@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.core.GenericSelector;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Transformers;
@@ -38,6 +39,10 @@ import org.springframework.stereotype.Component;
  *  defaultFlow(QUEUE_NAME_1) 에서 처리 후 routeToRecipients channel1(defaultSubFlow1), channel2(defaultSubFlow2)
  *  channel2(defaultSubFlow2) 에서 QUEUE_NAME_2 에 메세지 전송
  *  defaultFlow2(QUEUE_NAME_2) 에서 처리
+ *
+ *  IntegrationFlow 동적 생성 및 추가 방법
+ *  1. integrationFlowContext 주입 받는다 ( 프레임워크에서 자동으로 bean 생성 )
+ *  2. integrationFlowContext.registration(IntegrationFlow).id(ID).register();
  */
 @Configuration
 @RequiredArgsConstructor
@@ -100,10 +105,7 @@ public class AmqpConfig {
         .transform(Transformers.fromJson())
         //.transform(new JsonToObjectTransformer())
         .<Map<String, String>>handle((p, h) -> topicActivator.handle(p))
-        .filter((String timestamp) -> {
-          log.info("filter : " + timestamp);
-          return true;
-        })
+        .filter(this::logging)
         .routeToRecipients(
             r -> r.applySequence(true)
                 .recipient(channel1())
@@ -118,6 +120,11 @@ public class AmqpConfig {
     container.setDefaultRequeueRejected(false);
     container.setConcurrentConsumers(2);
     return container;
+  }
+
+  private boolean logging(String message){
+    log.info("filter : " + message);
+    return true;
   }
 
   @Bean
