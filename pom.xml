@@ -15,6 +15,7 @@
     <module>spring-rabbitmq</module>
     <module>spring-cache</module>
     <module>spring-mail</module>
+    <module>spring-dynamodb</module>
   </modules>
 
   <properties>

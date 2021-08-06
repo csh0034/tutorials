@@ -119,6 +119,8 @@ public class AmqpConfig {
     container.setQueueNames(queueName);
     container.setDefaultRequeueRejected(false);
     container.setConcurrentConsumers(2);
+    // container.setConsumerBatchEnabled();
+    // container.setPrefetchCount(250);
     return container;
   }
 
