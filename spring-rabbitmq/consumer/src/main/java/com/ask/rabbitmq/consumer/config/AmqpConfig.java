@@ -13,12 +13,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.core.GenericSelector;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Transformers;
@@ -35,22 +33,16 @@ import org.springframework.stereotype.Component;
 
 
 /**
- *  producer QUEUE_NAME_1에 메세지 전송
- *  defaultFlow(QUEUE_NAME_1) 에서 처리 후 routeToRecipients channel1(defaultSubFlow1), channel2(defaultSubFlow2)
- *  channel2(defaultSubFlow2) 에서 QUEUE_NAME_2 에 메세지 전송
- *  defaultFlow2(QUEUE_NAME_2) 에서 처리
- *
- *  IntegrationFlow 동적 생성 및 추가 방법
- *  1. integrationFlowContext 주입 받는다 ( 프레임워크에서 자동으로 bean 생성 )
- *  2. integrationFlowContext.registration(IntegrationFlow).id(ID).register();
+ * producer QUEUE_NAME_1에 메세지 전송 defaultFlow(QUEUE_NAME_1) 에서 처리 후 routeToRecipients channel1(defaultSubFlow1),
+ * channel2(defaultSubFlow2) channel2(defaultSubFlow2) 에서 QUEUE_NAME_2 에 메세지 전송 defaultFlow2(QUEUE_NAME_2) 에서 처리
+ * <p>
+ * IntegrationFlow 동적 생성 및 추가 방법 1. integrationFlowContext 주입 받는다 ( 프레임워크에서 자동으로 bean 생성 ) 2.
+ * integrationFlowContext.registration(IntegrationFlow).id(ID).register();
  */
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
 public class AmqpConfig {
-
-  @Value("${spring.jmx.enabled}")
-  private boolean jmxEnabled;
 
   private final ConnectionFactory connectionFactory;
   private final TopicActivator topicActivator;
@@ -68,7 +60,6 @@ public class AmqpConfig {
   @PostConstruct
   public void init() {
     log.info(integrationFlowContext.toString());
-    log.info(String.valueOf(jmxEnabled));
   }
 
   /*
@@ -124,7 +115,7 @@ public class AmqpConfig {
     return container;
   }
 
-  private boolean logging(String message){
+  private boolean logging(String message) {
     log.info("filter : " + message);
     return true;
   }
@@ -146,10 +137,10 @@ public class AmqpConfig {
   }
 
   //spring.jmx.enabled false 해도 켜지는 이유 : intellij spring boot run/debug Enable jmx agent 켜져있음
-  //@Bean
+  @Bean
   public MBeanExporter mbeanExporter() {
-    MBeanExporter mBeanExporter =  new MBeanExporter();
-    //mBeanExporter.setAutodetectMode(MBeanExporter.AUTODETECT_MBEAN);
+    MBeanExporter mBeanExporter = new MBeanExporter();
+    mBeanExporter.setAutodetectMode(MBeanExporter.AUTODETECT_MBEAN);
     mBeanExporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
     mBeanExporter.setNamingStrategy(new MetadataNamingStrategy(new AnnotationJmxAttributeSource()));
     return mBeanExporter;
