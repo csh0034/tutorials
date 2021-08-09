@@ -1,6 +1,6 @@
 package com.ask.rabbitmq.consumer.web;
 
-import com.ask.rabbitmq.consumer.config.DynamicIntegrationUtils;
+import com.ask.rabbitmq.consumer.config.MqttIntegrationUtils;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class IntegrationController {
 
-  private final DynamicIntegrationUtils dynamicIntegrationUtils;
+  private final MqttIntegrationUtils mqttIntegrationUtils;
 
   @GetMapping("/integration")
   public String find() {
-    Set<String> keySet = dynamicIntegrationUtils.registryKeySet();
+    Set<String> keySet = mqttIntegrationUtils.registryKeySet();
     log.info("key set : {}", keySet);
     return keySet.toString();
   }
 
   @GetMapping("/integration/add")
   public String add() {
-    dynamicIntegrationUtils.createMqttInboundFlow();
-    return dynamicIntegrationUtils.registryKeySet().toString();
+    mqttIntegrationUtils.createMqttInboundFlow();
+    return mqttIntegrationUtils.registryKeySet().toString();
   }
 
   @GetMapping("/integration/remove")
   public String remove() {
-    dynamicIntegrationUtils.removeMqttInboundFlow();
-    return dynamicIntegrationUtils.registryKeySet().toString();
+    mqttIntegrationUtils.removeMqttInboundFlow();
+    return mqttIntegrationUtils.registryKeySet().toString();
   }
 }

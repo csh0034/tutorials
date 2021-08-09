@@ -1,13 +1,13 @@
 package com.ask.rabbitmq.consumer.config;
 
 import static com.ask.rabbitmq.consumer.config.MqttConfig.BROKER_URL;
-import static com.ask.rabbitmq.consumer.config.MqttConfig.MQTT_CLIENT_ID;
 import static com.ask.rabbitmq.consumer.config.MqttConfig.MQTT_TOPIC;
 
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -149,7 +149,7 @@ public class AmqpConfig {
   private MqttPahoMessageDrivenChannelAdapter mqttChannelAdapter() {
     //BROKER_URL 없을 경우 MqttConnectOptions serverURIs 사용
     MqttPahoMessageDrivenChannelAdapter adapter =
-        new MqttPahoMessageDrivenChannelAdapter(BROKER_URL, MQTT_CLIENT_ID, mqttClientFactory, MQTT_TOPIC);
+        new MqttPahoMessageDrivenChannelAdapter(BROKER_URL, MqttAsyncClient.generateClientId(), mqttClientFactory, MQTT_TOPIC);
     adapter.setCompletionTimeout(5000);
     adapter.setConverter(new DefaultPahoMessageConverter());
     adapter.setQos(1);
