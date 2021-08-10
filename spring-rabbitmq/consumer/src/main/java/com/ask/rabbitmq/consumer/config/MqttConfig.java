@@ -38,8 +38,8 @@ public class MqttConfig {
 //    options.setPassword(MQTT_PASSWORD.toCharArray());
 
 //    MqttPahoMessageDrivenChannelAdapter getConnectionInfo() 참고
-//    세팅 되어있지 않을 경우 Adapter Url 사용
-    options.setServerURIs(new String[]{BROKER_URL});
+//    세팅 되어있지 않을 경우 Adapter Url 사용, 세팅 되어 있을 경우 ServerURIs 우선 적용
+//    options.setServerURIs(new String[]{"tcp://localhost:1884", "tcp://localhost:1885"});
     options.setCleanSession(true);
     return options;
   }
