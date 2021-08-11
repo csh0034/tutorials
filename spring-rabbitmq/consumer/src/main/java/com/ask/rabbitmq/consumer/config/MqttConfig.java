@@ -25,6 +25,10 @@ public class MqttConfig {
 
   public static final String MQTT_OUTBOUND_CHANNEL = "outboundChannel";
 
+  // options.setServerURIs 가 등록 되어있을 경우 MqttPahoMessageDrivenChannelAdapter 의 url 이 무시되므로
+  // MqttPahoClientFactory bean 등록시에 options.setServerURIs 을 세팅하지 않고 adaptor url 에서 처리 해야함
+  // 그러나 adaptor 는 url 하나만 입력 가능함 다수의 url 을 동록 할 경우에는 MqttPahoClientFactory 를 bean 으로 등록하지 말고
+  // mqtt flow 동적 등록시에 객체를 생성해서 options.setServerURIs() 후에 사용 해야함
   @Bean
   public MqttPahoClientFactory mqttPahoClientFactory() {
     DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
