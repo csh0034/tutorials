@@ -1,5 +1,10 @@
 docker build -t rabbitmq .
-docker run -d --name rabbitmq -p 15672:15672 -p 5672:5672 -p 1883:1883 -p 15675:15675 rabbitmq
+
+docker run -d --name rabbitmq \
+-v {호스트 저장 위치}:/var/lib/rabbitmq \
+-v {호스트 저장 위치}:/var/log/rabbitmq \
+-p 15672:15672 -p 5672:5672 -p 1883:1883 -p 15675:15675 \
+rabbitmq
 
 check plugin
 $ docker exec -it rabbitmq /bin/bash
