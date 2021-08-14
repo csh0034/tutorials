@@ -17,6 +17,7 @@
     <module>spring-mail</module>
     <module>spring-dynamodb</module>
     <module>spring-jsp</module>
+    <module>spring-dbunit</module>
   </modules>
 
   <properties>

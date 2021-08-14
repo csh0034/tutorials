@@ -1,0 +1,7 @@
+<dataset>
+  <tb_company company_id="company1" name="companyName1" />
+  <tb_company company_id="company2" name="companyName2" />
+
+  <tb_user user_id="user1" name="userName1" password="userPass1" company_id="company1" />
+  <tb_user user_id="user2" name="userName2" password="userPass2" company_id="company2" />
+</dataset>
