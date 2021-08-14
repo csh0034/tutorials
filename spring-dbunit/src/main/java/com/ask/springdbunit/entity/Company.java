@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -30,6 +31,7 @@ public class Company {
 
   private String name;
 
+  @Exclude
   @OneToMany(mappedBy = "company")
   private List<User> users = new ArrayList<>();
 }
