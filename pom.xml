@@ -18,6 +18,7 @@
     <module>spring-dynamodb</module>
     <module>spring-jsp</module>
     <module>spring-dbunit</module>
+    <module>spring-batch</module>
   </modules>
 
   <properties>
