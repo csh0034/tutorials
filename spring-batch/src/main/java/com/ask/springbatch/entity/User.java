@@ -38,16 +38,4 @@ public class User {
     user.enabled = enabled;
     return user;
   }
-
-  public static User empty() {
-    User user = new User();
-    user.name = "";
-    user.password = "";
-    user.enabled = false;
-    return user;
-  }
-
-  public boolean isEmpty() {
-    return "".equals(this.name) && "".equals(this.password) && !this.enabled;
-  }
 }
