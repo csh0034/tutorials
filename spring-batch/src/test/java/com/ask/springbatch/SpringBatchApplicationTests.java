@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBatchTest
 class SpringBatchApplicationTests {
 
-
   @Autowired
   private JobLauncherTestUtils jobLauncherTestUtils;
 
@@ -33,7 +32,7 @@ class SpringBatchApplicationTests {
 
   @DisplayName("csv 파일 테이블 데이터 변환")
   @Test
-  public void batchJob() throws Exception {
+  void batchJob() throws Exception {
     // GIVEN
     String file = "users.csv";
 
@@ -43,7 +42,7 @@ class SpringBatchApplicationTests {
         .toJobParameters();
 
     // WHEN
-    JobExecution jobExecution = this.jobLauncherTestUtils.launchJob(jobParameters);
+    JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
 
     // THEN
     assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());

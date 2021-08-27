@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/batch
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/batch?profileSQL=true
     username: root
     password: 111111
 
@@ -9,12 +10,19 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
-        show_sql: true
+        jdbc:
+          batch_size: 100
+        #show_sql: true
+        #format_sql: true
     open-in-view: false
 
   batch:
     job:
-      enabled: false
+      names: ${job.name:NONE}
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
+
+logging:
+  level:
+    org.hibernate:
+      SQL: debug

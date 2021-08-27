@@ -13,15 +13,13 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_user_not_auto")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @ToString
-public class User {
+public class UserNotAuto {
 
   @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
   @Column(name = "user_id")
   private String id;
 
@@ -31,20 +29,12 @@ public class User {
 
   private boolean enabled;
 
-  public static User create(String name, String password, boolean enabled) {
-    User user = new User();
+  public static UserNotAuto create(String id, String name, String password, boolean enabled) {
+    UserNotAuto user = new UserNotAuto();
+    user.id = id;
     user.name = name;
     user.password = password;
     user.enabled = enabled;
-    return user;
-  }
-
-  public static User create(String id, String name) {
-    User user = new User();
-    user.id = id;
-    user.name = name;
-    user.password = name;
-    user.enabled = true;
     return user;
   }
 }
