@@ -16,17 +16,35 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobLauncherController {
 
   private final JobLauncher jobLauncher;
-  private final Job job;
 
-  @GetMapping("/launch-job")
-  public String launchJob(@RequestParam(value = "file", defaultValue = "users.csv") String file) {
+  private final Job migrationUserJob;
+
+  private final Job stepJob;
+
+  @GetMapping("/job1")
+  public String launchJob1(@RequestParam(value = "file", defaultValue = "users.csv") String file) {
 
     try {
       JobParameters jobParameters = new JobParametersBuilder()
           .addString("file", file)
           .addLong("time", System.currentTimeMillis())
           .toJobParameters();
-      jobLauncher.run(job, jobParameters);
+      jobLauncher.run(migrationUserJob, jobParameters);
+    } catch (Exception e) {
+      log.info(e.getMessage());
+    }
+
+    return "Complete";
+  }
+
+  @GetMapping("/job2")
+  public String launchJob2() {
+
+    try {
+      JobParameters jobParameters = new JobParametersBuilder()
+          .addLong("time", System.currentTimeMillis())
+          .toJobParameters();
+      jobLauncher.run(stepJob, jobParameters);
     } catch (Exception e) {
       log.info(e.getMessage());
     }

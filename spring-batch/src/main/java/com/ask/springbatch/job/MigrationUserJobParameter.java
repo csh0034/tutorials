@@ -1,4 +1,4 @@
-package com.ask.springbatch.config;
+package com.ask.springbatch.job;
 
 import lombok.Getter;
 import lombok.ToString;
