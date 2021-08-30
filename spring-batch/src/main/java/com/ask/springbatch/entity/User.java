@@ -47,4 +47,12 @@ public class User {
     user.enabled = true;
     return user;
   }
+
+  public void updateId(String id) {
+    this.id = id;
+  }
+
+  public void disable() {
+    enabled = false;
+  }
 }

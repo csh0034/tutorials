@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,9 +29,9 @@ public class JpaItemWriterTests {
   @Autowired
   private EntityManagerFactory entityManagerFactory;
 
-  @DisplayName("id 직접 생성")
+  @DisplayName("id 직접 생성 할때")
   @Nested
-  class AutoIncrement {
+  class Class1 {
 
     List<UserNotAuto> items;
 
@@ -41,7 +43,7 @@ public class JpaItemWriterTests {
           .collect(toList());
     }
 
-    @DisplayName("merge insert, select 호출")
+    @DisplayName("id 값이 있고 merge 호출하면 insert, select")
     @Test
     void itemWriter1() {
       // GIVEN
@@ -53,7 +55,7 @@ public class JpaItemWriterTests {
       writer.write(items);
     }
 
-    @DisplayName("persist insert 호출")
+    @DisplayName("id 값이 있고 persist 호출하면 insert")
     @Test
     void itemWriter2() {
       // GIVEN
@@ -67,9 +69,9 @@ public class JpaItemWriterTests {
     }
   }
 
-  @DisplayName("id GenericGenerator 생성")
+  @DisplayName("id GenericGenerator 로 생성 할때")
   @Nested
-  class NonAutoIncrement {
+  class Class2 {
 
     List<User> items;
 
@@ -81,7 +83,7 @@ public class JpaItemWriterTests {
           .collect(toList());
     }
 
-    @DisplayName("merge insert 호출")
+    @DisplayName("id 값이 없고 merge 호출하면 insert")
     @Test
     void itemWriter1() {
       // GIVEN
@@ -93,7 +95,7 @@ public class JpaItemWriterTests {
       writer.write(items);
     }
 
-    @DisplayName("persist insert 호출")
+    @DisplayName("id 값이 없고 persist 호출하면 insert")
     @Test
     void itemWriter2() {
       // GIVEN
@@ -104,6 +106,49 @@ public class JpaItemWriterTests {
 
       // WHEN
       writer.write(items);
+    }
+
+    @DisplayName("id 값이 있고 merge 호출하면 select, insert")
+    @Test
+    void itemWriter3() {
+      // GIVEN
+      items = IntStream.iterate(1, i -> i + 1)
+          .limit(USER_SIZE)
+          .mapToObj(i -> {
+            User user = User.create("name" + i, "password" + i, true);
+            user.updateId("id" + i);
+            return user;
+          })
+          .collect(toList());
+
+      JpaItemWriter<User> writer = new JpaItemWriterBuilder<User>()
+          .entityManagerFactory(entityManagerFactory)
+          .build();
+
+      // WHEN
+      writer.write(items);
+    }
+
+    @DisplayName("id 값이 있고 persist 호출하면 Exception")
+    @Test
+    void itemWriter4() {
+      items = IntStream.iterate(1, i -> i + 1)
+          .limit(USER_SIZE)
+          .mapToObj(i -> {
+            User user = User.create("name" + i, "password" + i, true);
+            user.updateId("id" + i);
+            return user;
+          })
+          .collect(toList());
+
+      // GIVEN
+      JpaItemWriter<User> writer = new JpaItemWriterBuilder<User>()
+          .entityManagerFactory(entityManagerFactory)
+          .usePersist(true)
+          .build();
+
+      // WHEN
+      Assertions.assertThrows(PersistenceException.class, () -> writer.write(items));
     }
   }
 }
