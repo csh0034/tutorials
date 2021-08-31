@@ -104,24 +104,100 @@ schema 위치 : `classpath:org/springframework/batch/core/schema-@@platform@@.sq
 
 ***
 ## Tasklet
-- **Tasklet**은 Step안에서 단일로 수행될 커스텀한 기능들을 선언할때 사용함
+**Tasklet**은 Step안에서 단일로 수행될 커스텀한 기능들을 선언할때 사용함  
+Step은 Tasklet 단위로 처리되고, Tasklet 중에서 ChunkOrientedTasklet을 통해  
+Chunk를 처리하며 이를 구성하는 3 요소로 ItemReader, ItemWriter, ItemProcessor 가 있다
+
+> ItemReader & ItemWriter & ItemProcessor의 묶음 == Tasklet
 
 ***
 ## ItemReader
-- **ItemReader**는 Step의 대상이 되는 배치 데이터를 읽어오는 인터페이스이다.  
-  File, Xml Db등 여러 타입의 데이터를 읽어올 수 있다.
+**ItemReader**는 Step의 대상이 되는 배치 데이터를 읽어오는 인터페이스이다.  
+File, Xml Db등 여러 타입의 데이터를 읽어올 수 있다.
+
+Spring Batch의 Reader에서 읽어올 수 있는 데이터 유형
+- 입력 데이터에서 읽어오기
+- 파일에서 읽어오기
+- Database에서 읽어오기
+- Java Message Service등 다른 소스에서 읽어오기
+- 본인만의 커스텀한 Reader로 읽어오기
+
+**Database Reader**
+- Cursor ItemReader : ResultSet이 open 될 때마다 next() 메소드가 호출 되어 Database의 데이터가 반환
+  - JdbcCursorItemReader
+  - HibernateCursorItemReader
+  - StoredProcedureItemReader
+- Paging ItemReader : 페이지라는 Chunk로 Database에서 데이터를 검색
+  - JdbcPagingItemReader
+  - HibernatePagingItemReader
+  - JpaPagingItemReader
 
 ***
 ## ItemProcessor
-- **ItemProcessor**는 필수가 아니며 가공 (혹은 처리) 단계임  
-  Reader, Writer 와는 별도의 단계로 분리되었기 때문에 **비지니스 코드가 섞이는 것을 방지**
-- 읽어온 배치 데이터와 쓰여질 데이터의 타입이 다를 경우 처리 가능
+**ItemProcessor**는 필수가 아니며 가공 (혹은 처리) 단계임  
+Reader, Writer 와는 별도의 단계로 분리되었기 때문에 **비지니스 코드가 섞이는 것을 방지**  
+읽어온 배치 데이터와 쓰여질 데이터의 타입이 다를 경우 처리 가능
 
 ***
 ## ItemWriter
-- **ItemWriter**는 배치 데이터를 저장하며 일반적으로 DB나 파일에 저장한다.
-- **ItemWriter**도 **ItemReader**와 비슷한 방식을 구현합니다. 제네릭으로 원하는 타입을 받고 write()   
-  메서드는 List를 사용해서 저장한 타입의 리스트를 매게변수로 받는다.
+**ItemWriter**는 배치 데이터를 저장하며 일반적으로 DB나 파일에 저장한다.  
+item을 하나씩 처리하지 않고 Chunk 단위로 묶인 item List 로 처리
+```java
+public interface ItemWriter<T> {
+  void write(List<? extends T> items) throws Exception;
+}
+```
+
+ItemWriter 에 데이터 전달 되는 순서
+- ItemReader를 통해 각 항목을 개별적으로 읽고 이를 처리하기 위해 ItemProcessor에 전달
+- 이 프로세스는 청크의 Item 개수 만큼 처리 될 때까지 지속
+- 청크 단위만큼 처리가 완료되면 Writer에 전달  
+> Reader와 Processor를 거쳐 처리된 Item을 Chunk 단위 만큼 쌓은 뒤 이를 Writer에 전달된다.
+
+**Database Writer**
+- JdbcBatchItemWriter : JDBC의 Batch 기능을 사용하여 한번에 Database로 전달
+- JpaItemWriter
+- HibernateItemWriter
+
+**JdbcBatchItemWriter**  
+JDBC의 Batch 기능을 사용하여 한번에 Database로 전달하여 Database 내부에서 쿼리들이 실행
+
+JdbcBatchItemWriterBuilder 설정값
+
+| Property   | Parameter<br>Type      | 설명                     |
+|------------|-----------|--------------------------------------|
+| columnMapped | 없음 | Key,Value 기반으로 Insert SQL의 Values를 매핑 |
+| beanMapped   | 없음 | Pojo 기반으로 Insert SQL의 Values를 매핑      |
+
+> JdbcBatchItemWriter의 제네릭 타입은 Reader/Processor에서 넘겨준 클래스이다.
+
+**JpaItemWriter**  
+Writer에 전달하는 데이터가 Entity 클래스라면 JpaItemWriter를 사용하여 저장
+```java
+JpaItemWriter<User> writer = new JpaItemWriterBuilder<User>()
+    .entityManagerFactory(entityManagerFactory)
+    .usePersist(true)
+    .build();
+```
+
+해당 빌더 메서드중 usePersist 옵션 (default false) 의 설정에 따라 persist or merge 호출
+> id가 세팅되어있는 Entity에 대해서 merge 호출시 writer 에 넘어온 시점의 Entity 는  
+> detach 상태이기 때문에 select 후에 insert 또는 update를 호출함
+
+```java
+public class JpaItemWriter<T> implements ItemWriter<T>, InitializingBean {
+
+  protected void doWrite(EntityManager entityManager, List<? extends T> items) {
+    ...
+    if(usePersist) {
+      entityManager.persist(item);
+    } else {
+      entityManager.merge(item);
+    }
+    ...
+  }
+}
+```
 
 ***
 ## @JobScope, @StepScope, JobParameter

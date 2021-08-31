@@ -16,13 +16,15 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class PagingReaderJobConfig {
+@ConditionalOnProperty(name = "job.name", havingValue = JpaPagingItemReaderJobConfig.JOB_NAME)
+public class JpaPagingItemReaderJobConfig {
 
   public static final String JOB_NAME = "pagingReaderJob";
   private static final int CHUNK_SIZE = 100;

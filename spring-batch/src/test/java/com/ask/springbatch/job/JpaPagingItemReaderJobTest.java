@@ -1,7 +1,12 @@
 package com.ask.springbatch.job;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.ask.springbatch.entity.User;
+import com.ask.springbatch.repository.UserRepository;
+import java.util.List;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,8 +22,8 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @SpringBatchTest
-@TestPropertySource(properties = {"job.name=" + StepJobConfig.JOB_NAME})
-class StepJobTest {
+@TestPropertySource(properties = {"job.name=" + JpaPagingItemReaderJobConfig.JOB_NAME})
+class JpaPagingItemReaderJobTest {
 
   @Autowired
   private JobLauncherTestUtils jobLauncherTestUtils;
@@ -26,12 +31,23 @@ class StepJobTest {
   @Autowired
   private JobRepositoryTestUtils jobRepositoryTestUtils;
 
+  @Autowired
+  private UserRepository userRepository;
+
   @BeforeEach
-  void clearJobExecutions() {
+  void setup() {
     jobRepositoryTestUtils.removeJobExecutions();
+
+    List<User> users = IntStream.iterate(1, i -> i + 1)
+        .limit(1005)
+        .mapToObj(i -> User.create( "id" + i, "name" + i))
+        .collect(toList());
+
+    userRepository.deleteAll();
+    userRepository.saveAll(users);
   }
 
-  @DisplayName("스텝 테스트")
+  @DisplayName("JpaPagingItemReader 테스트")
   @Test
   void batchJob() throws Exception {
     // GIVEN

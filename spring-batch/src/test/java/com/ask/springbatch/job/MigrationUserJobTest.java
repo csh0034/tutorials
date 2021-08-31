@@ -2,7 +2,6 @@ package com.ask.springbatch.job;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ask.springbatch.config.TestBatchConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +14,11 @@ import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(classes = {MigrationUserJobConfig.class, TestBatchConfig.class})
+@SpringBootTest
 @SpringBatchTest
+@TestPropertySource(properties = {"job.name=" + MigrationUserJobConfig.JOB_NAME})
 class MigrationUserJobTest {
 
   @Autowired

@@ -9,12 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "tb_user")
 @NoArgsConstructor(access = PROTECTED)
+@Setter
 @Getter
 @ToString
 public class User {
@@ -46,10 +48,6 @@ public class User {
     user.password = name;
     user.enabled = true;
     return user;
-  }
-
-  public void updateId(String id) {
-    this.id = id;
   }
 
   public void disable() {

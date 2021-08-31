@@ -3,7 +3,6 @@ package com.ask.springbatch.job;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ask.springbatch.config.TestBatchConfig;
 import com.ask.springbatch.entity.User;
 import com.ask.springbatch.repository.UserRepository;
 import java.util.List;
@@ -19,10 +18,12 @@ import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(classes = {PagingReaderJobConfig.class, TestBatchConfig.class})
+@SpringBootTest
 @SpringBatchTest
-class PagingReaderJobTest {
+@TestPropertySource(properties = {"job.name=" + JdbcCursorItemReaderJobConfig.JOB_NAME})
+class JdbcCursorItemReaderJobTest {
 
   @Autowired
   private JobLauncherTestUtils jobLauncherTestUtils;
@@ -35,6 +36,7 @@ class PagingReaderJobTest {
 
   @BeforeEach
   void setup() {
+    System.out.println(">>>>>>>>>>>>>> setup start <<<<<<<<<<<<<<<<");
     jobRepositoryTestUtils.removeJobExecutions();
 
     List<User> users = IntStream.iterate(1, i -> i + 1)
@@ -44,9 +46,10 @@ class PagingReaderJobTest {
 
     userRepository.deleteAll();
     userRepository.saveAll(users);
+    System.out.println(">>>>>>>>>>>>>> setup end <<<<<<<<<<<<<<<<");
   }
 
-  @DisplayName("JpaPagingItemReader 테스트")
+  @DisplayName("JdbcCursorItemReader 테스트")
   @Test
   void batchJob() throws Exception {
     // GIVEN

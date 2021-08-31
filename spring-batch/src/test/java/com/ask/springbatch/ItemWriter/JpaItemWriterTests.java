@@ -116,7 +116,7 @@ public class JpaItemWriterTests {
           .limit(USER_SIZE)
           .mapToObj(i -> {
             User user = User.create("name" + i, "password" + i, true);
-            user.updateId("id" + i);
+            user.setId("id" + i);
             return user;
           })
           .collect(toList());
@@ -136,7 +136,7 @@ public class JpaItemWriterTests {
           .limit(USER_SIZE)
           .mapToObj(i -> {
             User user = User.create("name" + i, "password" + i, true);
-            user.updateId("id" + i);
+            user.setId("id" + i);
             return user;
           })
           .collect(toList());
