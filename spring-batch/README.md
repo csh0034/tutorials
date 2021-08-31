@@ -9,20 +9,20 @@
 
 pom.xml
 ```xml
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-batch</artifactId>
-    </dependency>
-    <!-- JDBC  -->
-    <dependency>
-      <groupId>org.mariadb.jdbc</groupId>
-      <artifactId>mariadb-java-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.batch</groupId>
-      <artifactId>spring-batch-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-batch</artifactId>
+</dependency>
+<!-- JDBC  -->
+<dependency>
+  <groupId>org.mariadb.jdbc</groupId>
+  <artifactId>mariadb-java-client</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.batch</groupId>
+  <artifactId>spring-batch-test</artifactId>
+  <scope>test</scope>
+</dependency>
 ```
 Java Config
 ```java
@@ -99,8 +99,6 @@ initialize-schema : 메타 테이블 생성 여부
 
 schema 위치 : `classpath:org/springframework/batch/core/schema-@@platform@@.sql`  
 > initialize-schema embedded, always 일 경우 현재 연결된 DB에 맞는 메타 테이블 스키마 생성 sql 실행
-
-
 
 ***
 ## Tasklet
