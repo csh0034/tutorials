@@ -14,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
+@Transactional // Connection 직접 할당해주어 동작 하지 않음
 class SpringDbunitApplicationTests {
 
   @Autowired
@@ -28,6 +28,8 @@ class SpringDbunitApplicationTests {
     InputStream is = new ClassPathResource("data.xml").getInputStream();
     FlatXmlDataSet flatXmlDataSet = new FlatXmlDataSetBuilder().build(is);
     DatabaseOperation.CLEAN_INSERT.execute(iDatabaseConnection, flatXmlDataSet);
-  }
 
+    connection.close();
+    iDatabaseConnection.close();
+  }
 }
