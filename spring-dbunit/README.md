@@ -29,11 +29,11 @@ pom.xml
 </dependency>
 ```
 
----
-##참고 사항
+***
+## 참고 사항
 - Intellij DbUnit Extractor 플러그인 설치
 
----
-##ref
+***
+## 참조
 - [dbunit docs](http://dbunit.sourceforge.net/components.html)
 - [스프링부트에서 DbUnit 을 이용하여 DB 테스트 해보기](https://techblog.woowahan.com/2650)
