@@ -2,10 +2,12 @@ package com.ask.springbatch.entity;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +34,9 @@ public class User {
   private String password;
 
   private boolean enabled;
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  private UserExtra userExtra;
 
   public static User create(String name, String password, boolean enabled) {
     User user = new User();

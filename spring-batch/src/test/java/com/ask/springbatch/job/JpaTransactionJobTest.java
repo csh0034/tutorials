@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.ask.springbatch.entity.User;
+import com.ask.springbatch.entity.UserExtra;
+import com.ask.springbatch.repository.UserExtraRepository;
 import com.ask.springbatch.repository.UserRepository;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -22,8 +24,8 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @SpringBatchTest
-@TestPropertySource(properties = {"job.name=" + JpaPagingItemReaderJobConfig.JOB_NAME})
-class JpaPagingItemReaderJobTest {
+@TestPropertySource(properties = {"job.name=" + JpaTransactionJobConfig.JOB_NAME})
+class JpaTransactionJobTest {
 
   @Autowired
   private JobLauncherTestUtils jobLauncherTestUtils;
@@ -34,20 +36,31 @@ class JpaPagingItemReaderJobTest {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private UserExtraRepository userExtraRepository;
+
   @BeforeEach
   void setup() {
+    System.out.println(">>>>>>>>>>>>>> setup start <<<<<<<<<<<<<<<<");
     jobRepositoryTestUtils.removeJobExecutions();
 
+    userRepository.deleteAll();
+    userExtraRepository.deleteAll();
+
     List<User> users = IntStream.iterate(1, i -> i + 1)
-        .limit(1005)
+        .limit(15)
         .mapToObj(i -> User.create("name" + i, "password" + i, true))
         .collect(toList());
 
-    userRepository.deleteAll();
     userRepository.saveAll(users);
+    users.stream()
+        .filter(user -> user.getId().contains("1"))
+        .forEach(user -> userExtraRepository.save(UserExtra.create(user)));
+
+    System.out.println(">>>>>>>>>>>>>> setup end <<<<<<<<<<<<<<<<");
   }
 
-  @DisplayName("JpaPagingItemReader 테스트")
+  @DisplayName("JpaTransaction 테스트")
   @Test
   void batchJob() throws Exception {
     // GIVEN

@@ -41,7 +41,7 @@ class JdbcCursorItemReaderJobTest {
 
     List<User> users = IntStream.iterate(1, i -> i + 1)
         .limit(1005)
-        .mapToObj(i -> User.create( "id" + i, "name" + i))
+        .mapToObj(i -> User.create("name" + i, "password" + i, true))
         .collect(toList());
 
     userRepository.deleteAll();

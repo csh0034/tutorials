@@ -129,12 +129,29 @@ Spring Batch의 Reader에서 읽어올 수 있는 데이터 유형
   - JdbcPagingItemReader
   - HibernatePagingItemReader
   - JpaPagingItemReader
+  - RepositoryItemReader
 
 ***
 ## ItemProcessor
 **ItemProcessor**는 필수가 아니며 가공 (혹은 처리) 단계임  
 Reader, Writer 와는 별도의 단계로 분리되었기 때문에 **비지니스 코드가 섞이는 것을 방지**  
 읽어온 배치 데이터와 쓰여질 데이터의 타입이 다를 경우 처리 가능
+
+값을 **변환** 또는 **필터** 역할을 할 수 있음
+
+```java
+public interface ItemProcessor<I, O> {
+
+  @Nullable
+  O process(@NonNull I item) throws Exception;
+}
+```
+ItemProcessor 인터페이스는 두 개의 제네릭 타입이 필요함
+- I : ItemReader에서 받을 데이터 타입
+- O : ItemWriter에 보낼 데이터 타입
+
+ItemReader 에서 넘어오는 값은 Null 일 수 없으며  
+리턴값이 Null 일 경우 ItemWriter로 보내지 않음
 
 ***
 ## ItemWriter
@@ -179,8 +196,8 @@ JpaItemWriter<User> writer = new JpaItemWriterBuilder<User>()
 ```
 
 해당 빌더 메서드중 usePersist 옵션 (default false) 의 설정에 따라 persist or merge 호출
-> id가 세팅되어있는 Entity에 대해서 merge 호출시 writer 에 넘어온 시점의 Entity 는  
-> detach 상태이기 때문에 select 후에 insert 또는 update를 호출함
+> 트랜잭션이 chunk 단위 이므로 User Entity 는 detach 상태가 아니지만  
+> 내부에서 merge 를 호출하므로 id가 세팅 되어 있을 경우 select, insert 발생함
 
 ```java
 public class JpaItemWriter<T> implements ItemWriter<T>, InitializingBean {
