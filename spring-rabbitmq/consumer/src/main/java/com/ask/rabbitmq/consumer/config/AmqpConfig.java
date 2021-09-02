@@ -19,8 +19,11 @@ import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Transformers;
 import org.springframework.integration.dsl.context.IntegrationFlowContext;
+import org.springframework.integration.handler.LoggingHandler;
+import org.springframework.integration.handler.LoggingHandler.Level;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
@@ -56,6 +59,8 @@ public class AmqpConfig {
 
   public static final String DIRECT_CHANNEL1 = "directChannel1";
   public static final String DIRECT_CHANNEL2 = "directChannel2";
+
+  public static final String LOGGING_CHANNEL = "loggingChannel";
 
   @PostConstruct
   public void init() {
@@ -97,6 +102,9 @@ public class AmqpConfig {
         //.transform(new JsonToObjectTransformer())
         .<Map<String, String>>handle((p, h) -> topicActivator.handle(p))
         .filter(this::logging)
+        .log()
+        .log(Level.ERROR, "log.test", m -> m)
+        .wireTap(LOGGING_CHANNEL)
         .routeToRecipients(
             r -> r.applySequence(true)
                 .recipient(channel1())
@@ -171,6 +179,23 @@ public class AmqpConfig {
         .from(channel2())
         .handle(Amqp.outboundAdapter(rabbitTemplate).routingKey(QUEUE_NAME_2))
         .get();
+  }
+
+  @Bean(name = LOGGING_CHANNEL)
+  public MessageChannel loggingChannel() {
+    return MessageChannels.direct().get();
+  }
+
+  @Bean
+  public IntegrationFlow logFlow() {
+    return IntegrationFlows.from(LOGGING_CHANNEL).handle(loggingHandler()).get();
+  }
+
+  @Bean
+  public LoggingHandler loggingHandler() {
+    //loggingHandler.setShouldLogFullMessage(true); // 메세지 전체 보여줄지 여부
+    //loggingHandler.setLoggerName("integrationLogger"); // log 출력 이름
+    return new LoggingHandler(LoggingHandler.Level.INFO.name());
   }
 
   @Component
