@@ -55,6 +55,7 @@ public class AmqpConfig {
   public static final String EXCHANGE_NAME = "sample.exchange";
   public static final String QUEUE_NAME_1 = "sample.queue1";
   public static final String QUEUE_NAME_2 = "sample.queue2";
+  public static final String QUEUE_NAME_3 = "sample.queue3";
   public static final String ROUTING_KEY = "sample.routing.key.#";
 
   public static final String DIRECT_CHANNEL1 = "directChannel1";
@@ -94,6 +95,15 @@ public class AmqpConfig {
     return new DirectChannel();
   }
 
+  // 인바운드 게이트웨이는 일부 다른 시스템이 메시징 애플리케이션을 호출하고 응답을 수신하는 양방향 통합 플로우에 사용
+  //@Bean
+  public IntegrationFlow amqpInboundGateway() {
+    return IntegrationFlows.from(inboundGateway(connectionFactory, QUEUE_NAME_1).defaultReplyTo(QUEUE_NAME_3))
+        .transform(Transformers.fromJson())
+        .get();
+  }
+
+  // 인바운드 채널 어댑터는 데이터를 메시징 애플리케이션으로 가져오기 위한 단방향 통합에 사용
   @Bean
   public IntegrationFlow defaultFlow() {
     return IntegrationFlows

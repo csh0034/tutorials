@@ -15,6 +15,7 @@ public class AmqpConfig {
   public static final String EXCHANGE_NAME = "sample.exchange";
   public static final String QUEUE_NAME_1 = "sample.queue1";
   public static final String QUEUE_NAME_2 = "sample.queue2";
+  public static final String QUEUE_NAME_3 = "sample.queue3";
   public static final String ROUTING_KEY = "sample.routing.key.#";
 
   @Bean
@@ -30,6 +31,11 @@ public class AmqpConfig {
   @Bean
   public Queue queue2() {
     return new Queue(QUEUE_NAME_2);
+  }
+
+  @Bean
+  public Queue queue3() {
+    return new Queue(QUEUE_NAME_3);
   }
 
   @Bean
