@@ -40,6 +40,7 @@ public class PessimisticLockTest {
           successCount.getAndIncrement();
           log.info("{} : 성공", finalI);
         } catch (ObjectOptimisticLockingFailureException oe) {
+          // 복구처리 해줘야함
           log.error("{} : 충돌감지", finalI);
         }
 
@@ -70,14 +71,9 @@ public class PessimisticLockTest {
     for (int i = 0; i < numberOfExecute; i++) {
       int finalI = i;
       service.execute(() -> {
-        try {
-          companyService.decreaseCountWithPessimisticLock(companyId);
-          successCount.getAndIncrement();
-          log.info("{} : 성공", finalI);
-        } catch (ObjectOptimisticLockingFailureException oe) {
-          log.error("{} : 충돌감지", finalI);
-        }
-
+        companyService.decreaseCountWithPessimisticLock(companyId);
+        successCount.getAndIncrement();
+        log.info("{} : 성공", finalI);
         latch.countDown();
       });
     }
