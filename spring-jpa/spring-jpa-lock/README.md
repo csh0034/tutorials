@@ -6,7 +6,7 @@
 - spring boot 2.5.3
 - Java 8
 - Maven
-- MariaDB 10.4.20
+- H2 1.4.200
 
 pom.xml
 ```xml
