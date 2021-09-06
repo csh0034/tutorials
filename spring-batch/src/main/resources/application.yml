@@ -1,6 +1,5 @@
 spring:
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/batch?profileSQL=true
     username: root
     password: 111111

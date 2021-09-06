@@ -19,6 +19,7 @@
     <module>spring-jsp</module>
     <module>spring-dbunit</module>
     <module>spring-batch</module>
+    <module>spring-jpa</module>
   </modules>
 
   <properties>
