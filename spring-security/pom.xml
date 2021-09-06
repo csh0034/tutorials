@@ -8,7 +8,7 @@
     <artifactId>tutorials</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>spring-jpa</artifactId>
+  <artifactId>spring-security</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -17,7 +17,7 @@
   </properties>
 
   <modules>
-    <module>spring-jpa-lock</module>
+    <module>authorization-server</module>
   </modules>
 
 </project>

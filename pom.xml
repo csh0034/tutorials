@@ -20,6 +20,7 @@
     <module>spring-dbunit</module>
     <module>spring-batch</module>
     <module>spring-jpa</module>
+    <module>spring-security</module>
   </modules>
 
   <properties>
