@@ -3,7 +3,7 @@
 ## spring boot + dbunit
 개발환경
 - IntelliJ IDEA 2021.1
-- spring boot 2.5.3
+- spring boot 2.5.4
 - Java 8
 - Maven
 
