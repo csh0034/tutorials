@@ -24,7 +24,9 @@ import org.hibernate.envers.NotAudited;
 @Getter
 @ToString
 @Audited
-public class Company {
+public class Company extends BaseEntity {
+
+  private static final long serialVersionUID = 8664127818368505411L;
 
   @Id
   @GeneratedValue(generator = "uuid")
@@ -52,7 +54,4 @@ public class Company {
     this.name = name;
   }
 
-  public void decreaseCount() {
-    count--;
-  }
 }

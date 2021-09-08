@@ -1,9 +1,11 @@
 package com.ask.springjpaenvers.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ask.springjpaenvers.entity.Company;
+import com.ask.springjpaenvers.entity.CompanyLog;
+import com.ask.springjpaenvers.repository.CompanyLogRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +24,9 @@ class CompanyServiceTest {
   @Autowired
   private CompanyService companyService;
 
+  @Autowired
+  private CompanyLogRepository companyLogRepository;
+
   @DisplayName("Company 저장 후 Revisions 조회")
   @Test
   void test1() {
@@ -39,6 +44,9 @@ class CompanyServiceTest {
     // then
     Revisions<Long, Company> revisions = companyService.findRevisions(companyId);
     revisions.forEach(revision -> log.info("revision : {}", revision));
+
+    List<CompanyLog> companyLogs = companyLogRepository.findAll();
+    companyLogs.forEach(companyLog -> log.info("companyLog : {}", companyLog));
   }
 
   @DisplayName("Company 저장 후 최근Revision 조회")

@@ -143,5 +143,78 @@ callback.getValue(entity)) 메서드는 실행시 프록시 객체가아닌 원�
 [spring data envers github issue](https://github.com/spring-projects/spring-data-envers/issues/250)
 
 ***
+## Listener 를 통한 로깅  
+EntityManagerFactory 빈생성 이후에 EventListenerRegistry 에 로깅을 처리하는 리스너를 등록
+
+리스너 등록
+```java
+@Configuration
+@RequiredArgsConstructor
+public class JpaConfig  {
+
+  private final EntityManagerFactory emf;
+
+  private final CompanyLogService companyLogService;
+
+  @PostConstruct
+  public void init() {
+    SessionFactoryImpl sessionFactory = emf.unwrap(SessionFactoryImpl.class);
+    EventListenerRegistry registry = sessionFactory.getServiceRegistry().getService(EventListenerRegistry.class);
+    CompanyLogWriteListener logWriteListener = new CompanyLogWriteListener(companyLogService);
+
+    registry.appendListeners(EventType.POST_INSERT, logWriteListener);
+    registry.appendListeners(EventType.POST_UPDATE, logWriteListener);
+    registry.appendListeners(EventType.POST_DELETE, logWriteListener);
+  }
+} 
+```
+
+리스너에서 로깅테이블 저장
+```java
+@RequiredArgsConstructor
+@Slf4j
+public class CompanyLogWriteListener implements PostInsertEventListener, PostUpdateEventListener, PostDeleteEventListener {
+
+  private static final long serialVersionUID = 7876932731944094153L;
+
+  private final CompanyLogService companyLogService;
+
+  @Override
+  public void onPostInsert(PostInsertEvent event) {
+    final Object entity = event.getEntity();
+
+    if (entity instanceof Company) {
+      log.info("Company onPostInsert");
+    }
+  }
+
+  @Override
+  public void onPostUpdate(PostUpdateEvent event) {
+    final Object entity = event.getEntity();
+
+    if (entity instanceof Company) {
+      log.info("Company onPostUpdate");
+    }
+  }
+
+  @Override
+  public void onPostDelete(PostDeleteEvent event) {
+    final Object entity = event.getEntity();
+
+    if (entity instanceof Company) {
+      log.info("Company onPostDelete");
+    }
+  }
+
+  @Override
+  public boolean requiresPostCommitHanding(EntityPersister entityPersister) {
+    return true;
+  }
+}
+```
+
+
+
+***
 ## 참조
 [hibernate document](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#envers-configuration)
