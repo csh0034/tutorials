@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/envers
+    username: root
+    password: 111111
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _h
+            store_data_at_delete: true
+            global_with_modified_flag: true
+            modified_flag_suffix: _mod
+      hibernate:
+        show_sql: false
+        format_sql: true
+    open-in-view: false
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
