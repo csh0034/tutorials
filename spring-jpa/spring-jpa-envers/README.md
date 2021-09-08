@@ -137,7 +137,8 @@ callback.getValue(entity)) 메서드는 실행시 프록시 객체가아닌 원�
 
 **해결방법**  
 프록시로 조회하지 않도록 `@Proxy(lazy = false)` 추가  
-> **적용시 이슈** : 프록시를 진짜 객체로 조회하기 위해 n + 1 문제 발생함
+> **적용시 이슈** : 프록시를 진짜 객체로 조회하기 위해 n + 1 문제 발생함  
+> [관련 사항 spring data envers github issue 추가](https://github.com/spring-projects/spring-data-envers/issues/313)
 
 [spring data envers github issue](https://github.com/spring-projects/spring-data-envers/issues/250)
 
