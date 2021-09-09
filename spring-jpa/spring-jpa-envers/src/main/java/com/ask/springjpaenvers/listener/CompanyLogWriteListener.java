@@ -33,7 +33,12 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 
       CompanyLog companyLog = CompanyLog.create(company.getId(), company.getName(), company.getCount(), LogType.CREATE);
 
-      companyLogService.save(companyLog);
+      // ActionQueue 에 이벤트 콜백 등록
+      event.getSession().getActionQueue().registerProcess((success, session) -> {
+        if (success) {
+          companyLogService.save(companyLog);
+        }
+      });
     }
   }
 
@@ -48,7 +53,11 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 
       CompanyLog companyLog = CompanyLog.create(company.getId(), company.getName(), company.getCount(), LogType.UPDATE);
 
-      companyLogService.save(companyLog);
+      event.getSession().getActionQueue().registerProcess((success, session) -> {
+        if (success) {
+          companyLogService.save(companyLog);
+        }
+      });
     }
   }
 

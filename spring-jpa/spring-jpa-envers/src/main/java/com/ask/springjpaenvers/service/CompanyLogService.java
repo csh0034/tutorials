@@ -13,7 +13,7 @@ public class CompanyLogService {
 
   private final CompanyLogRepository companyLogRepository;
 
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void save(CompanyLog companyLog) {
     companyLogRepository.save(companyLog);
   }
