@@ -226,7 +226,7 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 
 ### Hibernate Interceptor  
 - org.hibernate.EmptyInterceptor 상속 받아 사용
-- 코드가 적고 구성이 비교적 간단하지만 점은 전체 애플리케이션에 대해 하나만 가질 수 있다
+- 코드가 적고 구성이 비교적 간단하지만 전체 애플리케이션에 대해 하나만 가질 수 있다
 
 application.yml 로 설정 방법
 ```yaml
