@@ -213,7 +213,38 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 }
 ```
 
+***
+## Hibernate Listener vs Hibernate Interceptor  
+> HibernatePropertiesCustomizer를 사용하여 등록할 경우 JpaRepository 관련 의존성은 주입못함  
+> JpaRepository 생성시 EntityManagerFactory 가 필요하여 HibernatePropertiesCustomizer 은 EntityManagerFactory   
+> 빈생성시 호출되므로 순환 참조임
 
+### Hibernate Listener  
+- org.hibernate.event.spi.*Listener 인터페이스 중 하나를 구현
+- 여러개 등록 가능하며 구현 메서드가 간결함
+- [Listener 를 통한 로깅](#리스너-등록)
+
+### Hibernate Interceptor  
+- org.hibernate.EmptyInterceptor 상속 받아 사용
+- 코드가 적고 구성이 비교적 간단하지만 점은 전체 애플리케이션에 대해 하나만 가질 수 있다
+
+application.yml 로 설정 방법
+```yaml
+spring.jpa.properties.hibernate.session_factory.interceptor=my.package.MyInterceptor
+```
+
+bean 을 등록하며 설정 방법
+```java
+@Bean
+public HibernatePropertiesCustomizer customizer() {
+  return (properties) -> properties.put("hibernate.session_factory.interceptor", hibernateInterceptor());
+}
+
+@Bean
+public EmptyInterceptor hibernateInterceptor() {
+  return new MyInterceptor();
+}
+```
 
 ***
 ## 참조
