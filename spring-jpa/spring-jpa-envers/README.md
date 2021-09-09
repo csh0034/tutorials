@@ -222,7 +222,7 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 ### Hibernate Listener  
 - org.hibernate.event.spi.*Listener 인터페이스 중 하나를 구현
 - 여러개 등록 가능하며 구현 메서드가 간결함
-- [Listener 를 통한 로깅](#리스너-등록)
+- [Listener 를 통한 로깅](#listener-를-통한-로깅)
 
 ### Hibernate Interceptor  
 - org.hibernate.EmptyInterceptor 상속 받아 사용
