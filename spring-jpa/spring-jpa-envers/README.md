@@ -224,13 +224,64 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 - 여러개 등록 가능하며 구현 메서드가 간결함
 - [Listener 를 통한 로깅](#listener-를-통한-로깅)
 
+application.yml 로 설정 방법
+> 이때 Integrator 를 상속 받아 구현 하며 캐스팅 타입이 IntegratorProvider 이므로 둘다 구현해야함  
+> EntityManagerFactoryBuilderImpl applyIntegrationProvider 에서 처리함
+```yaml
+spring:
+  jpa:
+    properties:
+      hibernate:
+        integrator_provider: com.ask.springjpaenvers.listener.TestIntegrator
+```
+```java
+@Slf4j
+public class TestIntegrator implements Integrator, IntegratorProvider {
+
+  @Override
+  public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory,
+      SessionFactoryServiceRegistry serviceRegistry) {
+    log.info("call TestIntegrator integrate");
+  }
+
+  @Override
+  public void disintegrate(SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+  }
+
+  @Override
+  public List<Integrator> getIntegrators() {
+    return Collections.singletonList(new TestIntegrator());
+  }
+}
+```
+
+bean 을 등록하며 설정 방법
+```java
+@Bean
+public HibernatePropertiesCustomizer customizer() {
+  return (properties) -> properties.put("hibernate.integrator_provider", 
+    (IntegratorProvider) () -> Collections.singletonList(testIntegrator()));
+}
+
+@Bean
+public TestIntegrator testIntegrator() {
+  return new TestIntegrator();
+}
+```
+
+
 ### Hibernate Interceptor  
 - org.hibernate.EmptyInterceptor 상속 받아 사용
 - 코드가 적고 구성이 비교적 간단하지만 전체 애플리케이션에 대해 하나만 가질 수 있다
 
 application.yml 로 설정 방법
 ```yaml
-spring.jpa.properties.hibernate.session_factory.interceptor=my.package.MyInterceptor
+spring:
+  jpa:
+    properties:
+      hibernate:
+        session_factory:
+          interceptor: my.package.MyInterceptor
 ```
 
 bean 을 등록하며 설정 방법
