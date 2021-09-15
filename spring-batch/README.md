@@ -241,6 +241,16 @@ public class JpaItemWriter<T> implements ItemWriter<T>, InitializingBean {
   Scope Bean을 생성할때만 가능
 
 ***
+## Batch Status vs. Exit Status  
+**Batch Status**
+- Job 또는 Step 의 실행 결과를 Spring에서 기록할 때 사용하는 Enum
+
+**Exit Status**
+- Step의 실행 후 상태, Enum 이 아니다
+
+> Spring Batch는 기본적으로 ExitStatus의 exitCode는 Step의 BatchStatus와 같도록 설정되어 있다
+
+***
 ## MySQL (MariaDB) 배치설정
 ```yaml
 spring:
