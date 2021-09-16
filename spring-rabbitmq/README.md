@@ -1,6 +1,6 @@
 # spring amqp(rabbitmq), mqtt, integration
 
-## spring boot + dbunit
+## spring boot + integration + amqp, mqtt
 개발환경
 - IntelliJ IDEA 2021.1
 - spring boot 2.5.4
@@ -80,7 +80,26 @@ Spring Integration은 스프링 기반 애플리케이션에서 경량 메시지
 - **채널 어댑터**: 외부 시스템에 채널을 연결함. 외부 시스템으로부터 입력을 받거나 쓸 수 있음
 - **게이트웨이**: 인터페이스를 통해 통합플로우로 데이터를 전달
 
+### 채널
+**인터페이스**  
+- MessageChannel
+  - PollableChannel
+  - SubscribableChannel
+
+**구현체**
+- DirectChannel
+  - RoundRobin 방식으로 한개의 subscriber 만 처리
+  - 이 채널의 가장 중요한 특징중의 하나는 채널의 입력과 출력 측이 하나의 쓰레드에서 동작되게 한다
+  - 따라서 트랜젝션을 처리하고자 할때 유용함
+- QueueChannel : queue 로 구현 되어 있어 한개의 subscriber 만 처리, poller가 있어야함
+- PublishSubscribeChannel : 모든 subscriber 에게 보냄, 메시지를 폴링할 수 없다.
+- PriorityChannel : 우선 순위에 따라 채널 내에서 메시지를 정렬할 수 있다. 기본적으론 헤더에 따라 결정
+- RendezvousChannel
+- ExecutorChannel
+- FluxMessageChannel
+
 ***
 ## ref
 - [Spring Integration Reference Guide](https://docs.spring.io/spring-integration/docs/current/reference/html/index.html)
 - [MQTT 적용을 통한 중계시스템 개선](https://techblog.woowahan.com/2540)
+- [Message Channels 정리 블로그](https://springsource.tistory.com/48)

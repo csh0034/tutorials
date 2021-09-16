@@ -23,7 +23,7 @@ public class SplitConfig {
   @Autowired
   private Upcase upcase;
 
-  @Bean
+  //@Bean
   public ApplicationRunner applicationRunner() {
     return args -> {
       Collection<String> values = upcase.upcaseList(Arrays.asList("aaa", "bbb", "ccc"));

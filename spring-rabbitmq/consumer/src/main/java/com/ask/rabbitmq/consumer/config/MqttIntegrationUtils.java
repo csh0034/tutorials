@@ -35,13 +35,13 @@ public class MqttIntegrationUtils {
    */
   public void createMqttInboundFlow() {
     IntegrationFlow dynamicIntegrationFlow1 = IntegrationFlows
-        .from(mqttChannelAdapter(MQTT_DYNAMIC_TOPIC_1))
+        .from(mqttChannelAdapter(BROKER_URL, MQTT_DYNAMIC_TOPIC_1, mqttClientFactory))
         .handle(message -> log.info(message.toString()))
         .get();
     integrationFlowContext.registration(dynamicIntegrationFlow1).id(MQTT_DYNAMIC_TOPIC_1).register();
 
     IntegrationFlow dynamicIntegrationFlow2 = IntegrationFlows
-        .from(mqttChannelAdapter(MQTT_DYNAMIC_TOPIC_2))
+        .from(mqttChannelAdapter(BROKER_URL, MQTT_DYNAMIC_TOPIC_2, mqttClientFactory))
         .handle(message -> log.info(message.toString()))
         .get();
     integrationFlowContext.registration(dynamicIntegrationFlow2).id(MQTT_DYNAMIC_TOPIC_2).register();
@@ -73,7 +73,7 @@ public class MqttIntegrationUtils {
   public void createMqttOutboundFlow() {
     IntegrationFlow dynamicOutboundIntegrationFlow = IntegrationFlows
         .from(MQTT_OUTBOUND_CHANNEL)
-        .handle(mqttOutboundMessageHandler())
+        .handle(mqttOutboundMessageHandler(BROKER_URL, mqttClientFactory))
         .get();
 
     integrationFlowContext.registration(dynamicOutboundIntegrationFlow).id(MQTT_OUTBOUND_DYNAMIC_TOPIC).register();
@@ -87,17 +87,17 @@ public class MqttIntegrationUtils {
     }
   }
 
-  private MqttPahoMessageDrivenChannelAdapter mqttChannelAdapter(String topic) {
+  public static MqttPahoMessageDrivenChannelAdapter mqttChannelAdapter(String url, String topic, MqttPahoClientFactory mqttClientFactory) {
     MqttPahoMessageDrivenChannelAdapter adapter =
-        new MqttPahoMessageDrivenChannelAdapter(BROKER_URL, MqttAsyncClient.generateClientId(), mqttClientFactory, topic);
+        new MqttPahoMessageDrivenChannelAdapter(url, MqttAsyncClient.generateClientId(), mqttClientFactory, topic);
     adapter.setCompletionTimeout(5000);
     adapter.setConverter(new DefaultPahoMessageConverter());
     adapter.setQos(1);
     return adapter;
   }
 
-  private MessageHandler mqttOutboundMessageHandler() {
-    MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(BROKER_URL, MqttAsyncClient.generateClientId(), mqttClientFactory);
+  public static MessageHandler mqttOutboundMessageHandler(String url, MqttPahoClientFactory mqttClientFactory) {
+    MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(url, MqttAsyncClient.generateClientId(), mqttClientFactory);
     messageHandler.setAsync(true);
     messageHandler.setDefaultQos(1);
     return messageHandler;
