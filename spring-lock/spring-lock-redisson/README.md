@@ -155,10 +155,6 @@ class VoteServiceTest {
 
   @Test
   void voteWithoutLock() throws Exception {
-    // before
-    List<Vote> votes = voteService.findAll();
-    votes.forEach(vote -> log.info("vote : {}", vote));
-
     // given
     String voter = "voter1";
     String candidate = "candidate1";
