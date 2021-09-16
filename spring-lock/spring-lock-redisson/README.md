@@ -134,6 +134,77 @@ public class VoteService {
 }
 ```
 
+Test
+```java
+@SpringBootTest
+@Slf4j
+class VoteServiceTest {
+
+  private static final int THREAD_SIZE = 10;
+
+  CountDownLatch countDownLatch = new CountDownLatch(THREAD_SIZE);
+  ExecutorService service = Executors.newFixedThreadPool(THREAD_SIZE);
+
+  @Autowired
+  VoteService voteService;
+
+  @AfterEach
+  void tearDown() {
+    voteService.deleteAll();
+  }
+
+  @Test
+  void voteWithoutLock() throws Exception {
+    // before
+    List<Vote> votes = voteService.findAll();
+    votes.forEach(vote -> log.info("vote : {}", vote));
+
+    // given
+    String voter = "voter1";
+    String candidate = "candidate1";
+
+    // when
+    for (int i = 0; i < THREAD_SIZE; i++) {
+      service.execute(() -> {
+        voteService.voteWithoutLock(voter, candidate);
+        countDownLatch.countDown();
+      });
+    }
+
+    countDownLatch.await();
+
+    // then
+    List<Vote> votes2 = voteService.findAll();
+    votes2.forEach(vote -> log.info("vote : {}", vote));
+
+    assertThat(votes2.size()).isGreaterThan(1);
+  }
+
+  @Test
+  void voteWithLock() throws Exception {
+    // given
+    String voter = "voter2";
+    String candidate = "candidate2";
+
+    // when
+    for (int i = 0; i < THREAD_SIZE; i++) {
+      service.execute(() -> {
+        voteService.voteWithLock(voter, candidate);
+        countDownLatch.countDown();
+      });
+    }
+
+    countDownLatch.await();
+
+    // then
+    List<Vote> votes = voteService.findAll();
+    votes.forEach(vote -> log.info("vote : {}", vote));
+
+    assertThat(votes.size()).isEqualTo(1);
+  }
+}
+```
+
 ***
 ## 주의사항   
 JPA 사용시 트랜잭션이 끝나서 영속성 컨텍스트를 FLUSH 하기전에 Lock 을 해제하고 다음 작업을 하면   

@@ -54,7 +54,6 @@ public class VoteService {
     return voteRepository.findAll();
   }
 
-
   public void deleteAll() {
     voteRepository.deleteAll();
   }
