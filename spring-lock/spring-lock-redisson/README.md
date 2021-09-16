@@ -218,6 +218,7 @@ Spring 은 ThreadLocal 변수를 통해 트랜잭션 상태를 관리하기 때�
 
 ***
 ## 참조
-- [redisson github](https://github.com/redisson/redisson/tree/master/redisson-spring-boot-starter)
+- [Redisson GitHub](https://github.com/redisson/redisson)
+- [Redisson GitHub wiki](https://github.com/redisson/redisson/wiki/8.-distributed-locks-and-synchronizers)
 - [레디스를 활용한 분산 락과 안전하고 빠른 락의 구현](https://hyperconnect.github.io/2019/11/15/redis-distributed-lock-1.html)
 - [MySQL을 이용한 분산락으로 여러 서버에 걸친 동시성 관리](https://techblog.woowahan.com/2631/)
