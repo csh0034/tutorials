@@ -21,6 +21,7 @@
     <module>spring-batch</module>
     <module>spring-jpa</module>
     <module>spring-security</module>
+    <module>spring-lock</module>
   </modules>
 
   <properties>
