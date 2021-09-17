@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +31,7 @@ class VoteServiceTest {
     voteService.deleteAll();
   }
 
+  @DisplayName("redisson 분산락 사용 안함")
   @Test
   void voteWithoutLock() throws Exception {
     // given
@@ -53,6 +55,7 @@ class VoteServiceTest {
     assertThat(votes2.size()).isGreaterThan(1);
   }
 
+  @DisplayName("redisson 분산락 사용 함")
   @Test
   void voteWithLock() throws Exception {
     // given

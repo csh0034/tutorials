@@ -153,6 +153,7 @@ class VoteServiceTest {
     voteService.deleteAll();
   }
 
+  @DisplayName("redisson 분산락 사용 안함")
   @Test
   void voteWithoutLock() throws Exception {
     // given
@@ -176,6 +177,7 @@ class VoteServiceTest {
     assertThat(votes2.size()).isGreaterThan(1);
   }
 
+  @DisplayName("redisson 분산락 사용 함")
   @Test
   void voteWithLock() throws Exception {
     // given
@@ -197,6 +199,53 @@ class VoteServiceTest {
     votes.forEach(vote -> log.info("vote : {}", vote));
 
     assertThat(votes.size()).isEqualTo(1);
+  }
+}
+```
+
+RAtomicLong 활용 동시접근시에 한번만 실행
+```java
+@SpringBootTest
+@Slf4j
+class LockUtilsTest {
+
+  private static final int THREAD_SIZE = 10;
+
+  CountDownLatch countDownLatch = new CountDownLatch(THREAD_SIZE);
+  ExecutorService service = Executors.newFixedThreadPool(THREAD_SIZE);
+
+  @Autowired
+  RedissonClient redissonClient;
+
+  @DisplayName("redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
+  @RepeatedTest(5)
+  void redissonRAtomicLong() throws Exception {
+    // given
+    String lockKey = "lock-2";
+    AtomicInteger count = new AtomicInteger(0);
+
+    // when
+    for (int i = 0; i < THREAD_SIZE; i++) {
+      service.execute(() -> {
+        RAtomicLong atomicLong = redissonClient.getAtomicLong(lockKey);
+
+        if (atomicLong.compareAndSet(0, 1)) {
+          atomicLong.expire(2, TimeUnit.SECONDS);
+          count.getAndIncrement();
+          log.info("executed!!!");
+        } else {
+          log.info("already executed");
+        }
+
+        countDownLatch.countDown();
+      });
+    }
+    countDownLatch.await();
+
+    // then
+    log.info("end");
+    Assertions.assertThat(count.get()).isEqualTo(1);
+    TimeUnit.SECONDS.sleep(3);
   }
 }
 ```
