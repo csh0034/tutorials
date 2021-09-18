@@ -100,6 +100,114 @@ initialize-schema : 메타 테이블 생성 여부
 schema 위치 : `classpath:org/springframework/batch/core/schema-@@platform@@.sql`  
 > initialize-schema embedded, always 일 경우 현재 연결된 DB에 맞는 메타 테이블 스키마 생성 sql 실행
 
+![03.png](./images/03.png)
+### 메타 테이블 종류
+- [BATCH_JOB_INSTANCE](#batch_job_instance)
+- [BATCH_JOB_EXECUTION](#batch_job_execution)
+- [BATCH_JOB_EXECUTION_CONTEXT](#batch_job_execution_context)
+- [BATCH_JOB_EXECUTION_PARAMS](#batch_job_execution_params)
+- [BATCH_JOB_EXECUTION_SEQ](#_seq)
+- [BATCH_JOB_SEQ](#_seq)
+- [BATCH_STEP_EXECUTION](#batch_step_execution)
+- [BATCH_STEP_EXECUTION_CONTEXT](#batch_step_execution_context)
+- [BATCH_STEP_EXECUTION_SEQ](#_seq)
+
+#### BATCH_JOB_INSTANCE
+Job이 실행될때에 생성되는 JobInstance에 관한 정보를 저장  
+고유한 JobParameter값에 따라 새로 생성
+
+| column | description |
+|--------|-------------|
+| JOB_INSTANCE_ID | 실행된 Job을 고유하게 식별될할 수 있는 기본 키 |
+| VERSION | 해당 레코드에 update 될때마다 1씩 증가 |
+| JOB_NAME | JobBuilderFactory에서 get메서드를 통해 부여한 이름 |
+| JOB_KEY | 고유한 JobParameter 값의 직렬화(serialization)된 결과를 기록 |
+
+<br/>
+
+#### BATCH_JOB_EXECUTION
+Job 실행 내용을 담고 있다. Job의 실패 + 성공 횟수만큼 row가 생성된다.
+
+| column | description |
+|--------|-------------|
+| JOB_EXECUTION_ID | JobInstance에 대한 JobExecution을 고유하게 식별될할 수 있는 기본 키 | 
+| VERSION | 해당 레코드에 update 될때마다 1씩 증가 |
+| JOB_INSTANCE_ID | JobInstance 외래키 |
+| CREATE_TIME | 실행(Execution)이 생성된 시점의 TimeStamp |
+| START_TIME |실행(Execution)이 시작된 시점의 TimeStamp |
+| END_TIME | 실행이 성공 또는 실패와 상관없이 종료된 시점의 TimeStamp <br/> 실행 중 일부유형의 오류가 발생했거나 프레임워크 내부에서 값을 저장하기도 전에  <br/>  실패되었을 경우 값이 비어 있을 수 있다 |
+| STATUS | 실행의 상태를 BatchStatus Enum 으로 기록 |
+| EXIT_CODE | 실행 종료코드를 기록 |
+| EXIT_MESSAGE | Status가 실패(Fail)일 경우 실패한 원인에 대하여 문자열형태로 기록 |
+| LAST_UPDATED | 실행(Execution)이 마지막으로 영속(persisted)에 놓인 시점의 TimeStamp |
+
+<br/>
+
+#### BATCH_JOB_EXECUTION_CONTEXT
+Job의 ExecutionContext와 관련된 모든 정보를 기록  
+한개의 JobExecution에 각 JobExecutionContext가 있으며 특정 작업 실행에 필요한 모든 작업 레벨 데이터를 포함  
+일반적으로 JobInstance가 중지 된 위치에서 다시 시작할 수 있도록, 실패(Fail)이후 지점에 State를 나타낸다
+
+| column | description |
+|--------|-------------|
+| JOB_EXECUTION_ID | 기본키 & jobExecution 외래 키 |
+| SHORT_CONTEXT | SERIALIZED_CONTEXT의 버전을 나타내는 문자열 |
+| SERIALIZED_CONTEXT | 직렬화(serialized)된 전체 컨텍스트 |
+
+<br/>
+
+#### BATCH_JOB_EXECUTION_PARAMS
+JobParameter에 대한 모든정보를 기록  
+JobParameter값에 따라 JobInstance가 생성되며 동일한 JobParameter값으로   
+실행하면 BATCH_JOB_INSTANCE 테이블에 기록되지 않는다.
+
+<br/>
+
+#### BATCH_STEP_EXECUTION
+JobExecution에 대한 Step객체 정보를 기록
+
+| column | description |
+|--------|-------------|
+| STEP_EXECUTION_ID | Step에 대한 실행횟수정보를 고유하게 식별될할 수 있는 기본 키 |
+| VERSION | 해당 레코드에 update 될때마다 1씩 증가 |
+| STEP_NAME | StepBuilderFactory에서 get메서드를 통해 부여한 이름 |
+| JOB_EXECUTION_ID | jobExecution 외래 키 | 
+| START_TIME | 실행(Execution)이 시작된 시점의 TimeStamp |
+| END_TIME | 실행이 성공 또는 실패와 상관없이 종료된 시점의 TimeStamp <br/> 실행 중 일부유형의 오류가 발생했거나 프레임워크 내부에서 값을 저장하기도 전에  <br/>  실패되었을 경우 값이 비어 있을 수 있다 |
+| STATUS | 실행의 상태를 BatchStatus Enum 으로 기록 |
+| COMMIT_COUNT | Chunk 단위 트랜잭션 당 커밋되는 수를 기록 |
+| READ_COUNT | 실행시점에 Read한 Item 수를 기록 |
+| FILTER_COUNT | 실행도중 필터링된 Item 수를 기록 |
+| WRITE_COUNT | 실행도중 저장되고 커밋된 Item 수를 기록 |
+| READ_SKIP_COUNT | 실행도중 Read가 스킵(Skip)된 Item 수를 기록 | 
+| WRITE_SKIP_COUNT | 실행도중 write가 스킵(Skip)된 Item 수를 기록 | 
+| PROCESS_SKIP_COUNT | 실행도중 Process가 스킵(Skip)된 Item 수를 기록 | 
+| ROLLBACK_COUNT | 실행도중 rollback이 일어난 수를 기록<br/>재시도를 위한 롤백과 복구 건너뛰기 절차의 롤백을 포함하여 롤백이 발생할 때마다 포함 |
+| EXIT_CODE | 실행 종료코드를 기록 |
+| EXIT_MESSAGE | Status가 실패(Fail)일 경우 실패한 원인에 대하여 문자열형태로 기록 |
+| LAST_UPDATED | 실행(Execution)이 마지막으로 영속(persisted)에 놓인 시점의 TimeStamp |
+
+<br/>
+
+#### BATCH_STEP_EXECUTION_CONTEXT
+Step의 ExecutionContext와 관련된 모든 정보를 기록  
+한개의 StepExecution에 각 StepExecutionContext가 있으며 특정 작업 실행에 필요한 모든 작업 레벨 데이터를 포함  
+일반적으로 JobInstance가 중지 된 위치에서 다시 시작할 수 있도록, 실패(Fail)이후 지점에 State를 나타낸다
+
+| column | description |
+|--------|-------------|
+| JOB_EXECUTION_ID | 기본키 & StepExecution 외래 키 |
+| SHORT_CONTEXT | SERIALIZED_CONTEXT의 버전을 나타내는 문자열 |
+| SERIALIZED_CONTEXT | 직렬화(serialized)된 전체 컨텍스트 |
+
+<br/>
+
+#### *_SEQ
+시퀀스관리 테이블
+- BATCH_JOB_SEQ
+- BATCH_JOB_EXECUTION_SEQ
+- BATCH_STEP_EXECUTION_SEQ
+
 ***
 ## Tasklet
 **Tasklet**은 Step안에서 단일로 수행될 커스텀한 기능들을 선언할때 사용함  
@@ -179,7 +287,7 @@ JDBC의 Batch 기능을 사용하여 한번에 Database로 전달하여 Database
 
 JdbcBatchItemWriterBuilder 설정값
 
-| Property   | Parameter<br>Type      | 설명                     |
+| Property   | Parameter<br/>Type      | 설명                     |
 |------------|-----------|--------------------------------------|
 | columnMapped | 없음 | Key,Value 기반으로 Insert SQL의 Values를 매핑 |
 | beanMapped   | 없음 | Pojo 기반으로 Insert SQL의 Values를 매핑      |
