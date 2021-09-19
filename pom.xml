@@ -22,6 +22,7 @@
     <module>spring-jpa</module>
     <module>spring-security</module>
     <module>spring-lock</module>
+    <module>spring-quartz</module>
   </modules>
 
   <properties>

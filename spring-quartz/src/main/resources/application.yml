@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/quartz
+    username: root
+    password: 111111
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+    open-in-view: false
+
+  quartz:
+    jdbc:
+      initialize-schema: always
+    job-store-type: jdbc
+    properties:
+      "[org.quartz.scheduler.instanceId]": AUTO
+      "[org.quartz.threadPool.threadCount]": 20
+#      "[org.quartz.jobStore.class]": org.quartz.impl.jdbcjobstore.JobStoreTX spring 과 사용시 LocalDataSourceJobStore 로 설정됨
+      "[org.quartz.jobStore.driverDelegateClass]": org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      "[org.quartz.jobStore.tablePrefix]": QRTZ_
+      "[org.quartz.jobStore.isClustered]": true
+      "[org.quartz.jobStore.useProperties]": true
+      "[org.quartz.jobStore.misfireThreshold]": 60000
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
