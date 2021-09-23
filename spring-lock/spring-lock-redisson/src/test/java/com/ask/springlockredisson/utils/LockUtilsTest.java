@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -72,7 +73,7 @@ class LockUtilsTest {
     }
   }
 
-  @DisplayName("redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
+  @DisplayName("ExecutorService - redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
   @RepeatedTest(5)
   void redissonRAtomicLong() throws Exception {
     // given
@@ -95,6 +96,37 @@ class LockUtilsTest {
         countDownLatch.countDown();
       });
     }
+    countDownLatch.await();
+
+    // then
+    log.info("end");
+    Assertions.assertThat(count.get()).isEqualTo(1);
+    TimeUnit.SECONDS.sleep(3);
+  }
+
+  @DisplayName("ParallelStream - redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
+  @RepeatedTest(5)
+  void redissonRAtomicLongWithParallelStream() throws Exception {
+    // given
+    String lockKey = "lock-3";
+    AtomicInteger count = new AtomicInteger(0);
+
+    // when
+    IntStream.rangeClosed(1, 10).parallel()
+        .forEach(i -> {
+          RAtomicLong atomicLong = redissonClient.getAtomicLong(lockKey);
+
+          if (atomicLong.compareAndSet(0, 1)) {
+            atomicLong.expire(2, TimeUnit.SECONDS);
+            count.getAndIncrement();
+            log.info("executed!!!");
+          } else {
+            log.info("already executed");
+          }
+
+          countDownLatch.countDown();
+        });
+
     countDownLatch.await();
 
     // then
