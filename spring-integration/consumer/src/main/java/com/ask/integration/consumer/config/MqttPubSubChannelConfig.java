@@ -1,5 +1,8 @@
 package com.ask.integration.consumer.config;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +18,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.messaging.support.MessageBuilder;
 
 @Configuration
 @RequiredArgsConstructor
@@ -24,9 +28,28 @@ public class MqttPubSubChannelConfig {
   public static final String MQTT_PUB_SUB_OUTBOUND_CHANNEL = "pubSubOutboundChannel";
   public static final String MQTT_PUB_SUB_TOPIC = "/PUBSUB";
   public static final String MQTT_SERVER_1 = "tcp://localhost:1883";
-  public static final String MQTT_SERVER_2 = "tcp://localhost:1884";
+  public static final String MQTT_SERVER_2 = "tcp://localhost:1883";
 
   private final MqttPahoClientFactory mqttClientFactory;
+
+  // @PostConstruct
+  public void init() {
+    CompletableFuture.runAsync(() -> {
+      try {
+        TimeUnit.SECONDS.sleep(5);
+
+        Message<String> message = MessageBuilder
+            .withPayload("test mqtt message")
+            .setHeader(MqttHeaders.TOPIC, MQTT_PUB_SUB_TOPIC)
+            .setHeader(MqttHeaders.QOS, 1)
+            .build();
+
+        mqttPubSubOutboundChannel().send(message);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    });
+  }
 
   @Bean
   public IntegrationFlow mqttPubSubInboundFlow1() {
@@ -83,6 +106,18 @@ public class MqttPubSubChannelConfig {
         .handle(MqttIntegrationUtils.mqttOutboundMessageHandler(MQTT_SERVER_2, mqttClientFactory))
         .get();
   }
+
+//  @Bean
+//  public IntegrationFlow subFlowTest1() {
+//    return f -> f
+//        .handle(MqttIntegrationUtils.mqttOutboundMessageHandler(MQTT_SERVER_1, mqttClientFactory));
+//  }
+//
+//  @Bean
+//  public IntegrationFlow subFlowTest2() {
+//    return f -> f
+//        .handle(MqttIntegrationUtils.mqttOutboundMessageHandler(MQTT_SERVER_2, mqttClientFactory));
+//  }
 
   @MessagingGateway(defaultRequestChannel = MQTT_PUB_SUB_OUTBOUND_CHANNEL, defaultRequestTimeout = "5000", defaultReplyTimeout = "5000")
   public interface MqttPubSubOutboundGateway {

@@ -34,13 +34,13 @@ public class SplitConfig {
     };
   }
 
-  @MessagingGateway
+  @MessagingGateway(defaultRequestChannel = "upcase.input")
   public interface Upcase {
 
-    @Gateway(requestChannel = "upcase.input")
+    @Gateway
     Collection<String> upcaseList(Collection<String> strings);
 
-    @Gateway(requestChannel = "upcase.input")
+    @Gateway
     String upcase(String string);
   }
 
