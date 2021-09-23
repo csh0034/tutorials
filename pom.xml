@@ -12,7 +12,7 @@
 
   <modules>
     <module>spring-docker</module>
-    <module>spring-rabbitmq</module>
+    <module>spring-integration</module>
     <module>spring-cache</module>
     <module>spring-mail</module>
     <module>spring-dynamodb</module>
