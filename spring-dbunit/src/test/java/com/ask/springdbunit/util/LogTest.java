@@ -1,4 +1,4 @@
-package com.ask.springdbunit;
+package com.ask.springdbunit.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -6,10 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-class SpringDbunitApplicationTests {
+class LogTest {
 
   @Test
-  void contextLoads() {
-    log.info("SpringDbunitApplicationTests.contextLoads");
+  void log() {
+    log.info("LogTest.log");
   }
 }
