@@ -2,7 +2,7 @@
 ## 스프링 부트 + Spring security authorization server
 개발환경
 - IntelliJ IDEA 2021.2.1
-- spring boot 2.5.4
+- spring boot 2.5.5
 - Java 8
 - Maven
 - H2 1.4.200

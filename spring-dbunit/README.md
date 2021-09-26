@@ -3,7 +3,7 @@
 ## spring boot + dbunit
 개발환경
 - IntelliJ IDEA 2021.1
-- spring boot 2.5.4
+- spring boot 2.5.5
 - Java 8
 - Maven
 
@@ -69,7 +69,7 @@ pom.xml
 --- maven-surefire-plugin:2.22.2:test (initDB-on) @ spring-dbunit ---
 --- maven-surefire-plugin:2.22.2:test (default-test) @ spring-dbunit ---
 --- maven-jar-plugin:3.2.0:jar (default-jar) @ spring-dbunit ---
---- spring-boot-maven-plugin:2.5.4:repackage (repackage) @ spring-dbunit ---
+--- spring-boot-maven-plugin:2.5.5:repackage (repackage) @ spring-dbunit ---
 --- maven-install-plugin:2.5.2:install (default-install) @ spring-dbunit ---
 ```
 ***

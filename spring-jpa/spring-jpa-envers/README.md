@@ -2,7 +2,7 @@
 
 개발환경
 - IntelliJ IDEA 2021.2.1
-- spring boot 2.5.4
+- spring boot 2.5.5
 - Java 8
 - Maven
 - MariaDB 10.4.20
