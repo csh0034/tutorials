@@ -41,39 +41,39 @@ pom.xml
 
 ```xml
 <plugin>
-<groupId>org.apache.maven.plugins</groupId>
-<artifactId>maven-surefire-plugin</artifactId>
-<configuration>
-  <systemProperties>
-    <db.name>${db.name}</db.name>
-  </systemProperties>
-</configuration>
-<executions>
-  <execution>
-    <id>init-db</id> <!-- id 지정, 한개일 경우 안해도됨  -->
-    <goals>
-      <goal>test</goal> <!-- 해당 플러그인의 test goal 일 경우 동작  -->
-    </goals>
-    <phase>test-compile</phase> <!-- test-compile 이후에 동작  -->
-    <configuration>
-      <includes>
-        <include>com.ask.springdbunit.init.InitDB</include>
-      </includes>
-    </configuration>
-  </execution>
-  <execution>
-    <id>insert-db</id>
-    <goals>
-      <goal>test</goal>
-    </goals>
-    <phase>test-compile</phase>
-    <configuration>
-      <includes>
-        <include>com.ask.springdbunit.init.InsertDB</include>
-      </includes>
-    </configuration>
-  </execution>
-</executions>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-surefire-plugin</artifactId>
+  <configuration>
+    <systemProperties>
+      <db.name>${db.name}</db.name>
+    </systemProperties>
+  </configuration>
+  <executions>
+    <execution>
+      <id>init-db</id> <!-- id 지정, 한개일 경우 안해도됨  -->
+      <goals>
+        <goal>test</goal> <!-- 해당 플러그인의 test goal 일 경우 동작  -->
+      </goals>
+      <phase>test-compile</phase> <!-- test-compile 이후에 동작  -->
+      <configuration>
+        <includes>
+          <include>com.ask.springdbunit.init.InitDB</include>
+        </includes>
+      </configuration>
+    </execution>
+    <execution>
+      <id>insert-db</id>
+      <goals>
+        <goal>test</goal>
+      </goals>
+      <phase>test-compile</phase>
+      <configuration>
+        <includes>
+          <include>com.ask.springdbunit.init.InsertDB</include>
+        </includes>
+      </configuration>
+    </execution>
+  </executions>
 </plugin>
 ```
 
