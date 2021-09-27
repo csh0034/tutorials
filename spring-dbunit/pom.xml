@@ -15,6 +15,7 @@
   <description>Demo project for Spring Boot</description>
   <properties>
     <java.version>1.8</java.version>
+    <db.name>dbunit</db.name>
   </properties>
   <dependencies>
     <dependency>
@@ -75,16 +76,33 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemProperties>
+            <db.name>${db.name}</db.name>
+          </systemProperties>
+        </configuration>
         <executions>
           <execution>
-            <id>initDB-on</id>
+            <id>init-db</id>
             <goals>
               <goal>test</goal>
             </goals>
             <phase>test-compile</phase>
             <configuration>
               <includes>
-                <include>com.ask.springdbunit.InitDB</include>
+                <include>com.ask.springdbunit.init.InitDB</include>
+              </includes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>insert-db</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>test-compile</phase>
+            <configuration>
+              <includes>
+                <include>com.ask.springdbunit.init.InsertDB</include>
               </includes>
             </configuration>
           </execution>
