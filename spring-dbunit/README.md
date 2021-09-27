@@ -84,8 +84,8 @@ pom.xml
 --- maven-resources-plugin:3.2.0:testResources (default-testResources) @ spring-dbunit ---
 --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ spring-dbunit ---
 --- maven-surefire-plugin:2.22.2:test (init-db) @ spring-dbunit ---
---- maven-surefire-plugin:2.22.2:test (initDB-on) @ spring-dbunit ---
 --- maven-surefire-plugin:2.22.2:test (insert-db) @ spring-dbunit ---
+--- maven-surefire-plugin:2.22.2:test (default-test) @ spring-dbunit ---
 --- maven-jar-plugin:3.2.0:jar (default-jar) @ spring-dbunit ---
 --- spring-boot-maven-plugin:2.5.5:repackage (repackage) @ spring-dbunit ---
 --- maven-install-plugin:2.5.2:install (default-install) @ spring-dbunit ---
