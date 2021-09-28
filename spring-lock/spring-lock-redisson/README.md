@@ -91,7 +91,7 @@ public boolean tryLock(long waitTime, long leaseTime, TimeUnit unit) throws Inte
     - Redisson 은 pubsub 기능을 사용하여 락이 해제될 때마다 subscribe하는 클라이언트들에게 알림을 주어 레디스에  
       요청을 보내 락의 획득가능여부를 체크하지 않아도 되도록 개선했다.
 
-Sample
+Service
 ```java
 @Service
 @RequiredArgsConstructor
@@ -203,7 +203,9 @@ class VoteServiceTest {
 }
 ```
 
-RAtomicLong 활용 동시접근시에 한번만 실행
+RAtomicLong 활용 동시접근시에 한번만 실행  
+> redissonLock 은 로직 처리 도중 익셉션 발생시 lockUtils.setExecuted 를 호출하지 않고  락이 풀리므로 다음 대기작업에 기회를 준다.
+> redissonRAtomicLong 은 무조건 한번만 처리됨을 보장한다.
 ```java
 @SpringBootTest
 @Slf4j
@@ -217,6 +219,50 @@ class LockUtilsTest {
   @Autowired
   RedissonClient redissonClient;
 
+  @DisplayName("redisson 락을 사용하여 동시 접근시에 한번만 실행")
+  @Test
+  void redissonLock() throws Exception {
+    // given
+    String lockKey = "lock-1";
+
+    // when
+    for (int i = 0; i < THREAD_SIZE; i++) {
+      service.execute(() -> {
+        lock(lockKey);
+        countDownLatch.countDown();
+      });
+    }
+    countDownLatch.await();
+
+    // then
+    log.info("end");
+  }
+
+  void lock(String lockKey) {
+    RLock lock = redissonClient.getLock(lockKey);
+    try {
+      if (lock.tryLock(15, 10, TimeUnit.SECONDS)) {
+        try {
+          String executeKey = lockKey + "_";
+          if (lockUtils.isExecuted(executeKey)) {
+            log.info("already executed");
+          } else {
+            // 로직 처리 도중 익셉션 발생시 lockUtils.setExecuted 를 호출하지 않고  락이 풀리므로 다음 대기작업에 기회를 준다.
+            // 로직 start
+            log.info("executed!!!");
+            // 로직 end
+            lockUtils.setExecuted(executeKey, 10);
+          }
+        } finally {
+          if (lock.isLocked())
+            lock.unlock();
+        }
+      }
+    } catch(InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   @DisplayName("redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
   @RepeatedTest(5)
   void redissonRAtomicLong() throws Exception {
@@ -229,6 +275,7 @@ class LockUtilsTest {
       service.execute(() -> {
         RAtomicLong atomicLong = redissonClient.getAtomicLong(lockKey);
 
+        // 무조건 한번만 실행됨을 보장함
         if (atomicLong.compareAndSet(0, 1)) {
           atomicLong.expire(2, TimeUnit.SECONDS);
           count.getAndIncrement();
