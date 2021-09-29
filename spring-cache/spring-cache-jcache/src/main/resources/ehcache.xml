@@ -2,7 +2,7 @@
   xmlns="http://www.ehcache.org/v3"
   xsi:schemaLocation="http://www.ehcache.org/v3 https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
-  <persistence directory="cache/data"/>
+<!--  <persistence directory="cache/data"/>-->
 
   <cache-template name="template">
     <expiry>
@@ -34,10 +34,11 @@
   <!--
       alias == value : @Cacheable(value = "codes", key="#codeGrp")
   -->
-  <cache alias="codes" uses-template="template"/>
-  <cache alias="menus" uses-template="template" >
+  <cache alias="current-millis" uses-template="template">
     <expiry>
-      <ttl>60</ttl>
+      <ttl>10</ttl>
     </expiry>
   </cache>
+
+  <cache alias="codes" uses-template="template"/>
 </config>

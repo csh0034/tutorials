@@ -5,6 +5,6 @@ spring:
     password: 111111
 
   cache:
-    type: jcache
-    jcache:
-      config: classpath:ehcache.xml
+    type: jcache #구현체 하나면 생략가능
+#    jcache:
+#      config: classpath:ehcache.xml
