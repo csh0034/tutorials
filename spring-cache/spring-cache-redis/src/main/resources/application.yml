@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3307/remotemeeting
+    username: root
+    password: 111111

@@ -1,0 +1,43 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.ehcache.org/v3"
+  xsi:schemaLocation="http://www.ehcache.org/v3 https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+
+  <persistence directory="cache/data"/>
+
+  <cache-template name="template">
+    <expiry>
+      <!-- unit : nanos, micros, millis, seconds, minutes, hours, days -->
+      <ttl unit="days">1</ttl>
+    </expiry>
+
+    <!--
+    태그순서 중요
+    <listeners>
+        <listener>
+            <class>com.ask.**.CustomCacheEventLogger</class>
+            <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+            <event-ordering-mode>UNORDERED</event-ordering-mode>
+            <events-to-fire-on>CREATED</events-to-fire-on>
+            <events-to-fire-on>EVICTED</events-to-fire-on>
+            <events-to-fire-on>REMOVED</events-to-fire-on>
+            <events-to-fire-on>UPDATED</events-to-fire-on>
+            <events-to-fire-on>EXPIRED</events-to-fire-on>
+        </listener>
+    </listeners>
+    -->
+
+    <resources>
+      <heap>20</heap>
+    </resources>
+  </cache-template>
+
+  <!--
+      alias == value : @Cacheable(value = "codes", key="#codeGrp")
+  -->
+  <cache alias="codes" uses-template="template"/>
+  <cache alias="menus" uses-template="template" >
+    <expiry>
+      <ttl>60</ttl>
+    </expiry>
+  </cache>
+</config>
