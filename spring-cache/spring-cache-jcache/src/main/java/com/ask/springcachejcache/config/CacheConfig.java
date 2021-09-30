@@ -18,8 +18,8 @@ public class CacheConfig {
   @Bean
   public JCacheManagerCustomizer jCacheManagerCustomizer() {
     return cacheManager -> {
-      cacheManager.createCache("current-millis", getConfiguration(2, Duration.ofSeconds(3)));
-      cacheManager.createCache("sample-name", getConfiguration(10, Duration.ofSeconds(10)));
+      cacheManager.createCache("current-millis", getConfiguration(2, Duration.ofSeconds(2)));
+      cacheManager.createCache("random-list", getConfiguration(10, Duration.ofSeconds(2)));
     };
   }
 
