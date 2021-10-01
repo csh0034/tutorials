@@ -65,7 +65,7 @@ org.ehcache.expiry.ExpiryPolicy
 - ExpiryPolicyToEhcacheExpiry : JCache API 를 생성한 ExpiryPolicy 를 Ehcache 로 적용
 - ExpiryPolicyBuilder 활용
   - TimeToLiveExpiryPolicy : TTL 설정, 생성 또는 변경시점 부터 유지
-  - TimeToIdleExpiryPolicy : TIL 설정, 생성, 액세스 시점부터 유지
+  - TimeToIdleExpiryPolicy : TTI 설정, 생성, 액세스 시점부터 유지
 
 ## TTL, TTI
 TTL 과 TTI 동시 설정 불가
