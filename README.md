@@ -1,6 +1,7 @@
 # tutorials
 
 - [spring-batch](https://github.com/csh0034/tutorials/tree/master/spring-batch)
+- [spring-core](https://github.com/csh0034/tutorials/tree/master/spring-core)
 - [spring-cache](https://github.com/csh0034/tutorials/tree/master/spring-cache)
   - [spring-cache-jcache](https://github.com/csh0034/tutorials/tree/master/spring-cache/spring-cache-jcache)
   - [spring-cache-redis](https://github.com/csh0034/tutorials/tree/master/spring-cache/spring-cache-redis)
