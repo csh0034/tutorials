@@ -16,7 +16,9 @@ JCache API 를 통한 설정
   return cacheManager -> {
     MutableConfiguration<Long, String> configuration = new MutableConfiguration<Long, String>()
     .setTypes(Long.class, String.class)
-    .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE));
+    .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(javax.cache.expiry.Duration.ONE_MINUTE));
+
+    cacheManager.createCache("sample-cache", configuration);
   };
 }
 ```
@@ -26,8 +28,8 @@ Ehcache configuration 을 통한 설정
 @Bean
 public JCacheManagerCustomizer jCacheManagerCustomizer() {
   return cacheManager -> {
-    cacheManager.createCache("current-millis", getConfiguration(2, Duration.ofSeconds(3)));
-    cacheManager.createCache("sample-name", getConfiguration(10, Duration.ofSeconds(10)));
+    cacheManager.createCache("current-millis", getConfiguration(2, java.time.Duration.ofSeconds(3)));
+    cacheManager.createCache("sample-name", getConfiguration(10, java.time.Duration.ofSeconds(10)));
   };
 }
 
@@ -48,6 +50,22 @@ spring:
     jcache:
       config: classpath:ehcache.xml
 ```
+
+## Cache Expire
+### JCache API
+javax.cache.expiry.ExpiryPolicy : 생성, 수정, 액세스 작업을 기반으로 캐시 항목이 만료되는 시기를 결정
+- AccessedExpiryPolicy : 마지막 액세스시점 부터 유지
+- CreatedExpiryPolicy : 생성시점 부터 유지 기존 TTL
+- EternalExpiryPolicy : 캐시가 만료되지 않음
+- ModifiedExpiryPolicy : 마지막 변경 기준, _생성, 변경 포함_
+- TouchedExpiryPolicy : 마지막 터치 기준, _생성, 변경, 액세스 포함_
+
+### EHCache API
+org.ehcache.expiry.ExpiryPolicy
+- ExpiryPolicyToEhcacheExpiry : JCache API 를 생성한 ExpiryPolicy 를 Ehcache 로 적용
+- ExpiryPolicyBuilder 활용
+  - TimeToLiveExpiryPolicy : TTL 설정, 생성 또는 변경시점 부터 유지
+  - TimeToIdleExpiryPolicy : TIL 설정, 생성, 액세스 시점부터 유지
 
 ## TTL, TTI
 TTL 과 TTI 동시 설정 불가
