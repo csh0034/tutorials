@@ -23,6 +23,7 @@
     <module>spring-security</module>
     <module>spring-lock</module>
     <module>spring-quartz</module>
+    <module>spring-core</module>
   </modules>
 
   <properties>
