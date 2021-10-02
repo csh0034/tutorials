@@ -1,1 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
 
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      javax.persistence.sharedCache.mode: ENABLE_SELECTIVE # @Cacheable 사용시 캐싱 적용
+      hibernate:
+        show_sql: false
+        format_sql: true
+#        javax.cache:
+#          provider: org.ehcache.jsr107.EhcacheCachingProvider # 별도의 프로바이더 사용시
+#          uri: classpath:ehcache.xml # 별도의 ehcache 설정
+        cache:
+          default_cache_concurrency_strategy: read-write
+          use_query_cache: true
+          use_second_level_cache: true
+          region.factory_class: jcache
+
+    open-in-view: false
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
