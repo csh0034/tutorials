@@ -36,7 +36,7 @@ public class User {
 
   @Exclude
   @ManyToOne(fetch = LAZY, optional = false)
-  @JoinColumn(name = "company_Id")
+  @JoinColumn(name = "company_id")
   private Company company;
 
   @Version
