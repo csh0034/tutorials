@@ -87,12 +87,13 @@ spring:
       hibernate:
         show_sql: false
         format_sql: true
-#        javax.cache:
+          javax.cache:
+            missing_cache_strategy: fail
 #          provider: org.ehcache.jsr107.EhcacheCachingProvider # 별도의 프로바이더 사용시
 #          uri: classpath:ehcache.xml # 별도의 ehcache 설정
         cache:
           default_cache_concurrency_strategy: read-write
-          use_query_cache: true
+          use_query_cache: false # 쿼리캐시 설정 default false
           use_second_level_cache: true
           region.factory_class: jcache
 
@@ -103,6 +104,27 @@ logging:
     "[org.hibernate.SQL]": debug
     "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
 ```
+
+### 프로퍼티 설명
+`hibernate.javax.cache.missing_cache_strategy`
+- 캐시설정을 하지 않을 경우 처리
+> 이 방법으로 생성된 캐시는 Cache Provider 에서 기본캐시 구성을 명시적으로 하지 않을 경우  
+> 크기와 TTL 설정이 없으므로 운영시엔 fail 로 해두는게 나아보임
+
+| 값 | 설명 |
+|----|-----|
+|create-warn|default, 캐시 세팅이 안되어있을 경우 새 캐시를 만들면서 누락된 캐시 경고 출력|
+|create|경고를 기록하지 않고 새 캐시를 만듬|
+|fail|캐시 누락에 대한 예외와 함께 실패|
+
+<br>
+
+`hibernate.cache.use_query_cache`
+- true or false
+- 쿼리 캐시 사용여부 이며 고정 매개변수 값으로 자주 실행되는 쿼리에 유용함
+> 쿼리 결과를 캐싱하면 애플리케이션의 일반적인 트랜잭션 처리 측면에서 약간의 오버헤드가 발생한다.  
+> 엔티티 변경시 쿼리 캐시가 무효화 되어야 하기 때문에 대부분의 애플리케이션이 단순히 쿼리 결과를 캐싱하는 것의 이점을 얻지 못한다.  
+> 따라서 기본적으로 `false` 로 설정 되어있음
 
 ### MetadataBuildingOptionsImpl
 MetadataBuildingOptionsImpl 의 inner class MetadataBuildingOptionsImpl  
@@ -126,7 +148,6 @@ javax.persistence.SharedCacheMode
 - READ_WRITE
 - TRANSACTIONAL
 
-
 ## Hibernate property
 - org.hibernate.cfg.AvailableSettings - 전체 프로퍼티
 - org.hibernate.cache.jcache.ConfigSettings - 캐싱 관련 프로퍼티
@@ -139,6 +160,8 @@ javax.persistence.SharedCacheMode
 
 ## 참조
 - [Spring Boot, second-level caching](https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.data-access.configure-hibernate-second-level-caching)
+- [Hibernate GitHub, caching](https://github.com/hibernate/hibernate-orm/blob/main/documentation/src/main/asciidoc/userguide/chapters/caching/Caching.adoc)
 - [Hibernate, caching](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#caching)
+- [redisson hibernate](https://pavankjadda.medium.com/implement-hibernate-2nd-level-cache-with-redis-spring-boot-and-spring-data-jpa-7cdbf5632883)
 - [인프런, 김영한님 답변](https://www.inflearn.com/questions/33629)
 - [권남님 블로그, Hibernate Cache](https://kwonnam.pe.kr/wiki/java/hibernate/cache)

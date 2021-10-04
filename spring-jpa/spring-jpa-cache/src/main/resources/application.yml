@@ -11,12 +11,13 @@ spring:
       hibernate:
         show_sql: false
         format_sql: true
-#        javax.cache:
+        javax.cache:
+          missing_cache_strategy: fail # 캐시설정을 하지 않을 경우 처리
 #          provider: org.ehcache.jsr107.EhcacheCachingProvider # 별도의 프로바이더 사용시
 #          uri: classpath:ehcache.xml # 별도의 ehcache 설정
         cache:
           default_cache_concurrency_strategy: read-write
-          use_query_cache: true
+          use_query_cache: false # 쿼리캐시 설정 default false
           use_second_level_cache: true
           region.factory_class: jcache
 
