@@ -1,1 +1,7 @@
+spring:
+  main:
+    web-application-type: none
 
+conditional:
+  enabled: true
+  name: ask

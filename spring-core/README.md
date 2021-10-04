@@ -54,3 +54,23 @@ public class InjectConfig {
   private List<NotComponent> notComponentsAutowiredWithFalse; // null
 }
 ```
+
+## [Conditional](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.developing-auto-configuration.condition-annotations)
+SpringBoot는 @Conditional을 확장하여, 여러가지 어노테이션을 제공한다.
+- @ConditionalOnWebApplication : 프로젝트가 웹 애플리케이션이면 Bean 등록
+- @ConditionalOnBean: 해당 Bean이 존재하면 자동 설정 등록
+- @ConditionalOnMissingBean: 해당 Bean이 존재하지 않으면 자동설정 등록
+- @ConditionalOnClass: 해당 클래스가 존재하면 자동설정 등록
+- @ConditionalOnMissingClass: 해당 클래스가 클래스 패스에 존재하지 않으면 Bean 등록
+- @ConditionalOnResource: 해당 자원(file 등)이 존재하면 자동설정 등록
+- @ConditionalOnProperty: 설정한 프로퍼티가 존재하면 자동설정 등록
+- @ConditionalOnExpression : SPEL 을 사용한 검증
+- org.springframework.boot.autoconfigure.condition package annotation 확인
+```java
+@ConditionalOnProperty(value = "conditional.enabled", havingValue = "true")
+
+// SPEL 
+// #{} 자동으로 추가 
+// ${} Environment 값으로 치환
+@ConditionalOnExpression("${conditional.enabled:false} and '${conditional.name}'.equals('ask')")
+```
