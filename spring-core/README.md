@@ -65,6 +65,7 @@ SpringBoot는 @Conditional을 확장하여, 여러가지 어노테이션을 제�
 - @ConditionalOnResource: 해당 자원(file 등)이 존재하면 자동설정 등록
 - @ConditionalOnProperty: 설정한 프로퍼티가 존재하면 자동설정 등록
 - @ConditionalOnExpression : SPEL 을 사용한 검증
+- @ConditionalOnSingleCandidate : 해당 타입의 Bean이 하나일 경우 등록
 - org.springframework.boot.autoconfigure.condition package annotation 확인
 ```java
 @ConditionalOnProperty(value = "conditional.enabled", havingValue = "true")

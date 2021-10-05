@@ -1,5 +1,6 @@
 package com.ask.springcore.conditional;
 
+import com.ask.springcore.conditional.component.Candidate;
 import com.ask.springcore.conditional.component.ConditionalComponent;
 import com.ask.springcore.conditional.component.DependComponent;
 import javax.annotation.PostConstruct;
@@ -19,9 +20,12 @@ public class ConditionalConfig {
   @Nullable
   private final DependComponent dependComponent;
 
+  private final Candidate candidate;
+
   @PostConstruct
   public void init() {
     log.info("conditionalService : {}", conditionalService);
     log.info("dependComponent : {}", dependComponent);
+    log.info("candidate : {}", candidate);
   }
 }
