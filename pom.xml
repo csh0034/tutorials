@@ -24,6 +24,8 @@
     <module>spring-lock</module>
     <module>spring-quartz</module>
     <module>spring-core</module>
+    <module>spring-actuator</module>
+    <module>spring-admin</module>
   </modules>
 
   <properties>

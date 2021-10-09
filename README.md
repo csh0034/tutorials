@@ -1,5 +1,7 @@
 # tutorials
 
+- [spring-actuator](https://github.com/csh0034/tutorials/tree/master/spring-actuator)
+- [spring-admin](https://github.com/csh0034/tutorials/tree/master/spring-admin)
 - [spring-batch](https://github.com/csh0034/tutorials/tree/master/spring-batch)
 - [spring-cache](https://github.com/csh0034/tutorials/tree/master/spring-cache)
   - [spring-cache-jcache](https://github.com/csh0034/tutorials/tree/master/spring-cache/spring-cache-jcache)
