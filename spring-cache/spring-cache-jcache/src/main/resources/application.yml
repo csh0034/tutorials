@@ -1,9 +1,4 @@
 spring:
-  datasource:
-    url: jdbc:mariadb://127.0.0.1:3307/remotemeeting
-    username: root
-    password: 111111
-
   cache:
     type: jcache #구현체 하나면 생략가능
 #    jcache:
