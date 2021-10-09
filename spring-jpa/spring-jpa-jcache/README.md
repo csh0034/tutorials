@@ -1,4 +1,4 @@
-# Spring jpa cache (second-level cache)
+# Spring jpa jcache (ehcache3, second-level cache)
 개발환경
 - IntelliJ IDEA 2021.2
 - spring boot 2.5.5
@@ -36,8 +36,8 @@ public class CacheConfig {
   @Bean
   public JCacheManagerCustomizer jCacheManagerCustomizer() {
     return cacheManager -> {
-      cacheManager.createCache("com.ask.springjpacache.entity.User", getConfiguration(new Duration(SECONDS, 5)));
-      cacheManager.createCache("com.ask.springjpacache.entity.Company", getConfiguration(new Duration(SECONDS, 5)));
+      cacheManager.createCache("com.ask.springjpajcache.entity.User", getConfiguration(new Duration(SECONDS, 5)));
+      cacheManager.createCache("com.ask.springjpajcache.entity.Company", getConfiguration(new Duration(SECONDS, 5)));
     };
   }
 

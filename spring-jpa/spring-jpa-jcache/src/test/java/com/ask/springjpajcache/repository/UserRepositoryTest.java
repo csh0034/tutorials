@@ -1,12 +1,12 @@
-package com.ask.springjpacache.repository;
+package com.ask.springjpajcache.repository;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.atLeastOnce;
 
-import com.ask.springjpacache.config.CacheEventLoggerListener;
-import com.ask.springjpacache.entity.Company;
-import com.ask.springjpacache.entity.User;
+import com.ask.springjpajcache.config.CacheEventLoggerListener;
+import com.ask.springjpajcache.entity.Company;
+import com.ask.springjpajcache.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

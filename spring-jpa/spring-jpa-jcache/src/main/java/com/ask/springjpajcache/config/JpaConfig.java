@@ -1,4 +1,4 @@
-package com.ask.springjpacache.config;
+package com.ask.springjpajcache.config;
 
 import javax.cache.CacheManager;
 import lombok.RequiredArgsConstructor;

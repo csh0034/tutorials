@@ -1,4 +1,4 @@
-package com.ask.springjpacache.config;
+package com.ask.springjpajcache.config;
 
 import java.io.Serializable;
 import javax.cache.event.CacheEntryCreatedListener;

@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.ask</groupId>
-  <artifactId>spring-jpa-cache</artifactId>
+  <artifactId>spring-jpa-jcache</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>spring-jpa-cache</name>
-  <description>spring-jpa-cache</description>
+  <name>spring-jpa-jcache</name>
+  <description>spring-jpa-jcache</description>
   <properties>
     <java.version>1.8</java.version>
   </properties>

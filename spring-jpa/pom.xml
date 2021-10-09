@@ -19,7 +19,7 @@
   <modules>
     <module>spring-jpa-lock</module>
     <module>spring-jpa-envers</module>
-    <module>spring-jpa-cache</module>
+    <module>spring-jpa-jcache</module>
   </modules>
 
 </project>
