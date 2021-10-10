@@ -51,6 +51,42 @@ public class CustomHealthIndicator extends AbstractHealthIndicator {
 }
 ```
 
+### [Implementing Custom Endpoints](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints.implementing-custom)
+```java
+@Configuration
+@Endpoint(id = "custom")
+//@WebEndpoint(id = "custom") // web 으로만 노출
+public class CustomEndpoint {
+
+  private final Map<String, String> map = new ConcurrentHashMap<>();
+
+  @ReadOperation
+  public Map<String, String> customs() {
+    return map;
+  }
+
+  @ReadOperation
+  public String custom(@Selector String custom) {
+    return map.get(custom);
+  }
+
+  @WriteOperation
+  public void updateCustom(String custom, String value) {
+    map.put(custom, value);
+  }
+
+  @DeleteOperation
+  public void clearCustoms() {
+    map.clear();
+  }
+
+  @DeleteOperation
+  public void clearCustom(@Selector String custom) {
+    map.remove(custom);
+  }
+}
+```
+
 ### [spring-boot-admin-starter-client](https://codecentric.github.io/spring-boot-admin/2.4.3/#register-client-applications)
 pom.xml
 ```xml
