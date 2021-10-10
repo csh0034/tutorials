@@ -24,6 +24,9 @@ public class FilterConfig {
 
   @PostConstruct
   public void init() {
+    /*
+     * LocaleContextHolder, RequestContextHolder 에서 InheritableThreadLocal 을 사용하도록 지정함
+     */
     dispatcherServlet.setThreadContextInheritable(true);
   }
 
@@ -34,7 +37,7 @@ public class FilterConfig {
       public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
           throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        log.info("URI : {}", request.getRequestURI());
+        log.info("{} {}", request.getMethod(), request.getRequestURI());
 
         filterChain.doFilter(servletRequest, servletResponse);
       }

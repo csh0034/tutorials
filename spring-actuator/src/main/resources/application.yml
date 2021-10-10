@@ -1,11 +1,29 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
 spring:
+  config:
+    import: classpath:custom.properties
+--- #--- 로 한문서에서 구분시에 밑에 있는 부분이 우선순위가 높음
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
   boot:
     admin:
       client:
         url: "http://localhost:18080"
+
+management:
+#  health:
+#    db:
+#      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+#  server:
+#    address: 127.0.0.1 # 127.0.0.1 으로만 접근가능
+#    port: 8081  # actuator port 다르게 설정
