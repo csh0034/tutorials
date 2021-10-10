@@ -81,6 +81,8 @@ spring:
     admin:
       client:
         url: "http://localhost:18080"
+        username: admin # admin security 적용시
+        password: 1111 # admin security 적용시
 ```
 
 

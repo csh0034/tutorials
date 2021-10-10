@@ -12,6 +12,8 @@ spring:
     admin:
       client:
         url: "http://localhost:18080"
+        username: admin
+        password: 1111
 
 management:
 #  health:
