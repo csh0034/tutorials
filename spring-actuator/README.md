@@ -87,6 +87,30 @@ public class CustomEndpoint {
 }
 ```
 
+### [Auditing](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.auditing)
+- AuditAutoConfiguration 확인
+- AuditEventRepository 타입의 빈이 선언 되면 동작함
+- Security Auditing
+  - AbstractAuthenticationFailureEvent
+  - AuthenticationSuccessEvent
+- spring-actuator project 에 구현되어있음
+```java
+@Bean
+public InMemoryAuditEventRepository repository(){
+  return new InMemoryAuditEventRepository();
+}
+```
+```java
+@Component
+@Slf4j
+public class CustomEvent {
+  @EventListener
+  public void auditEventHappened(AuditApplicationEvent event) {
+    log.info("AuditApplicationEvent : {}", event.getAuditEvent());
+  }
+}
+```
+
 ### [spring-boot-admin-starter-client](https://codecentric.github.io/spring-boot-admin/2.4.3/#register-client-applications)
 pom.xml
 ```xml
@@ -120,9 +144,6 @@ spring:
         username: admin # admin security 적용시
         password: 1111 # admin security 적용시
 ```
-
-
-
 
 ## 참조
 - [Spring Boot, Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)

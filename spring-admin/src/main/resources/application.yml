@@ -5,3 +5,9 @@ spring:
     user:
       name: admin
       password: 1111
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

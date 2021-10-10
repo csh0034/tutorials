@@ -3,12 +3,15 @@ package com.ask.springadmin.config;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.audit.InMemoryAuditEventRepository;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -20,6 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final AdminServerProperties adminServer;
   private final SecurityProperties security;
+
+  @Override
+  public void configure(WebSecurity web) {
+    web.ignoring().antMatchers("/actuator/**");
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -53,4 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .password("{noop}" + security.getUser().getPassword()).roles("USER");
   }
 
+  @Bean
+  public InMemoryAuditEventRepository repository(){
+    return new InMemoryAuditEventRepository();
+  }
 }
