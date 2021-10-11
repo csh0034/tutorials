@@ -143,15 +143,30 @@ javax.persistence.SharedCacheMode
 엔티티 설정 : `@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)`
 
 - NONE
+  - 동시성 전략을 적용하지 않는다.
 - READ_ONLY
+  - 데이터를 추가 및 제거할 수 있지만 변경할 수는 없습니다. (엔터티를 업데이트 시도시 예외 발생).
+  - 변경되지 않는 일부 정적 참조 데이터에 매우 적합
 - NONSTRICT_READ_WRITE
+  - 두 개의 개별 트랜잭션 스레드가 동일한 개체를 업데이트할 가능성이 낮은 경우 사용
+  - 캐시를 잠그지 않고 업데이트되는 데이터를 캐싱한다, 일관성이 보장되지 않으며
+  - 최종 일관성을 허용할 수 있는 사용 사례에 적합하다
 - READ_WRITE
+  - 데이터를 업데이트 해야 하는 경우에 적합
+  - READ_WRITE + 클러스터링 캐시 구현체를 사용할 경우 캐시 구현체는 Lock 기능을 제공해야만 한다
+  - 캐시된 엔터티가 업데이트되면 해당 엔터티에 대한 소프트 잠금도 캐시에 저장되며 트랜잭션이 커밋된 후 해제된다.  
+    소프트 잠금 항목에 액세스하는 모든 동시 트랜잭션은 데이터베이스에서 해당 데이터를 직접 가져온다.
 - TRANSACTIONAL
+  - JTA를 사용, 따라서 엔티티가 자주 수정되는 경우에 더 적합
+  - hibernate.transaction.manager_lookup_class 를 지정해야함 EHCache 지원 안함
 
 ## Hibernate property
 - org.hibernate.cfg.AvailableSettings - 전체 프로퍼티
 - org.hibernate.cache.jcache.ConfigSettings - 캐싱 관련 프로퍼티
 
+## hibernate-ehcache
+- Hibernate version < 5.3 일 경우 사용하며 현재 Deprecated 된 Ehcache2 를 사용한다
+- Hibernate version >= 5.3 일 경우 hibernate-jcache 와 Ehcache3 를 사용해야 한다.
 
 ## 2차캐시 관련 답변내용
 - 엔티티는 스프링이나 외부캐시에 저장하면 안된다.
