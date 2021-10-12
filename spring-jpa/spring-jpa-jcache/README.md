@@ -152,11 +152,13 @@ javax.persistence.SharedCacheMode
   - 캐시를 잠그지 않고 업데이트되는 데이터를 캐싱한다, 일관성이 보장되지 않으며
   - 최종 일관성을 허용할 수 있는 사용 사례에 적합하다
 - READ_WRITE
+  - READ_COMMITTED 정도의 격리 수준을 보장
   - 데이터를 업데이트 해야 하는 경우에 적합
   - READ_WRITE + 클러스터링 캐시 구현체를 사용할 경우 캐시 구현체는 Lock 기능을 제공해야만 한다
   - 캐시된 엔터티가 업데이트되면 해당 엔터티에 대한 소프트 잠금도 캐시에 저장되며 트랜잭션이 커밋된 후 해제된다.  
     소프트 잠금 항목에 액세스하는 모든 동시 트랜잭션은 데이터베이스에서 해당 데이터를 직접 가져온다.
 - TRANSACTIONAL
+  - 설정에 따라 REPEATABLE_READ 정도의 격리 수준을 보장   
   - JTA를 사용, 따라서 엔티티가 자주 수정되는 경우에 더 적합
   - hibernate.transaction.manager_lookup_class 를 지정해야함 EHCache 지원 안함
 
@@ -167,6 +169,21 @@ javax.persistence.SharedCacheMode
 ## hibernate-ehcache
 - Hibernate version < 5.3 일 경우 사용하며 현재 Deprecated 된 Ehcache2 를 사용한다
 - Hibernate version >= 5.3 일 경우 hibernate-jcache 와 Ehcache3 를 사용해야 한다.
+
+## 2차 캐시
+애플리케이션에서 공유하는 캐시를 JPA는 공유 캐시(Shared Cache)라 하는데 일반적으로 2차 캐시 (Second Level Cache, L2 Cache)라 부른다.   
+2차 캐시는 애플리케이션 범위의 캐시다. 따라서 애플리케이션을 종료할 때까지 캐시가 유지된다. 분산 캐시나 클러스터링 환경의 캐시는 애플리케이션보다   
+더 오래 유지 될 수도 있다. 엔티티 매니저를 통해 데이터를 조회할 때 우선 2차 캐시에서 찾고 없으면 데이터베이스에서 찾는다.
+- 엔티티 캐시 : 엔티티 단위로 캐시한다. 식별자로 엔티티를 조회하거나 컬렉션이 아닌 연관된 엔티티를 로딩할 때 사용한다.
+- 컬렉션 캐시 : 엔티티와 연관된 컬렉션을 캐시한다. 컬렉션이 엔티티를 담고 있으면 식별자 값만 캐시한다. (하이버네이트 기능)
+- 쿼리 캐시 : 쿼리와 파라미터 정보를 키로 사용해서 캐시한다. 결과가 엔티티면 식별자 값만 캐시한다. (하이버네이트 기능)
+
+## 2차 캐시 영역
+- 엔티티 캐시 영역 : 기본값으로 “패키지 명 + 클래스 명”을 사용
+- 컬렉션 캐시 영역 : 엔티티 캐시 영역 이름에 캐시한 컬렉션의 필드 명이 추가
+- 필요하다면 @Cache(region = "customRegion", …) 처럼 region 속성을 사용해서 캐시 영역을 직접 지정할 수 있음
+- 캐시 영역별로 세부 설정이 가능
+
 
 ## 2차캐시 관련 답변내용
 - 엔티티는 스프링이나 외부캐시에 저장하면 안된다.
@@ -180,3 +197,4 @@ javax.persistence.SharedCacheMode
 - [redisson hibernate](https://pavankjadda.medium.com/implement-hibernate-2nd-level-cache-with-redis-spring-boot-and-spring-data-jpa-7cdbf5632883)
 - [인프런, 김영한님 답변](https://www.inflearn.com/questions/33629)
 - [권남님 블로그, Hibernate Cache](https://kwonnam.pe.kr/wiki/java/hibernate/cache)
+- [JPA 캐시 정리 블로그](https://gunju-ko.github.io/jpa/2019/01/14/JPA-2%EC%B0%A8%EC%BA%90%EC%8B%9C.html)
