@@ -11,6 +11,7 @@ spring:
       hibernate:
         show_sql: false
         format_sql: true
+#        generate_statistics: true # Hibernate 통계정보를 출력
         javax.cache:
           missing_cache_strategy: fail # 캐시설정을 하지 않을 경우 처리
 #          provider: org.ehcache.jsr107.EhcacheCachingProvider # 별도의 프로바이더 사용시

@@ -87,6 +87,7 @@ spring:
       hibernate:
         show_sql: false
         format_sql: true
+#        generate_statistics: true # Hibernate 통계정보를 출력
           javax.cache:
             missing_cache_strategy: fail
 #          provider: org.ehcache.jsr107.EhcacheCachingProvider # 별도의 프로바이더 사용시
@@ -125,6 +126,41 @@ logging:
 > 쿼리 결과를 캐싱하면 애플리케이션의 일반적인 트랜잭션 처리 측면에서 약간의 오버헤드가 발생한다.  
 > 엔티티 변경시 쿼리 캐시가 무효화 되어야 하기 때문에 대부분의 애플리케이션이 단순히 쿼리 결과를 캐싱하는 것의 이점을 얻지 못한다.  
 > 따라서 기본적으로 `false` 로 설정 되어있음
+
+<br>
+
+`spring.jpa.properties.hibernate.generate_statistics`
+- 하이버네이트가 여러 통계정보를 출력하게 해주는데 캐시 적용 여부를 확인 가능
+- executing 1 JDBC statements : DB 쿼리 수행
+- L2C puts: 2차 캐시에 데이터 추가
+- L2C hits: 2차 캐시의 데이터 사용
+- L2C miss: 2차 캐시에 해당 데이터 조회 실패 -> 데이터베이스 접근
+```text
+// DB 접근시
+298266 nanoseconds spent acquiring 1 JDBC connections;
+0 nanoseconds spent releasing 0 JDBC connections;
+244403 nanoseconds spent preparing 1 JDBC statements;
+844024 nanoseconds spent executing 1 JDBC statements;
+0 nanoseconds spent executing 0 JDBC batches;
+2532453 nanoseconds spent performing 1 L2C puts;
+0 nanoseconds spent performing 0 L2C hits;
+1726149 nanoseconds spent performing 1 L2C misses;
+0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+
+// 2차캐시 접근시
+26572 nanoseconds spent acquiring 1 JDBC connections;
+0 nanoseconds spent releasing 0 JDBC connections;
+0 nanoseconds spent preparing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC statements;
+0 nanoseconds spent executing 0 JDBC batches;
+0 nanoseconds spent performing 0 L2C puts;
+1367875 nanoseconds spent performing 1 L2C hits;
+0 nanoseconds spent performing 0 L2C misses;
+0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+```
+
 
 ### MetadataBuildingOptionsImpl
 MetadataBuildingOptionsImpl 의 inner class MetadataBuildingOptionsImpl  
