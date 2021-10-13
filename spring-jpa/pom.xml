@@ -20,6 +20,7 @@
     <module>spring-jpa-lock</module>
     <module>spring-jpa-envers</module>
     <module>spring-jpa-jcache</module>
+    <module>spring-jpa-redisson</module>
   </modules>
 
 </project>
