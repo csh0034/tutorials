@@ -2,6 +2,8 @@ package com.ask.springjpajcache.config;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import com.ask.springjpajcache.entity.Company;
+import com.ask.springjpajcache.entity.User;
 import javax.cache.configuration.FactoryBuilder;
 import javax.cache.configuration.MutableCacheEntryListenerConfiguration;
 import javax.cache.configuration.MutableConfiguration;
@@ -23,8 +25,8 @@ public class CacheConfig {
   @Bean
   public JCacheManagerCustomizer jCacheManagerCustomizer() {
     return cacheManager -> {
-      cacheManager.createCache("com.ask.springjpacache.entity.User", getConfiguration(new Duration(SECONDS, 5)));
-      cacheManager.createCache("com.ask.springjpacache.entity.Company", getConfiguration(new Duration(SECONDS, 5)));
+      cacheManager.createCache(User.class.getName(), getConfiguration(new Duration(SECONDS, 5)));
+      cacheManager.createCache(Company.class.getName(), getConfiguration(new Duration(SECONDS, 5)));
     };
   }
 
