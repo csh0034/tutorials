@@ -24,3 +24,4 @@
 - [spring-quartz](https://github.com/csh0034/tutorials/tree/master/spring-quartz)
 - [spring-security](https://github.com/csh0034/tutorials/tree/master/spring-security)
   - [authorization-server](https://github.com/csh0034/tutorials/tree/master/spring-security/authorization-server)
+- [spring-validator](https://github.com/csh0034/tutorials/tree/master/spring-validator)
