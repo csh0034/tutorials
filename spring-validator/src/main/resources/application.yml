@@ -1,0 +1,8 @@
+spring:
+  messages:
+    basename: message/messages
+
+server:
+  servlet:
+    encoding:
+      force: true
