@@ -27,6 +27,7 @@
     <module>spring-actuator</module>
     <module>spring-admin</module>
     <module>spring-validator</module>
+    <module>java-core</module>
   </modules>
 
   <properties>
