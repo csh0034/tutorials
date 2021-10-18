@@ -1,5 +1,6 @@
 # tutorials
 
+- [java-core](https://github.com/csh0034/tutorials/tree/master/java-core)
 - [spring-actuator](https://github.com/csh0034/tutorials/tree/master/spring-actuator)
 - [spring-admin](https://github.com/csh0034/tutorials/tree/master/spring-admin)
 - [spring-batch](https://github.com/csh0034/tutorials/tree/master/spring-batch)
@@ -17,6 +18,7 @@
   - [spring-jpa-envers](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-envers)
   - [spring-jpa-jcache](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-jcache)
   - [spring-jpa-lock](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-lock)
+  - [spring-jpa-redisson](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-redisson)
 - [spring-jsp](https://github.com/csh0034/tutorials/tree/master/spring-jsp)
 - [spring-lock](https://github.com/csh0034/tutorials/tree/master/spring-lock)
   - [spring-lock-redisson](https://github.com/csh0034/tutorials/tree/master/spring-lock/spring-lock-redisson)
