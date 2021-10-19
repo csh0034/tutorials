@@ -1,18 +1,15 @@
 package com.ask.javacore;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.ask.javacore.common.BaseTest;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ForkJoinPoolTest {
+public class ForkJoinPoolTest extends BaseTest {
 
   @BeforeAll
   static void beforeAll() {
@@ -32,7 +29,7 @@ public class ForkJoinPoolTest {
     print("parallelism : " + ForkJoinPool.getCommonPoolParallelism());
 
     IntStream.rangeClosed(1, ForkJoinPool.getCommonPoolParallelism()).parallel()
-        .forEach(index -> print(index, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
+        .forEach(index -> print(index, "Done"));
   }
 
   @Order(3)
@@ -43,44 +40,21 @@ public class ForkJoinPoolTest {
 
     forkJoinPool.submit(() ->
         IntStream.rangeClosed(1, forkJoinPool.getParallelism()).parallel()
-            .forEach(index -> print(index, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))));
+            .forEach(index -> print(index, "Done")));
 
     TimeUnit.MILLISECONDS.sleep(500);
   }
 
   @Order(4)
   @Test
-  void commonPoolSleep() {
+  void commonPoolSleep()throws Exception {
     int parallelism = ForkJoinPool.getCommonPoolParallelism();
 
-    IntStream.rangeClosed(1, parallelism).parallel()
-        .forEach(index ->  {
-          try {
-            TimeUnit.SECONDS.sleep(2);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
-
-          print(index, "Done");
-        });
-
-    print("================================================");
-
-    IntStream.rangeClosed(1, parallelism).parallel()
-        .forEach(index -> print(index, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)));
-  }
-
-  @Order(5)
-  @Test
-  void newForkJoinPoolSleep() throws Exception {
-    int parallelism = 11;
-    ForkJoinPool forkJoinPool1 = new ForkJoinPool(parallelism);
-
-    forkJoinPool1.submit(() ->
+    CompletableFuture.runAsync(() ->
         IntStream.rangeClosed(1, parallelism).parallel()
-          .forEach(index ->  {
+          .forEach(index -> {
             try {
-              TimeUnit.MILLISECONDS.sleep(100);
+              TimeUnit.MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {
               e.printStackTrace();
             }
@@ -88,21 +62,40 @@ public class ForkJoinPoolTest {
             print(index, "Done1");
           }));
 
+    TimeUnit.MILLISECONDS.sleep(100);
+
+    CompletableFuture.runAsync(() ->
+        IntStream.rangeClosed(1, parallelism).parallel()
+            .forEach(index -> print(index, "Done2")));
+
+    TimeUnit.MILLISECONDS.sleep(700);
+  }
+
+  @Order(5)
+  @Test
+  void newForkJoinPoolSleep() throws Exception {
+    int parallelism = 11;
+
+    ForkJoinPool forkJoinPool1 = new ForkJoinPool(parallelism);
+    forkJoinPool1.submit(() ->
+        IntStream.rangeClosed(1, parallelism).parallel()
+            .forEach(index -> {
+              try {
+                TimeUnit.MILLISECONDS.sleep(100);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+
+              print(index, "Done1");
+            }));
+
     ForkJoinPool forkJoinPool2 = new ForkJoinPool(parallelism);
     forkJoinPool2.submit(() ->
         IntStream.rangeClosed(1, parallelism).parallel()
-            .forEach(index ->  {
+            .forEach(index -> {
               print(index, "Done2");
             }));
 
     TimeUnit.MILLISECONDS.sleep(500);
-  }
-
-  private static void print(String message) {
-    System.out.printf("(%s) %s%n", Thread.currentThread().getName(), message);
-  }
-
-  private static void print(int index, String message) {
-    System.out.printf("(%s) index=%d %s%n", Thread.currentThread().getName(), index, message);
   }
 }
