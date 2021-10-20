@@ -75,3 +75,17 @@ SpringBoot는 @Conditional을 확장하여, 여러가지 어노테이션을 제�
 // ${} Environment 값으로 치환
 @ConditionalOnExpression("${conditional.enabled:false} and '${conditional.name}'.equals('ask')")
 ```
+
+## MethodInvoke
+- MethodInvoker
+  - 정적이든 비정적이든 선언적 방식으로 호출할 메서드를 지정할 수 있는 Helper 클래스
+- MethodInvokingBean
+  - method invoking 후에 결과를 어플리케이션 컨텍스트에 등록하지 않는다.
+- MethodInvokingFactoryBean
+  - method invoking 후에 결과를 어플리케이션 컨텍스트에 등록한다.
+  - FactoryBean<Object> 구현 하였음
+  - applicationContext.getBean("factoryBean");
+    - FactoryBean 인터페이스의 구현체가 아닌 FactoryBean.getObject()에서 리턴되는 객체가 리턴
+  - applicationContext.getBean("&factoryBean");
+    - FactoryBean 자체가 리턴된다.
+
