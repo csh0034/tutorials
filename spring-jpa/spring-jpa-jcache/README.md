@@ -161,6 +161,9 @@ logging:
 0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
 ```
 
+### RegionFactoryInitiator
+hibernate.cache.region.factory_class 프로퍼티가 설정이 안되어 있을 경우 클래스패스에서  
+RegionFactory 를 찾는다.
 
 ### MetadataBuildingOptionsImpl
 MetadataBuildingOptionsImpl 의 inner class MetadataBuildingOptionsImpl  
