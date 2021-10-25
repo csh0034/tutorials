@@ -180,6 +180,7 @@ javax.persistence.SharedCacheMode
 ### Concurrency Strategy
 글로벌 설정 : `hibernate.cache.default_cache_concurrency_strategy=read-write`  
 엔티티 설정 : `@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)`
+> Hibernate 문서에선 전역 설정을 사용하는 것보다 엔티티별로 캐시 동시성 전략을 정의하는 것을 추천함.
 
 - NONE
   - 동시성 전략을 적용하지 않는다.
