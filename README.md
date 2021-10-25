@@ -24,6 +24,7 @@
   - [spring-lock-redisson](https://github.com/csh0034/tutorials/tree/master/spring-lock/spring-lock-redisson)
 - [spring-mail](https://github.com/csh0034/tutorials/tree/master/spring-mail)
 - [spring-quartz](https://github.com/csh0034/tutorials/tree/master/spring-quartz)
+- [spring-quickperf](https://github.com/csh0034/tutorials/tree/master/spring-quickperf)
 - [spring-security](https://github.com/csh0034/tutorials/tree/master/spring-security)
   - [authorization-server](https://github.com/csh0034/tutorials/tree/master/spring-security/authorization-server)
 - [spring-validator](https://github.com/csh0034/tutorials/tree/master/spring-validator)

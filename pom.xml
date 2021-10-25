@@ -28,6 +28,7 @@
     <module>spring-admin</module>
     <module>spring-validator</module>
     <module>java-core</module>
+    <module>spring-quickperf</module>
   </modules>
 
   <properties>
