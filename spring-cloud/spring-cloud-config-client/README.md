@@ -83,8 +83,9 @@ Actuator `RefreshEndpoint` 접근시에 EnvironmentChangeEvent 발생 시킴
 
 ## [@RefreshScope](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#refresh-scope)
 - refresh 할때 해당 어노테이션이 있는 대상 갱신해줌
+> Environment 객체 안의 propertySources 내부 값이 직접 바뀌므로 env.getProperty() 호출시 갱신된 값이 나옴
 
-## [POST 를 통해 env 변수 변경하기](https://docs.spring.io/spring-cloud-commons/docs/endpoints/reference/html/#endpoints)
+## [POST 를 통해 env 변수 변경하기](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#endpoints)
 - management.endpoint.env.post.enabled=true
 - `WritableEnvironmentEndpointAutoConfiguration` 동작함
 
