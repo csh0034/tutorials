@@ -1,0 +1,25 @@
+server:
+  port: 9999
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    env:
+      post:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: classpath:/sample-config/

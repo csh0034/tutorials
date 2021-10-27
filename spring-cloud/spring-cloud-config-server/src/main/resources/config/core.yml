@@ -1,0 +1,11 @@
+profile:
+  name: core-default
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "refresh,env"

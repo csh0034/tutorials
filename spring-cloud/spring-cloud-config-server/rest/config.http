@@ -1,0 +1,15 @@
+### actuator env
+GET http://localhost:9999/actuator/env
+
+### actuator env update
+POST http://localhost:9999/actuator/env
+Content-Type: application/json
+
+{
+  "name":"spring.application.name",
+  "value": "config-update-name"
+}
+
+### actuator 'spring.application.name' env 조회
+### actuator env
+GET http://localhost:9999/actuator/env/spring.application.name

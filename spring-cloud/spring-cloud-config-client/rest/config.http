@@ -1,0 +1,8 @@
+### actuator refresh
+POST http://localhost:7777/actuator/refresh
+
+### actuator env
+GET http://localhost:7777/actuator/env
+
+### refresh 동작하는지 테스트
+GET http://localhost:7777/check

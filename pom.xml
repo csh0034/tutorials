@@ -29,6 +29,7 @@
     <module>spring-validator</module>
     <module>java-core</module>
     <module>spring-quickperf</module>
+    <module>spring-cloud</module>
   </modules>
 
   <properties>
