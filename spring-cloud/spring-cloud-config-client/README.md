@@ -78,8 +78,51 @@ spring:
   2. `spring.config.import=optional:configserver:http://myhost:8888`
   
 ## [Actuator 를 이용한 refresh](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#endpoints)
-Actuator `RefreshEndpoint` 접근시에 EnvironmentChangeEvent 발생 시킴
+Actuator `RefreshEndpoint` 접근시에 ContextRefresher 를 통해 갱신함.
 - /actuator/refresh
+
+## Actuator 를 사용하지 않고 직접 refresh
+- 하단 처럼 RefreshEndpoint 는 `contextRefresher.refresh()` 만 호출하기 때문에 직접 주입받아 사용 하면됨.
+- @ConditionalOnBootstrapDisabled 일 경우 `ConfigDataContextRefresher` Bean 생성됨 - `RefreshAutoConfiguration`
+- 또는 `RefreshEventListener` 로 bean 으로 등록되므로 `RefreshEvent` 객체의 이벤트를 발생시키면됨
+```java
+@Endpoint(id = "refresh")
+public class RefreshEndpoint {
+
+  private ContextRefresher contextRefresher;
+
+  public RefreshEndpoint(ContextRefresher contextRefresher) {
+    this.contextRefresher = contextRefresher;
+  }
+
+  @WriteOperation
+  public Collection<String> refresh() {
+    Set<String> keys = this.contextRefresher.refresh();
+    return keys;
+  }
+}
+```
+```java
+@RestController
+@RequiredArgsConstructor
+public class RefreshController {
+
+  private final ContextRefresher contextRefresher;
+  private final ApplicationEventPublisher eventPublisher;
+
+  @GetMapping("/refresh")
+  public Collection<String> refresh() {
+    return contextRefresher.refresh();
+  }
+
+  @GetMapping("/refresh/event")
+  public String refreshEvent() {
+    RefreshEvent refreshEvent = new RefreshEvent("source", "event", "RefreshEvent 발생!!");
+    eventPublisher.publishEvent(refreshEvent);
+    return "Call RefreshEvent !!";
+  }
+}
+```
 
 ## [@RefreshScope](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#refresh-scope)
 - refresh 할때 해당 어노테이션이 있는 대상 갱신해줌

@@ -1,6 +1,12 @@
 ### actuator refresh
 POST http://localhost:7777/actuator/refresh
 
+### actuator 사용하지 않고 직접 ContextRefresher refresh 호출
+GET http://localhost:7777/refresh
+
+### actuator 사용하지 않고 직접 RefreshEventListener 호출
+GET http://localhost:7777/refresh/event
+
 ### actuator env
 GET http://localhost:7777/actuator/env
 
