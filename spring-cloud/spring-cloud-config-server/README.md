@@ -69,13 +69,6 @@ spring:
     name: config-server
   profiles:
     active: native    # File System 의 config 를 사용
-# 파일 경로 지정이 필요할 경우 세팅
-# default, "optional:classpath:/", "optional:classpath:/config/", "optional:file:./", "optional:file:./config/"
-#  cloud:
-#    config:
-#      server:
-#        native:
-#          search-locations: classpath:/sample-config/
 ```
 
 ## HTTP 호출을 통한 리소스 형식
@@ -92,8 +85,39 @@ GET /{label}/{application}-{profile}.properties
 ```
 
 ## [Environment Repository](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#_environment_repository)
-- Git
+- Git (GitRepositoryConfiguration)
+  - default 설정임, `@Profile("git")` 
+  - github 사용시 suffix `.git` 필수아님.
+  - gitlab 사용시에 suffix `.git` 필수임. 없으면 _422 Unprocessable Entity_ 발생 
+```yaml
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitlab.com/csh0034/spring-cloud-config-repo.git
+```
 - File System (NativeRepositoryConfiguration)
+  - `@Profile("native")`
+  - search-locations 설정 안할 경우 검색 위치
+    - "optional:classpath:/"
+    - "optional:classpath:/config/"
+    - "optional:file:./"
+    - "optional:file:./config/"
+```yaml
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: classpath:/sample-config/
+```
 - Redis
 - Database
 - ...
