@@ -84,6 +84,11 @@ GET /{application}-{profile}.properties
 GET /{label}/{application}-{profile}.properties
 ```
 
+## Config Server 에서 설정 정보 가져오는 시점
+- application 이 올라 갈때 가져오는것이 아닌 호출시마다 갱신해서 가져옴
+- client 측에서 EnvironmentController 의 설정 정보를 가져오는 api 호출시에  
+  EnvironmentRepository.findOne 을 호출하며 그시점에 가져온다.
+
 ## [Environment Repository](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#_environment_repository)
 - Git (GitRepositoryConfiguration)
   - default 설정임, `@Profile("git")` 

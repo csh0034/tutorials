@@ -68,14 +68,32 @@ spring:
 - Spring Cloud Config GitHub Test 에 Multiple name 을 지정한 테스트가 있음
 - [NativeEnvironmentRepositoryTests locationPlaceholdersMultipleApplication](https://github.com/spring-cloud/spring-cloud-config/blob/04e1d22b13/spring-cloud-config-server/src/test/java/org/springframework/cloud/config/server/environment/NativeEnvironmentRepositoryTests.java)
 - 우선 Native (File System) 모드에선 정상 작동함 다른곳에서도 동작하는지 테스트 해봐야함
+  - 추가. git 모드에서도 동작 확인함
 
 
 ## [spring.config.import](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#config-data-import)
 > spring.config.import=optional:configserver:
+- `optional:` 키워드가 없을 경우 구성 서버에 연결 못하면 구동 실패 [fail-fast](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#config-client-fail-fast)
 - 해당 프로퍼티 추가시에 default Config Server 주소로 연결 : `http://localhost:8888`
 - 주소 변경 방법
-  1. 위의 방법 추가 + `spring.cloud.config.uri=http://myhost:8888`
-  2. `spring.config.import=optional:configserver:http://myhost:8888`
+1. spring.config.import `configserver` 콜론 뒤에 추가
+```yaml
+spring:
+  config:
+    import: "optional:configserver:http://myhost:8888"
+```
+2. spring.config.import + spring.cloud.config.uri
+```yaml
+spring:
+  config:
+    import: "optional:configserver:"
+
+  cloud:
+    config:
+      uri: "http://localhost:9999"
+```
+3. 위의 두가지 방법을 동시에 사용할 경우 `1번 방법`이 우선순위 높음.
+- [reference](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#discovery-first-bootstrap) 에 bootstrap 모드 사용 안하면 `optional:` 필요하다고 되어있는데 없어도 동작은됨... fail-safe 방법인듯함
   
 ## [Actuator 를 이용한 refresh](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#endpoints)
 Actuator `RefreshEndpoint` 접근시에 ContextRefresher 를 통해 갱신함.
