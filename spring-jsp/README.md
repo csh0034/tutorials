@@ -3,7 +3,7 @@
 ## spring boot + jsp
 개발환경
 - IntelliJ IDEA 2021.1
-- spring boot 2.5.5
+- spring boot 2.5.6
 - Java 8
 - Maven
 

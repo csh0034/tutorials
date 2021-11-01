@@ -2,7 +2,7 @@
 
 개발환경
 - IntelliJ IDEA 2021.2.3
-- spring boot 2.5.5
+- spring boot 2.5.6
 - spring cloud 2020.0.4
 - Java 8
 - Maven
