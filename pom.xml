@@ -30,6 +30,7 @@
     <module>java-core</module>
     <module>spring-quickperf</module>
     <module>spring-cloud</module>
+    <module>spring-event</module>
   </modules>
 
   <properties>
