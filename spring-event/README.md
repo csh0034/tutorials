@@ -45,12 +45,13 @@ class SampleEventListenerTest {
 
 ## Annotation-Driven Event Listener
 - Spring 4.2부터 @EventListener 를 사용하여 Annotation 기반 이벤트 처리 지원
+- condition : 이벤트 처리를 조건부로 만드는 데 사용되는 SpEL(Spring Expression Language) 표현식
 ```java
 @Component
 @Slf4j
 public class SampleEventAnnotationDrivenListener {
 
-  @EventListener
+  @EventListener(condition = "#event.success")
   public void handleSampleEvent(SampleEvent event) {
     log.info("SampleEvent : {}", event);
   }
@@ -93,6 +94,76 @@ public void processBlockedListEvent(BlockedListEvent event) {
     // notify appropriate parties via notificationAddress...
 }
 ```
+
+## [Generic Events](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#context-functionality-events-generics)
+- Spring 4.2부터 모든 객체(Object)를 이벤트로서 발급할 수 있다. (`AbstractApplicationContext.publishEvent`)
+- 파라미터가 ApplicationEvent 타입이 아닐 경우, `PayloadApplicationEvent` 로 감싸서 처리한다.
+```java
+@RequiredArgsConstructor
+@Getter
+@ToString
+public class GenericEvent<T> {
+
+  private final T entity;
+  private final boolean needToPersist;
+}
+```
+```java
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class GenericEventAnnotationDrivenListener {
+
+  private final EntityManager em;
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @EventListener(condition = "#event.needToPersist")
+  public void handleGenericEvent(GenericEvent<?> event) {
+    log.info("GenericEvent<User> : {}", event);
+    em.persist(event.getEntity());
+  }
+}
+```
+```java
+@SpringBootTest
+class GenericEventAnnotationDrivenListenerTest {
+
+  @Autowired
+  private ApplicationEventPublisher publisher;
+
+  @SpyBean
+  private GenericEventAnnotationDrivenListener genericEventAnnotationDrivenListener;
+
+  @DisplayName("제네릭 이벤트, condition : true")
+  @Test
+  void genericEventWithConditionTrue() {
+    // given
+    User user = User.create("ask-true");
+    GenericEvent<User> event = new GenericEvent<>(user, true);
+
+    // when
+    publisher.publishEvent(event);
+
+    // then
+    then(genericEventAnnotationDrivenListener).should(atLeastOnce()).handleGenericEvent(any());
+  }
+
+  @DisplayName("제네릭 이벤트, condition : false")
+  @Test
+  void genericEventWithConditionFalse() {
+    // given
+    User user = User.create("ask-false");
+    GenericEvent<User> event = new GenericEvent<>(user, false);
+
+    // when
+    publisher.publishEvent(event);
+
+    // then
+    then(genericEventAnnotationDrivenListener).should(never()).handleGenericEvent(any());
+  }
+}
+```
+
 
 ## [@TransactionalEventListener](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction-event)
 - 트랜잭션의 결과가 리스너 처리에 중요한 요소일때 유연하게 사용할 수 있다.
