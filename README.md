@@ -14,6 +14,7 @@
 - [spring-dbunit](https://github.com/csh0034/tutorials/tree/master/spring-dbunit)
 - [spring-docker](https://github.com/csh0034/tutorials/tree/master/spring-docker)
 - [spring-dynamodb](https://github.com/csh0034/tutorials/tree/master/spring-dynamodb)
+- [spring-event](https://github.com/csh0034/tutorials/tree/master/spring-event)
 - [spring-integration](https://github.com/csh0034/tutorials/tree/master/spring-integration)
   - [consumer](https://github.com/csh0034/tutorials/tree/master/spring-integration/consumer)
   - [producer](https://github.com/csh0034/tutorials/tree/master/spring-integration/producer)

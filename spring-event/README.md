@@ -1,5 +1,12 @@
 # Spring Event
 
+## 개발환경
+- IntelliJ IDEA 2021.2.3
+- spring boot 2.5.6
+- Java 8
+- Maven
+- H2 1.4.200
+
 ## custom event 생성
 - ApplicationEvent 를 상속받아 구현
 ```java
