@@ -3,6 +3,9 @@ package com.ask.integration.consumer.web;
 import com.ask.integration.consumer.config.MqttConfig;
 import com.ask.integration.consumer.config.MqttIntegrationUtils;
 import com.ask.integration.consumer.config.MqttPubSubChannelConfig;
+import com.ask.integration.consumer.config.MqttPubSubChannelConfig.CustomMqttOutboundMessageHandler;
+import com.ask.integration.consumer.config.MqttPubSubChannelConfig.SampleMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,9 @@ public class MqttController {
   private final MqttConfig.MqttOutboundGateway mqttOutboundGateway;
   private final MqttPubSubChannelConfig.MqttPubSubOutboundGateway mqttPubSubOutboundGateway;
   private final MqttIntegrationUtils mqttIntegrationUtils;
+
+  private final CustomMqttOutboundMessageHandler customMqttOutboundMessageHandler;
+  private final ObjectMapper objectMapper;
 
   @GetMapping("/mqtt")
   public String mqtt(@RequestParam(defaultValue = "test") String message) {
@@ -41,8 +47,26 @@ public class MqttController {
   }
 
   @GetMapping("/mqtt/pub-sub")
-  public String pubSub() {
-    mqttPubSubOutboundGateway.publish(MqttPubSubChannelConfig.MQTT_PUB_SUB_TOPIC, "pub-sub");
+  public String pubSub(@RequestParam(defaultValue = "1") String id) throws Exception {
+    String mqttHandlerId = MqttPubSubChannelConfig.MQTT_HANDLER_1;
+    if (!id.equals("1")) {
+      mqttHandlerId = MqttPubSubChannelConfig.MQTT_HANDLER_2;
+    }
+
+    String payload = objectMapper.writeValueAsString(new SampleMessage(0, "ask"));
+    mqttPubSubOutboundGateway.publish(mqttHandlerId, MqttPubSubChannelConfig.MQTT_PUB_SUB_TOPIC, payload);
     return "success";
+  }
+
+  @GetMapping("/mqtt/pub-sub/clear")
+  public String pubSubClearRegisteredHandlers() {
+    customMqttOutboundMessageHandler.clearRegisteredHandlers();
+    return "clearRegisteredHandlers";
+  }
+
+  @GetMapping("/mqtt/pub-sub/init")
+  public String pubSubInitializeDefaultHandler() {
+    customMqttOutboundMessageHandler.initializeDefaultHandlers();
+    return "initializeDefaultHandler";
   }
 }
