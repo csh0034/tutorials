@@ -21,6 +21,8 @@ import com.ask.javacore.util.PropertiesUtils;
 
 class RsaTest extends BaseTest {
 
+	private static final String PROPERTIES_PATH = "security/rsa/key.properties";
+
 	private KeyPair keyPair;
 
 	@BeforeEach
@@ -56,6 +58,7 @@ class RsaTest extends BaseTest {
 		// when
 		String encryptedText = RsaUtils.encrypt(plainText, publicKey);
 		String decryptedText = RsaUtils.decrypt(encryptedText, privateKey);
+
 		// then
 		print("encryptedText : " + encryptedText);
 		print("decryptedText : " + decryptedText);
@@ -87,7 +90,7 @@ class RsaTest extends BaseTest {
 	@Test
 	void convertToPublicKey() {
 		// given
-		Properties properties = PropertiesUtils.load("security/rsa/key.properties");
+		Properties properties = PropertiesUtils.load(PROPERTIES_PATH);
 		String stringPublicKey = properties.getProperty("public");
 
 		// when
@@ -105,7 +108,7 @@ class RsaTest extends BaseTest {
 	@Test
 	void convertToPrivateKey() {
 		// given
-		Properties properties = PropertiesUtils.load("security/rsa/key.properties");
+		Properties properties = PropertiesUtils.load(PROPERTIES_PATH);
 		String stringPrivateKey = properties.getProperty("private");
 
 		// when
@@ -116,5 +119,28 @@ class RsaTest extends BaseTest {
 			() -> assertThat(privateKey).isNotNull(),
 			() -> assertThat(stringPrivateKey).isEqualTo(Base64.getEncoder().encodeToString(privateKey.getEncoded()))
 		);
+	}
+
+	@Order(6)
+	@DisplayName("RSA 를 이용한 unixTimestamp 서명(sign) 및 검증(verify) 기능")
+	@Test
+	void signAndVerifyWithTimestamp() {
+		// given
+		long unixTimestamp = System.currentTimeMillis();
+		String unixTimestampStr = String.valueOf(unixTimestamp);
+
+		PublicKey publicKey = keyPair.getPublic();
+		PrivateKey privateKey = keyPair.getPrivate();
+
+		// when
+		// 송신측
+		String signature = RsaUtils.sign(unixTimestampStr, privateKey);
+
+		// when 2
+		// 수신측
+		boolean result = RsaUtils.verify(String.valueOf(unixTimestamp), signature, publicKey);
+
+		// then
+		assertThat(result).isTrue();
 	}
 }

@@ -26,12 +26,12 @@ public class RsaUtils {
 	public static final String CHARSET = "UTF-8";
 
 	private static final int DEFAULT_KEY_SIZE = 2048;
-	private static final String KEY_FACTORY_ALGORITHM = "RSA";
+	private static final String RSA_ALGORITHM = "RSA";
 	private static final String SIGNATURE_ALGORITHM = "SHA512withRSA";
 
 	public static KeyPair generateKeyPair() {
 		try {
-			KeyPairGenerator generator = KeyPairGenerator.getInstance(KEY_FACTORY_ALGORITHM);
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
 			generator.initialize(DEFAULT_KEY_SIZE, new SecureRandom());
 			return generator.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
@@ -41,7 +41,7 @@ public class RsaUtils {
 
 	public static String encrypt(String plainText, PublicKey publicKey) {
 		try {
-			Cipher cipher = Cipher.getInstance(KEY_FACTORY_ALGORITHM);
+			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			byte[] bytes = cipher.doFinal(plainText.getBytes(CHARSET));
 			return Base64.getEncoder().encodeToString(bytes);
@@ -54,7 +54,7 @@ public class RsaUtils {
 	public static String decrypt(String cipherText, PrivateKey privateKey) {
 		try {
 			byte[] bytes = Base64.getDecoder().decode(cipherText);
-			Cipher cipher = Cipher.getInstance(KEY_FACTORY_ALGORITHM);
+			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			return new String(cipher.doFinal(bytes), CHARSET);
 		} catch (NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException | IllegalBlockSizeException
@@ -91,7 +91,7 @@ public class RsaUtils {
 
 	public static PublicKey convertToPublicKey(String stringPublicKey) {
 		try {
-			KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
+			KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			byte[] bytePublicKey = Base64.getDecoder().decode(stringPublicKey.getBytes());
 			return keyFactory.generatePublic(new X509EncodedKeySpec(bytePublicKey));
 		} catch (NoSuchAlgorithmException e) {
@@ -103,7 +103,7 @@ public class RsaUtils {
 
 	public static PrivateKey convertToPrivateKey(String stringPrivateKey) {
 		try {
-			KeyFactory keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
+			KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			byte[] bytePublicKey = Base64.getDecoder().decode(stringPrivateKey.getBytes());
 			return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePublicKey));
 		} catch (NoSuchAlgorithmException e) {
