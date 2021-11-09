@@ -128,18 +128,22 @@ public class MqttPubSubChannelConfig {
   public IntegrationFlow mqttPubSubOutboundFlow1() {
     return IntegrationFlows
         .from(mqttPubSubOutboundChannel())
+        .log("mqttPubSubOutboundFlow1")
         .handle(customMqttOutboundMessageHandler)
         .get();
   }
 
-  @Bean
-  public IntegrationFlow mqttPubSubOutboundFlow2() {
-    return IntegrationFlows
-        .from(mqttPubSubOutboundChannel())
-        .handle(customMqttOutboundMessageHandler)
-//        .handle(MqttIntegrationUtils.mqttOutboundMessageHandler(MQTT_SERVER_2, mqttClientFactory))
-        .get();
-  }
+//  위의 flow 와 중복
+//  @Bean
+//  public IntegrationFlow mqttPubSubOutboundFlow2() {
+//    return IntegrationFlows
+//        .from(mqttPubSubOutboundChannel())
+//        .log("mqttPubSubOutboundFlow2")
+//        .filter((MessageSelector) message -> true)
+//        .handle(customMqttOutboundMessageHandler)
+////        .handle(MqttIntegrationUtils.mqttOutboundMessageHandler(MQTT_SERVER_2, mqttClientFactory))
+//        .get();
+//  }
 
 //  @Bean
 //  public IntegrationFlow subFlowTest1() {
