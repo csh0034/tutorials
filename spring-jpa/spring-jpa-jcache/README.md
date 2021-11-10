@@ -187,6 +187,7 @@ javax.persistence.SharedCacheMode
 - READ_ONLY
   - 데이터를 추가 및 제거할 수 있지만 변경할 수는 없습니다. (엔터티를 업데이트 시도시 예외 발생).
   - 변경되지 않는 일부 정적 참조 데이터에 매우 적합
+  - Entity에 @Immutable annotation 선언 되어야함
 - NONSTRICT_READ_WRITE
   - 두 개의 개별 트랜잭션 스레드가 동일한 개체를 업데이트할 가능성이 낮은 경우 사용
   - 캐시를 잠그지 않고 업데이트되는 데이터를 캐싱한다, 일관성이 보장되지 않으며
@@ -201,6 +202,11 @@ javax.persistence.SharedCacheMode
   - 설정에 따라 REPEATABLE_READ 정도의 격리 수준을 보장   
   - JTA를 사용, 따라서 엔티티가 자주 수정되는 경우에 더 적합
   - hibernate.transaction.manager_lookup_class 를 지정해야함 EHCache 지원 안함
+
+> READ_ONLY 설정시에 Entity에 @Immutable annotation 없을 경우 하단 warning 로그 발생
+```text
+HHH90001003: Read-only caching was requested for mutable entity [NavigableRole[com.ask.springjpajcache.entity.Role]]
+```
 
 ## Hibernate property
 - org.hibernate.cfg.AvailableSettings - 전체 프로퍼티

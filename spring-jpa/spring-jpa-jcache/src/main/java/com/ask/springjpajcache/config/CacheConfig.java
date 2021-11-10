@@ -3,6 +3,7 @@ package com.ask.springjpajcache.config;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.ask.springjpajcache.entity.Company;
+import com.ask.springjpajcache.entity.Role;
 import com.ask.springjpajcache.entity.User;
 import javax.cache.configuration.FactoryBuilder;
 import javax.cache.configuration.MutableCacheEntryListenerConfiguration;
@@ -27,6 +28,7 @@ public class CacheConfig {
     return cacheManager -> {
       cacheManager.createCache(User.class.getName(), getConfiguration(new Duration(SECONDS, 5)));
       cacheManager.createCache(Company.class.getName(), getConfiguration(new Duration(SECONDS, 5)));
+      cacheManager.createCache(Role.class.getName(), getConfiguration(new Duration(SECONDS, 5)));
     };
   }
 
