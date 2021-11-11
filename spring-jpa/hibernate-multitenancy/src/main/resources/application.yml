@@ -1,1 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/db_multitenancy?createDatabaseIfNotExist=true
+    username: root
+    password: 111111
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+    open-in-view: false
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
