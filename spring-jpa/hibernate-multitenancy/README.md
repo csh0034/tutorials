@@ -10,6 +10,28 @@
 - 멀티 테넌시 아키텍처
 - 확장성을 지원하는 인프라
 
+## Hibernate Multitenancy
+
+### Multitenant 데이터 접근 방식
+- Separate database
+  - 각 테넌트의 데이터는 물리적으로 별도의 데이터베이스 인스턴스에 보관.
+  - JDBC Connection 은 각 데이터베이스를 가리키므로 모든 풀링은 테넌트별로 이루어진다.
+  - 일반적인 애플리케이션 접근 방식
+    - 테넌트별로 JDBC 연결 풀을 정의 하고 현재 로그인한 사용자와 연결된 테넌트 식별자를 기반으로 사용할 풀을 선택하는것이다.
+- Separate schema
+  - 각 테넌트의 데이터는 단일 데이터베이스 인스턴스의 고유한 데이터베이스 스키마에 보관
+  - JDBC 연결을 정의하는 두 가지 방법
+    1. 드라이버가 연결 URL에서 기본 스키마 이름 지정을 지원하거나 풀링 메커니즘이 연결에 사용할 스키마 이름 지정을 지원하는 경우
+    2. 데이터베이스 자체를 가리킬 수 있지만(일부 기본 스키마 사용) 연결은 SQL SET SCHEMA(또는 유사한) 명령을 사용하여 변경
+- Partitioned (discriminator) data
+  - 5.4.32.Final 기준 Hibernate 에서 제공되지 않음. 
+  - 모든 데이터는 단일 데이터베이스 스키마에 보관된다. 
+  - 각 테넌트에 대한 데이터는 파티션 값 또는 식별자를 사용하여 파티션된다.
+ 
+### Multitenant 관련 추상화 인터페이스
+- MultiTenantConnectionProvider – 테넌트당 연결 제공
+- CurrentTenantIdentifierResolver – 사용할 테넌트 식별자를 확인합니다.
+ 
 ### Hibernate SchemaExport
 - [StackOverflow, SchemaExport in Hibernate 5](https://stackoverflow.com/questions/47432115/replacing-schemaexportconfiguration-in-hibernate-5)
 ```java
@@ -73,3 +95,4 @@ public class MultiTenantCreateRunner implements ApplicationRunner {
 
 ## 참조
 - [hibernate, multitenancy](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#multitenacy)
+- [baeldung, A Guide to Multitenancy in Hibernate 5](https://www.baeldung.com/hibernate-5-multitenancy)
