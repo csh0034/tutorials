@@ -203,7 +203,8 @@ javax.persistence.SharedCacheMode
   - JTA를 사용, 따라서 엔티티가 자주 수정되는 경우에 더 적합
   - hibernate.transaction.manager_lookup_class 를 지정해야함 EHCache 지원 안함
 
-> READ_ONLY 설정시에 Entity에 @Immutable annotation 없을 경우 하단 warning 로그 발생
+> READ_ONLY 설정시에 Entity에 @Immutable annotation 없을 경우 하단 warning 로그 발생  
+> @Immutable : 엔티티 생성 가능, 엔티티 수정 무시, 컬렉션 엔티티 수정시 HibernateException 발생
 ```text
 HHH90001003: Read-only caching was requested for mutable entity [NavigableRole[com.ask.springjpajcache.entity.Role]]
 ```

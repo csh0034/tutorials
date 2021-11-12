@@ -31,4 +31,14 @@ public class Role {
   private String id;
 
   private String name;
+
+  public static Role create(String name) {
+    Role role = new Role();
+    role.name = name;
+    return role;
+  }
+
+  public void updateName(String name) {
+    this.name = name;
+  }
 }
