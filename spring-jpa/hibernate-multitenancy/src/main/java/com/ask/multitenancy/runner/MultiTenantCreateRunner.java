@@ -19,7 +19,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class MultiTenantCreateRunner implements ApplicationRunner {
 
@@ -45,7 +45,7 @@ public class MultiTenantCreateRunner implements ApplicationRunner {
 
   private Map<String, Object> createSettingsMap() {
     DataSource dataSource = dataSourceProperties.initializeDataSourceBuilder()
-        .url("jdbc:mariadb://127.0.0.1:3306/db_second?createDatabaseIfNotExist=true")
+        .url("jdbc:mariadb://127.0.0.1:3306/db_default?createDatabaseIfNotExist=true")
         .build();
 
     Map<String, Object> settings = getDefaultSettings();

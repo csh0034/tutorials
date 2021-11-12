@@ -1,10 +1,9 @@
-package com.ask.multitenancy.entity.base;
+package com.ask.multitenancy.entity.tenant;
 
 import static lombok.AccessLevel.PROTECTED;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +21,6 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @ToString
-@Cacheable
 public class Company {
 
   @Id

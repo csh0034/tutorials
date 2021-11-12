@@ -1,9 +1,8 @@
-package com.ask.multitenancy.entity.base;
+package com.ask.multitenancy.entity.tenant;
 
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +21,6 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @ToString
-@Cacheable
 public class User {
 
   @Id
@@ -39,6 +37,7 @@ public class User {
   @ManyToOne(fetch = LAZY, optional = false)
   @JoinColumn(name = "company_id")
   private Company company;
+
   public static User create(String name, String password, Company company) {
     User user = new User();
     user.name = name;
