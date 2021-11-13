@@ -1,4 +1,4 @@
-package com.ask.multitenancy.config.tenant;
+package com.ask.multitenancy.tenant;
 
 public class TenantContextHolder {
 

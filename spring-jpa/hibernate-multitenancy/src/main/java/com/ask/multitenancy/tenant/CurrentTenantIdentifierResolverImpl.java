@@ -1,18 +1,18 @@
-package com.ask.multitenancy.config.tenant;
+package com.ask.multitenancy.tenant;
 
+import java.util.Optional;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentifierResolver {
 
   private static final String DEFAULT_TENANT_ID = "default";
 
   @Override
   public String resolveCurrentTenantIdentifier() {
-    String tenant = TenantContextHolder.getTenantId();
-    return StringUtils.hasText(tenant) ? tenant : DEFAULT_TENANT_ID;
+    return Optional.ofNullable(TenantContextHolder.getTenantId())
+        .orElse(DEFAULT_TENANT_ID);
   }
 
   @Override

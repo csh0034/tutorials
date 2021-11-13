@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.MultiTenancyStrategy;
@@ -12,6 +13,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
@@ -23,12 +25,16 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableJpaRepositories(basePackages = "com.ask.multitenancy.repository.tenant",
-    entityManagerFactoryRef = "tenantEntityManagerFactory")
+    entityManagerFactoryRef = "tenantEntityManagerFactory",
+    transactionManagerRef = "tenantTransactionManager"
+)
 public class TenantConfig {
 
   private static final String PROVIDER_DISABLES_AUTOCOMMIT = "hibernate.connection.provider_disables_autocommit";
@@ -52,6 +58,12 @@ public class TenantConfig {
         .properties(vendorProperties)
         .persistenceUnit("tenant")
         .build();
+  }
+
+  @Bean
+  public PlatformTransactionManager tenantTransactionManager(
+      @Qualifier("tenantEntityManagerFactory") EntityManagerFactory tenantEntityManagerFactory) {
+    return new JpaTransactionManager(tenantEntityManagerFactory);
   }
 
   private Map<String, Object> getVendorProperties() {

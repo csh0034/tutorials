@@ -1,0 +1,20 @@
+### companies 조회, 존재하지 않는 tenantId
+GET http://localhost:8080/companies
+X-TENANT-ID: invlid
+
+### companies 조회, 유효한 tenantId
+GET http://localhost:8080/companies
+X-TENANT-ID: id01
+
+### sample companies 등록, id01 tenant
+GET http://localhost:8080/companies/add
+X-TENANT-ID: id01
+
+### companies 조회, X-TENANT-ID 입력하지 않을 경우 default tenant 사용
+GET http://localhost:8080/companies
+
+### sample companies 등록, default tenant
+GET http://localhost:8080/companies/add
+
+### tenant DB 등록
+GET http://localhost:8080/tenant/create-db?tenantId=sample

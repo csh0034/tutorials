@@ -5,12 +5,9 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.MultiTenancyStrategy;
-import org.hibernate.cfg.Environment;
-import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
-import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
@@ -25,13 +22,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = "com.ask.multitenancy.repository.master",
-    entityManagerFactoryRef = "masterEntityManagerFactory")
+    entityManagerFactoryRef = "masterEntityManagerFactory",
+    transactionManagerRef = "masterTransactionManager"
+)
 public class MasterConfig {
 
   private static final String PROVIDER_DISABLES_AUTOCOMMIT = "hibernate.connection.provider_disables_autocommit";
@@ -53,6 +54,12 @@ public class MasterConfig {
         .properties(vendorProperties)
         .persistenceUnit("master")
         .build();
+  }
+
+  @Bean
+  @Primary
+  public PlatformTransactionManager masterTransactionManager(EntityManagerFactory masterEntityManagerFactory) {
+    return new JpaTransactionManager(masterEntityManagerFactory);
   }
 
   private Map<String, Object> getVendorProperties() {

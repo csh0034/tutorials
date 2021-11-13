@@ -15,14 +15,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 class TenantControllerTest {
 
   @Autowired
-  private MockMvc mvc;
+  private MockMvc mockMvc;
 
   @Test
-  void findAll() throws Exception {
+  void findAllCompanies() throws Exception {
     // given
 
     // when
-    ResultActions result = mvc.perform(MockMvcRequestBuilders.get("/users"));
+    ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/companies"));
 
     // then
     result.andDo(print());

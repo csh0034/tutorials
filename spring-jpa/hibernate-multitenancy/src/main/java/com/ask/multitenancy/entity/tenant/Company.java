@@ -2,6 +2,7 @@ package com.ask.multitenancy.entity.tenant;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -31,16 +32,14 @@ public class Company {
 
   private String name;
 
-  private long count;
-
   @Exclude
   @OneToMany(mappedBy = "company")
+  @JsonIgnore
   private List<User> users = new ArrayList<>();
 
   public static Company create(String name) {
     Company company = new Company();
     company.name = name;
-    company.count = 10L;
     return company;
   }
 }

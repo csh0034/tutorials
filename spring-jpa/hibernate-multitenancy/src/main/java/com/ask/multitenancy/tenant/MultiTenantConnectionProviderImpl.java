@@ -1,4 +1,4 @@
-package com.ask.multitenancy.config.tenant;
+package com.ask.multitenancy.tenant;
 
 import com.ask.multitenancy.entity.master.Tenant;
 import com.ask.multitenancy.repository.master.TenantRepository;
@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @RequiredArgsConstructor
 public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
 
@@ -19,7 +19,7 @@ public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMu
 
   private final DataSource dataSource;
   private final DataSourceProperties dataSourceProperties;
-  private final ObjectProvider<TenantRepository> tenantRepositoryObjectProvider;
+  private final ObjectProvider<TenantRepository> tenantRepositoryProvider;
 
   private final Map<String, DataSource> dataSourceMap = new ConcurrentHashMap<>();
 
@@ -35,12 +35,11 @@ public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMu
       dataSource = createDataSource(tenantId);
       dataSourceMap.put(tenantId, dataSource);
     }
-
     return dataSource;
   }
 
   private DataSource createDataSource(String tenantId) {
-    TenantRepository tenantRepository = tenantRepositoryObjectProvider.getIfAvailable();
+    TenantRepository tenantRepository = tenantRepositoryProvider.getIfAvailable();
 
     if (tenantRepository == null) {
       throw new RuntimeException("tenantRepository must not be null");

@@ -1,7 +1,10 @@
 package com.ask.multitenancy.controller;
 
-import com.ask.multitenancy.entity.tenant.User;
-import com.ask.multitenancy.repository.tenant.UserRepository;
+import com.ask.multitenancy.entity.master.Tenant;
+import com.ask.multitenancy.entity.tenant.Company;
+import com.ask.multitenancy.repository.master.TenantRepository;
+import com.ask.multitenancy.repository.tenant.CompanyRepository;
+import com.ask.multitenancy.tenant.TenantDatabaseHelper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +15,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TenantController {
 
-  private final UserRepository userRepository;
+  private final TenantRepository tenantRepository;
+  private final CompanyRepository companyRepository;
 
-  @GetMapping("/users")
-  public ResponseEntity<List<User>> findAll() {
-    List<User> users = userRepository.findAll();
-    return ResponseEntity.ok(users);
+  private final TenantDatabaseHelper tenantDatabaseHelper;
+
+  @GetMapping("/tenant/create-db")
+  public String createTenantDatabase(String tenantId) {
+    Tenant tenant = createTenant(tenantId);
+    tenantDatabaseHelper.executeSchemaExport(tenant);
+    return tenant.getDbName();
+  }
+
+  private Tenant createTenant(String tenantId) {
+    Tenant tenant = Tenant.builder()
+        .id(tenantId)
+        .dbName("db_" + tenantId)
+        .dbAddress("localhost")
+        .dbUsername("root")
+        .dbPassword("111111")
+        .build();
+
+    return tenantRepository.save(tenant);
+  }
+
+  @GetMapping("/companies")
+  public ResponseEntity<List<Company>> findAllCompanies() {
+    List<Company> companies = companyRepository.findAll();
+    return ResponseEntity.ok(companies);
+  }
+
+  @GetMapping("/companies/add")
+  public String addCompany() {
+    Company company = Company.create("sample-" + System.currentTimeMillis());
+    return companyRepository.save(company).getId();
   }
 }
