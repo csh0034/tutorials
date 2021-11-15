@@ -37,6 +37,7 @@ class SessionControllerTest {
 
     assert session != null;
     log.info("session id : {}", session.getId());
+    log.info("session id : {}", session);
     log.info("{} : {}", key, session.getAttribute(key));
   }
 }
