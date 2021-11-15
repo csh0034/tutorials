@@ -18,7 +18,7 @@ public class SessionAspect {
 
   @Around("execution(* com.ask.springcore.session.*.*(..))")
   public Object timeLog(ProceedingJoinPoint pjp) throws Throwable {
-    log.info("session toString : {}", request.getSession());
+    log.info("session toString : {}", request.getSession(false));
     return pjp.proceed();
   }
 }
