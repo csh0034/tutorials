@@ -18,6 +18,7 @@
 
   <modules>
     <module>authorization-server</module>
+    <module>spring-security-core</module>
   </modules>
 
 </project>

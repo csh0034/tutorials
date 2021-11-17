@@ -32,4 +32,5 @@
 - [spring-quickperf](https://github.com/csh0034/tutorials/tree/master/spring-quickperf)
 - [spring-security](https://github.com/csh0034/tutorials/tree/master/spring-security)
   - [authorization-server](https://github.com/csh0034/tutorials/tree/master/spring-security/authorization-server)
+  - [spring-security-core](https://github.com/csh0034/tutorials/tree/master/spring-security/spring-security-core)
 - [spring-validator](https://github.com/csh0034/tutorials/tree/master/spring-validator)
