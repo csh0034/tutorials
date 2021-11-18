@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+</head>
+<body>
+<div>
+  <span>Authorities</span> : <span sec:authentication="principal"></span><br>
+  <a href="/">move index</a>
+</div>
+</body>
+</html>

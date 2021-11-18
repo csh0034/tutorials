@@ -1,1 +1,6 @@
-
+spring:
+  security:
+    user:
+      name: ask
+      password: ask111
+      roles: USER
