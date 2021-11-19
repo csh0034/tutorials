@@ -28,7 +28,7 @@ public class SecurityConfig {
               .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .formLogin(form -> form
               .loginPage("/main/login").permitAll()
-              .loginProcessingUrl("/main/login").and())
+              .loginProcessingUrl("/main/login"))
           .logout(logout -> logout
               .logoutUrl("/main/logout")
               .logoutSuccessUrl("/"))
@@ -52,7 +52,7 @@ public class SecurityConfig {
           .csrf(AbstractHttpConfigurer::disable)
           .formLogin(form -> form
               .loginPage("/sub/login").permitAll()
-              .loginProcessingUrl("/sub/login").and())
+              .loginProcessingUrl("/sub/login"))
           .logout(logout -> logout
               .logoutUrl("/sub/logout")
               .logoutSuccessUrl("/"))
