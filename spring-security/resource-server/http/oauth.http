@@ -9,6 +9,18 @@ grant_type=client_credentials&scope=message:read
 client.global.set("accessToken", response.body.access_token);
 %}
 
+### authroization-server introspect
+POST {{authroization-server}}/oauth2/introspect
+Content-Type: application/x-www-form-urlencoded
+
+token={{accessToken}}
+
+### authroization-server revoke
+POST {{authroization-server}}/oauth2/revoke
+Content-Type: application/x-www-form-urlencoded
+
+token={{accessToken}}
+
 ### resource-server
 GET {{resource-server}}
 Authorization: Bearer {{accessToken}}
