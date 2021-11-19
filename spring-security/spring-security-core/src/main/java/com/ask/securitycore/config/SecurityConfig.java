@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
@@ -22,16 +23,17 @@ public class SecurityConfig {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.antMatcher("/main/**")
-          .csrf().disable()
-          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-          .formLogin()
+          .csrf(AbstractHttpConfigurer::disable)
+          .sessionManagement(session -> session
+              .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .formLogin(form -> form
               .loginPage("/main/login").permitAll()
-              .loginProcessingUrl("/main/login").and()
-          .logout()
+              .loginProcessingUrl("/main/login").and())
+          .logout(logout -> logout
               .logoutUrl("/main/logout")
-              .logoutSuccessUrl("/").and()
-          .authorizeRequests()
-              .anyRequest().authenticated();
+              .logoutSuccessUrl("/"))
+          .authorizeRequests(auth -> auth
+              .anyRequest().authenticated());
     }
   }
 
@@ -47,15 +49,15 @@ public class SecurityConfig {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.antMatcher("/sub/**")
-          .csrf().disable()
-          .formLogin()
+          .csrf(AbstractHttpConfigurer::disable)
+          .formLogin(form -> form
               .loginPage("/sub/login").permitAll()
-              .loginProcessingUrl("/sub/login").and()
-          .logout()
+              .loginProcessingUrl("/sub/login").and())
+          .logout(logout -> logout
               .logoutUrl("/sub/logout")
-              .logoutSuccessUrl("/").and()
-          .authorizeRequests()
-              .anyRequest().authenticated();
+              .logoutSuccessUrl("/"))
+          .authorizeRequests(auth -> auth
+              .anyRequest().authenticated());
     }
   }
 }
