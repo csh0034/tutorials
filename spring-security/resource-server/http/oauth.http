@@ -1,0 +1,14 @@
+### authroization-server
+POST {{authroization-server}}/oauth2/token
+Authorization: Basic messaging-client secret
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&scope=message:read
+
+> {%
+client.global.set("accessToken", response.body.access_token);
+%}
+
+### resource-server
+GET {{resource-server}}
+Authorization: Bearer {{accessToken}}

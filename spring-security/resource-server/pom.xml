@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.ask</groupId>
-  <artifactId>authorization-server</artifactId>
+  <artifactId>resource-server</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>authorization-server</name>
-  <description>authorization-server</description>
+  <name>resource-server</name>
+  <description>resource-server</description>
   <properties>
     <java.version>1.8</java.version>
   </properties>
@@ -26,15 +26,8 @@
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-authorization-server</artifactId>
-      <version>0.2.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-devtools</artifactId>
-      <scope>runtime</scope>
-      <optional>true</optional>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -49,6 +42,11 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -1,0 +1,7 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:simple.pub # static 방식
+#          jwk-set-uri: http://localhost:9000/oauth2/jwks #JWT + JWK 방식
