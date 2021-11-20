@@ -1,2 +1,6 @@
 server:
   port: 9000
+
+rsa:
+  pub: classpath:simple.pub
+  priv: classpath:simple.priv

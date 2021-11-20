@@ -30,6 +30,11 @@ server:
   port: 9000
 ```
 
+## String to Rsa Object
+- RsaKeyConversionServicePostProcessor
+  - @Value 에 rsa pub/pri key 또는 키의 위치를 명시하면 자동으로 바꿔줌
+  - String 값이 "-----" 로 시작할 경우 직접 바꾸며 아닐 경우 Resource 위치로 처리함 
+  
 ## 참조
 - [spring-authorization-server github](https://github.com/spring-projects/spring-authorization-server)
 - [OAuth 2.0 Migration Guide](https://github.com/spring-projects/spring-security/wiki/OAuth-2.0-Migration-Guide)

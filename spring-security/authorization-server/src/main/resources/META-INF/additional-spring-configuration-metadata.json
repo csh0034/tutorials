@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "rsa.priv",
+      "type": "java.lang.String",
+      "description": "Description for rsa.priv."
+    },
+    {
+      "name": "rsa.pub",
+      "type": "java.lang.String",
+      "description": "Description for rsa.pub."
+    }
+  ]
+}
