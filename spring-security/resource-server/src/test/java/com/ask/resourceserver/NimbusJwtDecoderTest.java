@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.util.StreamUtils;
 
@@ -36,7 +37,7 @@ class NimbusJwtDecoderTest {
     SecretKey secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
 
     // when
-    NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(secretKey).build();
+    JwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(secretKey).build();
 
     // then
     Jwt jwt = jwtDecoder.decode(properties.getProperty("hmacToken"));
@@ -55,7 +56,7 @@ class NimbusJwtDecoderTest {
         .generatePublic(new X509EncodedKeySpec(getKeySpec(key)));
 
     // when
-    NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(publicKey).build();
+    JwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(publicKey).build();
 
     // then
     Jwt jwt = jwtDecoder.decode(properties.getProperty("messageReadToken"));
