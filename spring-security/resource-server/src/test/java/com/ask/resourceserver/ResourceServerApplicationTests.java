@@ -44,7 +44,7 @@ class ResourceServerApplicationTests {
     // then
     result.andDo(print())
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString("Hello, subject!")));
+        .andExpect(content().string(containsString("Hello, messaging-client!")));
   }
 
   @DisplayName("/message : Read 토큰으로 접근 가능하다.")
