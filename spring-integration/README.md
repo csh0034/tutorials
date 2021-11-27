@@ -28,6 +28,15 @@ pom.xml
 ```
 
 ***
+## Message Queue 장점
+- 비동기(Asynchronous): Queue에 넣기 때문에 나중에 처리할 수 있다.
+- 비동조(Decoupling): Appliction 과 분리할 수 있다. (각 서비스의 연결을 느슨하게 한다)
+- 탄력성(Resilience): 일부가 실패 시 전체에 영향을 받지 않는다.
+- 과잉(Redundancy): 실패할 경우 재실행 가능하다.
+- 보증(Guarantees): 작업이 처리된걸 확인할 수 있다.
+- 확장성(Scalable): 다수의 프로세스들이 큐에 메시지를 보낼 수 있다.
+
+***
 ## amqp(rabbitmq)
 Advanced Message Queing Protocol의 약자로, 흔히 알고 있는 MQ의 오픈소스에 기반한 표준 프로토콜을 의미한다.   
 AMQP 자체는 프로토콜을 의미하기 때문에 이 프로토콜에 따른 실제 MQ 제품들은 여러가지가 존재할 수 있다.
