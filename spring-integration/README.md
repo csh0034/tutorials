@@ -37,13 +37,35 @@ pom.xml
 - 확장성(Scalable): 다수의 프로세스들이 큐에 메시지를 보낼 수 있다.
 
 ***
-## amqp(rabbitmq)
+## amqp
 Advanced Message Queing Protocol의 약자로, 흔히 알고 있는 MQ의 오픈소스에 기반한 표준 프로토콜을 의미한다.   
 AMQP 자체는 프로토콜을 의미하기 때문에 이 프로토콜에 따른 실제 MQ 제품들은 여러가지가 존재할 수 있다.
 - RabbitMQ
 - ActiveMQ
 - Kafka
+- SQS
 - ...
+
+### rabbitmq
+![01](./_images/01.png)
+
+- Producer : 메시지를 생성하고 발송하는 주체, 메시지 전달 시 Queue에 전달하지 않고 Exchange를 통해 전달한다.
+- Exchange : Producer들에게서 전달 받은 메시지들을 어떤 Queue들에게 발송할지 결정하는 주체이다.
+- Queue : Producer들이 발송한 메시지들이 Consumer가 소비하기 전까지 보관되는 장소이다.
+- Consumer : 메시지를 수신하는 주체
+
+Exchange type : 동작방식 선택
+
+|type|description|
+|---|---|
+|direct|지정된 routingKey를 가진 Queue에만 메시지 전달|
+|fanout|알려진 모든 Queue에 메시지 전달 함(pub/sub)|
+|topic|routing key 전체가 일치 하거나 일부 패턴과 일치하는 모든 Queue 로 메시지가 전달(pub/sub)|
+|header|헤더에 포함된 key=value의 일치조건에 따라서 메시지 전달|
+
+Virtual Hosts  
+하나의 Broker 에서 운영 환경(ex. live, dev)에 따라 Users, Exchange, Queue 등을  
+각각 사용할 수 있는 Vhosts 컨셉을 갖고 있다.
 
 ***
 ## mqtt
