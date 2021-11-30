@@ -83,9 +83,60 @@ SpringBoot는 @Conditional을 확장하여, 여러가지 어노테이션을 제�
   - method invoking 후에 결과를 어플리케이션 컨텍스트에 등록하지 않는다.
 - MethodInvokingFactoryBean
   - method invoking 후에 결과를 어플리케이션 컨텍스트에 등록한다.
-  - FactoryBean<Object> 구현 하였음
+  - `FactoryBean<Object>` 구현 하였음
   - applicationContext.getBean("factoryBean");
     - FactoryBean 인터페이스의 구현체가 아닌 FactoryBean.getObject()에서 리턴되는 객체가 리턴
   - applicationContext.getBean("&factoryBean");
     - FactoryBean 자체가 리턴된다.
 
+## Locale 
+spring-webmvc-5.3.12기준
+
+### LocaleResolver
+
+|타입|설명|
+|---|---|
+|AcceptHeaderLocaleResolver|웹 브라우저가 전송한 Accept-Language 헤더로부터 Locale을 선택|
+|CookieLocaleResolveer|쿠키를 이용해서 Locale 정보 구함. setLocale() 메소드는 쿠키에 Locale 정보를 저장함|
+|SessionLocaleResolver|세션으로부터 Locale 정보를 구함. setLocale() 메소드는 세션에 Locale 정보를 저장함|
+|FixedLocaleResolver|고정 Locale을 사용함. setLocale() 메소드가 없음|
+
+### 기본 설정
+> request.getLocale() : Accept-Language 헤더를 기반  
+> Locale.getDefault() : JVM 의 이 인스턴스에 대한 기본 로케일의 현재 값
+1. RequestContextFilter
+   - initContextHolders
+   - `LocaleContextHolder.setLocale(request.getLocale(), this.threadContextInheritable);`
+2. DispatcherServlet
+   - buildLocaleContext 
+   - `((LocaleContextResolver) lr).resolveLocaleContext(request);`
+   - 리턴 값 LocaleContextHolder 에 저장
+
+### 스프링 부트 Auto Configuration
+`WebMvcAutoConfiguration`
+```java
+@Override
+@Bean
+@ConditionalOnMissingBean(name = DispatcherServlet.LOCALE_RESOLVER_BEAN_NAME)
+@SuppressWarnings("deprecation")
+public LocaleResolver localeResolver() {
+  if (this.webProperties.getLocaleResolver() == WebProperties.LocaleResolver.FIXED) {
+    return new FixedLocaleResolver(this.webProperties.getLocale());
+  }
+  if (this.mvcProperties.getLocaleResolver() == WebMvcProperties.LocaleResolver.FIXED) {
+    return new FixedLocaleResolver(this.mvcProperties.getLocale());
+  }
+  AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+  Locale locale = (this.webProperties.getLocale() != null) ? this.webProperties.getLocale()
+    : this.mvcProperties.getLocale();
+  localeResolver.setDefaultLocale(locale);
+  return localeResolver;
+}
+```
+
+```yaml
+spring:
+  web:
+    locale-resolver: accept_header or fixed # accept_header default
+    locale: ko # Accept-Language 헤더가 없는 경우 대체할 고정 기본 로케일을 구성
+```
