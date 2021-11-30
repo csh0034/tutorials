@@ -1,6 +1,7 @@
 spring:
-  main:
-    web-application-type: none
+  messages:
+    basename: message/message
+    use-code-as-default-message: true
 
 conditional:
   enabled: true
