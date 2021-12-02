@@ -85,7 +85,28 @@ class RsaTest extends BaseTest {
 		assertThat(result).isTrue();
 	}
 
-	@Order(4)
+  @Order(4)
+  @DisplayName("RSA 를 이용한 서명(sign) 및 검증(verify) 실패 검증")
+  @ParameterizedTest(name = "{index}. plainText : {0}")
+  @ValueSource(strings = {"시그니처", "signature", "signature-test", "signature-검증"})
+  void signAndVerifyFailed(String plainText) {
+    // given
+    PublicKey publicKey = keyPair.getPublic();
+    PrivateKey privateKey = keyPair.getPrivate();
+
+    String invalidSigningKey = "invalidSigningKey";
+
+    // when
+    String signature = RsaUtils.sign(plainText, privateKey);
+    boolean result = RsaUtils.verify(invalidSigningKey, signature, publicKey);
+
+    // then
+    print("signature : " + signature);
+
+    assertThat(result).isFalse();
+  }
+
+	@Order(5)
 	@DisplayName("String public key를 PublicKey 객체로 변환")
 	@Test
 	void convertToPublicKey() {
@@ -103,7 +124,7 @@ class RsaTest extends BaseTest {
 		);
 	}
 
-	@Order(5)
+	@Order(6)
 	@DisplayName("String private key를 PublicKey 객체로 변환")
 	@Test
 	void convertToPrivateKey() {
@@ -121,7 +142,7 @@ class RsaTest extends BaseTest {
 		);
 	}
 
-	@Order(6)
+	@Order(7)
 	@DisplayName("RSA 를 이용한 unixTimestamp 서명(sign) 및 검증(verify) 기능")
 	@Test
 	void signAndVerifyWithTimestamp() {

@@ -1,29 +1,19 @@
 package com.ask.javacore.security;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Signature;
-import java.security.SignatureException;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 public class RsaUtils {
-
-	public static final String CHARSET = "UTF-8";
 
 	private static final int DEFAULT_KEY_SIZE = 2048;
 	private static final String RSA_ALGORITHM = "RSA";
@@ -34,7 +24,7 @@ public class RsaUtils {
 			KeyPairGenerator generator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
 			generator.initialize(DEFAULT_KEY_SIZE, new SecureRandom());
 			return generator.generateKeyPair();
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -43,10 +33,9 @@ public class RsaUtils {
 		try {
 			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-			byte[] bytes = cipher.doFinal(plainText.getBytes(CHARSET));
+			byte[] bytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 			return Base64.getEncoder().encodeToString(bytes);
-		} catch (NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException | IllegalBlockSizeException
-			| BadPaddingException | NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -56,9 +45,8 @@ public class RsaUtils {
 			byte[] bytes = Base64.getDecoder().decode(cipherText);
 			Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
-			return new String(cipher.doFinal(bytes), CHARSET);
-		} catch (NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException | IllegalBlockSizeException
-			| BadPaddingException | NoSuchAlgorithmException e) {
+			return new String(cipher.doFinal(bytes), StandardCharsets.UTF_8);
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -67,10 +55,10 @@ public class RsaUtils {
 		try {
 			Signature sig = Signature.getInstance(SIGNATURE_ALGORITHM);
 			sig.initSign(privateKey);
-			sig.update(plainText.getBytes(CHARSET));
+			sig.update(plainText.getBytes(StandardCharsets.UTF_8));
 			byte[] signature = sig.sign();
 			return Base64.getEncoder().encodeToString(signature);
-		} catch (NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException | SignatureException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -81,10 +69,10 @@ public class RsaUtils {
 			sig.initVerify(publicKey);
 			sig.update(plainText.getBytes());
 			if (!sig.verify(Base64.getDecoder().decode(signature))) {
-				throw new RuntimeException("Invalid Signature : " + signature);
+				return false;
 			}
-		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-			throw new RuntimeException(e);
+		} catch (Exception e) {
+      throw new RuntimeException(e);
 		}
 		return true;
 	}
@@ -94,10 +82,8 @@ public class RsaUtils {
 			KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			byte[] bytePublicKey = Base64.getDecoder().decode(stringPublicKey.getBytes());
 			return keyFactory.generatePublic(new X509EncodedKeySpec(bytePublicKey));
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} catch (InvalidKeySpecException e) {
-			throw new IllegalArgumentException(e);
 		}
 	}
 
@@ -106,10 +92,8 @@ public class RsaUtils {
 			KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			byte[] bytePublicKey = Base64.getDecoder().decode(stringPrivateKey.getBytes());
 			return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePublicKey));
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
-		} catch (InvalidKeySpecException e) {
-			throw new IllegalArgumentException(e);
 		}
 	}
 }
