@@ -1,6 +1,12 @@
 package com.ask.javacore.security;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -90,10 +96,53 @@ public class RsaUtils {
 	public static PrivateKey convertToPrivateKey(String stringPrivateKey) {
 		try {
 			KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
-			byte[] bytePublicKey = Base64.getDecoder().decode(stringPrivateKey.getBytes());
-			return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePublicKey));
+			byte[] bytePrivateKey = Base64.getDecoder().decode(stringPrivateKey.getBytes());
+			return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePrivateKey));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
+
+  public static PublicKey convertPemToPublicKey(InputStream is) {
+    try {
+      String key = convertToString(is);
+
+      String pem = key
+          .replace("-----BEGIN PUBLIC KEY-----", "")
+          .replaceAll(System.lineSeparator(), "")
+          .replace("-----END PUBLIC KEY-----", "");
+
+      byte[] bytePublicKey = Base64.getDecoder().decode(pem.getBytes());
+      KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+      return keyFactory.generatePublic(new X509EncodedKeySpec(bytePublicKey));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static PrivateKey convertPemToPrivateKey(InputStream is) {
+    try {
+      String key = convertToString(is);
+
+      String pem = key
+          .replace("-----BEGIN PRIVATE KEY-----", "")
+          .replaceAll(System.lineSeparator(), "")
+          .replace("-----END PRIVATE KEY-----", "");
+
+      byte[] bytePrivateKey = Base64.getDecoder().decode(pem.getBytes());
+      KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+      return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePrivateKey));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static String convertToString(InputStream is) throws IOException {
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    byte[] buffer = new byte[0xFFFF];
+    for (int len = is.read(buffer); len != -1; len = is.read(buffer)) {
+      os.write(buffer, 0, len);
+    }
+    return os.toString(StandardCharsets.UTF_8.name());
+  }
 }

@@ -3,6 +3,8 @@ package com.ask.javacore.security;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -19,9 +21,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.ask.javacore.common.BaseTest;
 import com.ask.javacore.util.PropertiesUtils;
 
-class RsaTest extends BaseTest {
+class RsaUtilsTest extends BaseTest {
 
 	private static final String PROPERTIES_PATH = "security/rsa/key.properties";
+	private static final String PUBLIC_PEM_PATH = "security/rsa/public.pem";
+	private static final String PRIVATE_PEM_PATH = "security/rsa/private.pem";
 
 	private KeyPair keyPair;
 
@@ -164,4 +168,36 @@ class RsaTest extends BaseTest {
 		// then
 		assertThat(result).isTrue();
 	}
+
+  @Order(8)
+  @DisplayName("public pem 파일을 InputStream 으로 읽어서 PublicKey 로 변환")
+  @Test
+  void convertPemToPublicKey() {
+    // given
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    InputStream is = classLoader.getResourceAsStream(PUBLIC_PEM_PATH);
+
+    // when
+    PublicKey publicKey = RsaUtils.convertPemToPublicKey(is);
+
+    // then
+    System.out.println(publicKey);
+    assertThat(publicKey).isNotNull();
+  }
+
+  @Order(9)
+  @DisplayName("private pem 파일을 InputStream 으로 읽어서 PrivateKey 로 변환")
+  @Test
+  void convertPemToPrivateKey() {
+    // given
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    InputStream is = classLoader.getResourceAsStream(PRIVATE_PEM_PATH);
+
+    // when
+    PrivateKey privateKey = RsaUtils.convertPemToPrivateKey(is);
+
+    // then
+    System.out.println(privateKey);
+    assertThat(privateKey).isNotNull();
+  }
 }
