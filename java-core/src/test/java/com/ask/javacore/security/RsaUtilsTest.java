@@ -235,6 +235,7 @@ class RsaUtilsTest extends BaseTest {
   }
 
   @Order(12)
+  @DisplayName("pkcs8 private key 로 signing 하여 pkcs1 public key 로 검증")
   @Test
   void signingPkcs8AndVerifyPkcs1() {
     // given
@@ -254,6 +255,7 @@ class RsaUtilsTest extends BaseTest {
   }
 
   @Order(13)
+  @DisplayName("pkcs1 private key 로 signing 하여 pkcs1 public key 로 검증")
   @Test
   void signingPkcs1AndVerifyPkcs1() {
     // given
