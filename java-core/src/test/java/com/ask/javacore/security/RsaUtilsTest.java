@@ -3,7 +3,6 @@ package com.ask.javacore.security;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -24,8 +23,10 @@ import com.ask.javacore.util.PropertiesUtils;
 class RsaUtilsTest extends BaseTest {
 
 	private static final String PROPERTIES_PATH = "security/rsa/key.properties";
-	private static final String PUBLIC_PEM_PATH = "security/rsa/public.pem";
-	private static final String PRIVATE_PEM_PATH = "security/rsa/private.pem";
+	private static final String PUBLIC_X509_PEM_PATH = "security/rsa/public-x509.pem";
+	private static final String PRIVATE_PKCS8_PEM_PATH = "security/rsa/private-pkcs8.pem";
+	private static final String PUBLIC_PKCS1_PEM_PATH = "security/rsa/public-pkcs1.pem";
+	private static final String PRIVATE_PKCS1_PEM_PATH = "security/rsa/private-pkcs1.pem";
 
 	private KeyPair keyPair;
 
@@ -60,8 +61,8 @@ class RsaUtilsTest extends BaseTest {
 		PrivateKey privateKey = keyPair.getPrivate();
 
 		// when
-		String encryptedText = RsaUtils.encrypt(plainText, publicKey);
-		String decryptedText = RsaUtils.decrypt(encryptedText, privateKey);
+		String encryptedText = RsaUtils.encrypt(publicKey, plainText);
+		String decryptedText = RsaUtils.decrypt(privateKey, encryptedText);
 
 		// then
 		print("encryptedText : " + encryptedText);
@@ -80,8 +81,8 @@ class RsaUtilsTest extends BaseTest {
 		PrivateKey privateKey = keyPair.getPrivate();
 
 		// when
-		String signature = RsaUtils.sign(plainText, privateKey);
-		boolean result = RsaUtils.verify(plainText, signature, publicKey);
+		String signature = RsaUtils.sign(privateKey, plainText);
+		boolean result = RsaUtils.verify(publicKey, plainText, signature);
 
 		// then
 		print("signature : " + signature);
@@ -101,8 +102,8 @@ class RsaUtilsTest extends BaseTest {
     String invalidSigningKey = "invalidSigningKey";
 
     // when
-    String signature = RsaUtils.sign(plainText, privateKey);
-    boolean result = RsaUtils.verify(invalidSigningKey, signature, publicKey);
+    String signature = RsaUtils.sign(privateKey, plainText);
+    boolean result = RsaUtils.verify(publicKey, invalidSigningKey, signature);
 
     // then
     print("signature : " + signature);
@@ -159,26 +160,26 @@ class RsaUtilsTest extends BaseTest {
 
 		// when
 		// 송신측
-		String signature = RsaUtils.sign(unixTimestampStr, privateKey);
+		String signature = RsaUtils.sign(privateKey, unixTimestampStr);
 
 		// when 2
 		// 수신측
-		boolean result = RsaUtils.verify(String.valueOf(unixTimestamp), signature, publicKey);
+		boolean result = RsaUtils.verify(publicKey, String.valueOf(unixTimestamp), signature);
 
 		// then
 		assertThat(result).isTrue();
 	}
 
   @Order(8)
-  @DisplayName("public pem 파일을 InputStream 으로 읽어서 PublicKey 로 변환")
+  @DisplayName("x509 public pem 파일을 InputStream 으로 읽어서 PublicKey 로 변환")
   @Test
   void convertPemToPublicKey() {
     // given
     ClassLoader classLoader = this.getClass().getClassLoader();
-    InputStream is = classLoader.getResourceAsStream(PUBLIC_PEM_PATH);
+    InputStream is = classLoader.getResourceAsStream(PUBLIC_X509_PEM_PATH);
 
     // when
-    PublicKey publicKey = RsaUtils.convertPemToPublicKey(is);
+    PublicKey publicKey = RsaUtils.convertX509PemToPublicKey(is);
 
     // then
     System.out.println(publicKey);
@@ -186,18 +187,88 @@ class RsaUtilsTest extends BaseTest {
   }
 
   @Order(9)
-  @DisplayName("private pem 파일을 InputStream 으로 읽어서 PrivateKey 로 변환")
+  @DisplayName("pkcs8 private pem 파일을 InputStream 으로 읽어서 PrivateKey 로 변환")
   @Test
   void convertPemToPrivateKey() {
     // given
     ClassLoader classLoader = this.getClass().getClassLoader();
-    InputStream is = classLoader.getResourceAsStream(PRIVATE_PEM_PATH);
+    InputStream is = classLoader.getResourceAsStream(PRIVATE_PKCS8_PEM_PATH);
 
     // when
-    PrivateKey privateKey = RsaUtils.convertPemToPrivateKey(is);
+    PrivateKey privateKey = RsaUtils.convertPkcs8PemToPrivateKey(is);
 
     // then
     System.out.println(privateKey);
     assertThat(privateKey).isNotNull();
+  }
+
+  @Order(10)
+  @DisplayName("pkcs1 public pem 파일을 InputStream 으로 읽어서 PublicKey 로 변환")
+  @Test
+  void convertPkcs1PemToPublicKey() {
+    // given
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    InputStream is = classLoader.getResourceAsStream(PUBLIC_PKCS1_PEM_PATH);
+
+    // when
+    PublicKey publicKey = RsaUtils.convertPkcs1PemToPublicKey(is);
+
+    // then
+    System.out.println(publicKey);
+    assertThat(publicKey).isNotNull();
+  }
+
+  @Order(11)
+  @DisplayName("pkcs1 private pem 파일을 InputStream 으로 읽어서 PrivateKey 로 변환")
+  @Test
+  void convertPkcs1PemToPrivateKey() {
+    // given
+    ClassLoader classLoader = this.getClass().getClassLoader();
+    InputStream is = classLoader.getResourceAsStream(PRIVATE_PKCS1_PEM_PATH);
+
+    // when
+    PrivateKey privateKey = RsaUtils.convertPkcs1PemToPrivateKey(is);
+
+    // then
+    System.out.println(privateKey);
+    assertThat(privateKey).isNotNull();
+  }
+
+  @Order(12)
+  @Test
+  void signingPkcs8AndVerifyPkcs1() {
+    // given
+    ClassLoader classLoader = this.getClass().getClassLoader();
+
+    String unixTimestampStr = String.valueOf(System.currentTimeMillis());
+    PrivateKey privateKey = RsaUtils.convertPkcs8PemToPrivateKey(classLoader.getResourceAsStream(PRIVATE_PKCS8_PEM_PATH));
+
+    String signature = RsaUtils.sign(privateKey, unixTimestampStr);
+
+    // when
+    PublicKey publicKey = RsaUtils.convertPkcs1PemToPublicKey(classLoader.getResourceAsStream(PUBLIC_PKCS1_PEM_PATH));
+    boolean result = RsaUtils.verify(publicKey, unixTimestampStr, signature);
+
+    // then
+    assertThat(result).isTrue();
+  }
+
+  @Order(13)
+  @Test
+  void signingPkcs1AndVerifyPkcs1() {
+    // given
+    ClassLoader classLoader = this.getClass().getClassLoader();
+
+    String unixTimestampStr = String.valueOf(System.currentTimeMillis());
+    PrivateKey privateKey = RsaUtils.convertPkcs1PemToPrivateKey(classLoader.getResourceAsStream(PRIVATE_PKCS1_PEM_PATH));
+
+    String signature = RsaUtils.sign(privateKey, unixTimestampStr);
+
+    // when
+    PublicKey publicKey = RsaUtils.convertPkcs1PemToPublicKey(classLoader.getResourceAsStream(PUBLIC_PKCS1_PEM_PATH));
+    boolean result = RsaUtils.verify(publicKey, unixTimestampStr, signature);
+
+    // then
+    assertThat(result).isTrue();
   }
 }
