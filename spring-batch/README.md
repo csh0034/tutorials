@@ -1,8 +1,8 @@
 # spring batch
 ## 스프링 부트 + 스프링 배치 시작하기
 개발환경   
-- IntelliJ IDEA 2021.1
-- spring boot 2.5.6
+- IntelliJ IDEA 2021.3
+- spring boot 2.6.1
 - Java 8
 - Maven
 - MariaDB 10.4.20

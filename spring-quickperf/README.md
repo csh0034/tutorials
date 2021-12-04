@@ -1,8 +1,8 @@
 # spring quickperf
 
 개발환경
-- IntelliJ IDEA 2021.2.3
-- spring boot 2.5.6
+- IntelliJ IDEA 2021.3
+- spring boot 2.6.1
 - Java 8
 - Maven
 - H2 1.4.200
