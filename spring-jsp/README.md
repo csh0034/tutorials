@@ -61,6 +61,12 @@ spring:
 프로젝트 구조  
 ![01](./images/01.png)
 
+## JSP Error 처리
+- BasicErrorController 에서 처리됨
+- spring.mvc.view.prefix,suffix 에 error/{status} 에 있으면 처리됨 (JspTemplateAvailabilityProvider 참고)
+  - ex) /WEB-INF/jsp/error/500.jsp, /WEB-INF/jsp/error/404.jsp
+- 상단 프로퍼티 설정이 되지 않았을 경우 /WEB-INF/jsp/error.jsp
+
 ## 참고사항
 > 만약 멀티 모듈 구성일 경우 인텔리제이 Edit Configuration 선택후  
 > Working directory $MODULE_WORKING_DIR$ 추가 해야 jsp 파일 404 오류 발생하지 않음
