@@ -18,3 +18,8 @@ $ docker exec -it rabbitmq /bin/bash
 - rabbitmq-plugins enable --offline rabbitmq_mqtt
 - rabbitmq-plugins enable --offline rabbitmq_web_mqtt
 - rabbitmq-plugins enable --offline rabbitmq_delayed_message_exchange
+
+## docker hub
+- [docker pull csh0034/rabbitmq](https://hub.docker.com/repository/docker/csh0034/rabbitmq)
+- management : [http://localhost:15672](http://localhost:15672)
+- default account : guest / guest
