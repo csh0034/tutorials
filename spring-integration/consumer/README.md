@@ -50,3 +50,14 @@ EventDrivenConsumer     : started bean 'mqttPubSubOutboundFlow2...
 EventDrivenConsumer     : Adding {message-handler} as a subscriber to the 'mqttPubSubOutboundFlow2.channel#1' channel
 DirectChannel           : Channel 'application.mqttPubSubOutboundFlow2.channel#1' has 1 subscriber(s).
 ```
+
+## Integration 사용시 Mbean 이슈
+- Integration Flows Bean 생성시에 Bean 이름에 자동으로 `:`(콜론) 이 들어가면서 생성이 안되는 이슈
+- 하단 의존성 추가
+```xml
+<dependency>
+  <groupId>org.springframework.integration</groupId>
+  <artifactId>spring-integration-jmx</artifactId>
+</dependency>
+```
+- [Github issue, spring-integration](https://github.com/spring-projects/spring-integration/issues/3051)
