@@ -23,6 +23,7 @@
   - [spring-jpa-envers](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-envers)
   - [spring-jpa-jcache](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-jcache)
   - [spring-jpa-lock](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-lock)
+  - [spring-jpa-querydsl](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-querydsl)
   - [spring-jpa-redisson](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-redisson)
 - [spring-jsp](https://github.com/csh0034/tutorials/tree/master/spring-jsp)
 - [spring-lock](https://github.com/csh0034/tutorials/tree/master/spring-lock)

@@ -22,6 +22,7 @@
     <module>spring-jpa-jcache</module>
     <module>spring-jpa-redisson</module>
     <module>hibernate-multitenancy</module>
+    <module>spring-jpa-querydsl</module>
   </modules>
 
 </project>
