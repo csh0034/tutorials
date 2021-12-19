@@ -4,6 +4,7 @@ import static com.ask.springjpaquerydsl.entity.QUser.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ask.springjpaquerydsl.config.JpaConfig;
+import com.ask.springjpaquerydsl.entity.Company;
 import com.ask.springjpaquerydsl.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,12 @@ import org.springframework.context.annotation.Import;
 @Import(JpaConfig.class)
 @Slf4j
 class UserRepositoryTest {
-
+  
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private CompanyRepository companyRepository;
 
   @Autowired
   private JPAQueryFactory queryFactory;
@@ -26,7 +30,10 @@ class UserRepositoryTest {
   @Test
   void select() {
     // given
-    User createUser = User.create("abc123", "1234");
+    Company company = Company.create("company1");
+    companyRepository.save(company);
+
+    User createUser = User.create("abc123", "1234", company);
     userRepository.save(createUser);
 
     // when
