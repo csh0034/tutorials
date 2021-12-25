@@ -97,7 +97,7 @@ spring-webmvc-5.3.12기준
 |타입|설명|
 |---|---|
 |AcceptHeaderLocaleResolver|웹 브라우저가 전송한 Accept-Language 헤더로부터 Locale을 선택|
-|CookieLocaleResolveer|쿠키를 이용해서 Locale 정보 구함. setLocale() 메소드는 쿠키에 Locale 정보를 저장함|
+|CookieLocaleResolver|쿠키를 이용해서 Locale 정보 구함. setLocale() 메소드는 쿠키에 Locale 정보를 저장함|
 |SessionLocaleResolver|세션으로부터 Locale 정보를 구함. setLocale() 메소드는 세션에 Locale 정보를 저장함|
 |FixedLocaleResolver|고정 Locale을 사용함. setLocale() 메소드가 없음|
 
