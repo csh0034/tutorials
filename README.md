@@ -35,4 +35,5 @@
   - [authorization-server](https://github.com/csh0034/tutorials/tree/master/spring-security/authorization-server)
   - [spring-security-core](https://github.com/csh0034/tutorials/tree/master/spring-security/spring-security-core)
   - [resource-server](https://github.com/csh0034/tutorials/tree/master/spring-security/resource-server)
+- [spring-test](https://github.com/csh0034/tutorials/tree/master/spring-test)
 - [spring-validator](https://github.com/csh0034/tutorials/tree/master/spring-validator)
