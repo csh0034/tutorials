@@ -1,7 +1,6 @@
 # Spring jpa jcache (ehcache3, second-level cache)
 개발환경
-- IntelliJ IDEA 2021.3
-- spring boot 2.6.1
+- spring boot 2.6.2
 - Java 8
 - Maven
 

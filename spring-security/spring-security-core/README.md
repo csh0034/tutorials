@@ -2,9 +2,7 @@
 
 ## Settings
 개발환경
-- IntelliJ IDEA 2021.3
-- spring boot 2.6.1
-- spring security 5.6.0
+- spring boot 2.6.2
 - Java 8
 - Maven
 

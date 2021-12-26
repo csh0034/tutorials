@@ -2,8 +2,7 @@
 
 ## 스프링 부트 + redisson
 개발환경
-- IntelliJ IDEA 2021.3
-- spring boot 2.6.1
+- spring boot 2.6.2
 - Java 8
 - Maven
 - H2 1.4.200

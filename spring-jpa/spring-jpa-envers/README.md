@@ -1,8 +1,7 @@
 # spring jpa envers
 
 개발환경
-- IntelliJ IDEA 2021.3
-- spring boot 2.6.1
+- spring boot 2.6.2
 - Java 8
 - Maven
 - MariaDB 10.4.20
