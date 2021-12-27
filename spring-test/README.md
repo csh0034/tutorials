@@ -64,6 +64,18 @@ TestContext 프레임워크는 하단 매개변수를 사용하여 컨텍스트 
 - ApplicationContext 가 더티로 표시되면 테스트 프레임워크의 캐시에서 제거된다.
 - 동일 구성에 대해서도 후속 테스트에서 다시 ApplicationContext 를 생성한다.
 
+```java
+@SpringBootTest
+@DirtiesContext
+@Slf4j
+class DirtiesContextTest {
+
+  @Test
+  void test() {
+    log.info("invoke DirtiesContextTest.test");
+  }
+}
+```
 
 ### 캐싱 처리 코드
 DefaultCacheAwareContextLoaderDelegate
