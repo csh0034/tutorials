@@ -1,5 +1,7 @@
 package com.ask.securitycore.config;
 
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 public class SecurityConfig {
@@ -56,8 +59,16 @@ public class SecurityConfig {
           .logout(logout -> logout
               .logoutUrl("/sub/logout")
               .logoutSuccessUrl("/"))
+          .sessionManagement(session -> session
+              .maximumSessions(1)
+              .maxSessionsPreventsLogin(true))
           .authorizeRequests(auth -> auth
               .anyRequest().authenticated());
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+      return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
     }
   }
 }

@@ -78,5 +78,95 @@ Security Filter 추가 하는 경우에 순서가 중요하다.
 - FilterSecurityInterceptor
 - SwitchUserFilter
 
+## SessionManagementFilter, ConcurrentSessionFilter
+동일 계정 로그인 중복 방지 기능 동작구조
+
+- 로그인 처리시에 principal 을 Map 에 key 로 하고 SESSIONID 를 `Set<String>` 으로 저장한다.
+- maxSessionsPreventsLogin(false) 일때 (이전 사용자 세션 만료 처리)  
+  - maximumSessions 로 지정한 세션 수가 초과할 경우
+  - 가장 오래된 유저 세션의 `SessionInformation.expireNow()` 를 호출한다.
+- maxSessionsPreventsLogin(true) 일때 (신규 사용자 인증 실패 처리)
+  - 현재 로그인하는 유저에 로그인 실패처리를 한다.
+
+### 최대 세션 허용 개수 지정 방법
+```java
+protected void configure(HttpSecurity http) throws Exception {
+  http.sessionManagement()
+    .maximumSessions(1)
+    .maxSessionsPreventsLogin(true)
+    .invalidSessionUrl("/invalid") // 세션이 유효하지 않을 경우 이동 할 페이지
+    .expiredUrl("expired") // 세션이 만료된 경우 이동 할 페이지
+}
+```
+
+### HttpSessionEventPublisher
+was 의 세션 관련 이벤트를 spring security 에서 처리 할 수 있도록 이벤트를 발생시킨다.  
+> 리스너로 등록 하지 않을 경우 로그아웃 했을때 SessionRegistryImpl 의 principals, sessionIds 에서 삭제 되지 않아  
+> 추후 로그인하는 유저의 로그인 처리가 안될수 있다.
+
+리스너 Bean 등록
+```java
+@Bean
+public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+  return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+}
+```
+
+### SessionRegistry 의 구현체
+- Spring Session 을 사용하지 않을 경우 : SessionRegistryImpl
+- Spring Session 을 사용 할 경우 : SpringSessionBackedSessionRegistry
+```java
+public class SessionRegistryImpl implements SessionRegistry, ApplicationListener<AbstractSessionEvent> {
+  //... 
+  // <principal:Object,SessionIdSet>
+  private final ConcurrentMap<Object, Set<String>> principals;
+
+  // <sessionId:Object,SessionInformation>
+  private final Map<String, SessionInformation> sessionIds;
+  
+  //...
+  @Override
+  public void onApplicationEvent(AbstractSessionEvent event) {
+    if (event instanceof SessionDestroyedEvent) {
+      SessionDestroyedEvent sessionDestroyedEvent = (SessionDestroyedEvent) event;
+      String sessionId = sessionDestroyedEvent.getId();
+      removeSessionInformation(sessionId);
+    }
+    else if (event instanceof SessionIdChangedEvent) {
+      SessionIdChangedEvent sessionIdChangedEvent = (SessionIdChangedEvent) event;
+      String oldSessionId = sessionIdChangedEvent.getOldSessionId();
+      if (this.sessionIds.containsKey(oldSessionId)) {
+        Object principal = this.sessionIds.get(oldSessionId).getPrincipal();
+        removeSessionInformation(oldSessionId);
+        registerNewSession(sessionIdChangedEvent.getNewSessionId(), principal);
+      }
+    }
+  }
+  //...
+}
+```
+
+다른곳에서 `HttpSession.invalidate();` 메서드를 호출 할 경우 HttpSessionListener 의 `sessionDestroyed()` 가 호출 된다.
+
+따라서 SessionRegistryImpl 의 onApplicationEvent 에서 처리되며
+등록되어있는 Map 에서 해당 sessionId 를 제거한다.
+
+```java
+public class HttpSessionEventPublisher implements HttpSessionListener, HttpSessionIdListener {
+  // ...
+  @Override
+  public void sessionDestroyed(HttpSessionEvent event) {
+    extracted(event.getSession(), new HttpSessionDestroyedEvent(event.getSession()));
+  }
+  
+  //...
+  private void extracted(HttpSession session, ApplicationEvent e) {
+    Log log = LogFactory.getLog(LOGGER_NAME);
+    log.debug(LogMessage.format("Publishing event: %s", e));
+    getContext(session.getServletContext()).publishEvent(e);
+  }
+}
+```
+
 ## 참조
 - [Spring, Security](https://docs.spring.io/spring-security/reference/index.html)

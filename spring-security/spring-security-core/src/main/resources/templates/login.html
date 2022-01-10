@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Main Login</title>
@@ -10,5 +10,9 @@
     <input type="password" name="password" value="ask111">
     <button>login!</button>
   </form>
+  <br>
+  <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null">
+    <span th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></span>
+  </div>
 </body>
 </html>
