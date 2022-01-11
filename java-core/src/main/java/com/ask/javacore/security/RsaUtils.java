@@ -26,7 +26,7 @@ import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 public final class RsaUtils {
 
   private static final int DEFAULT_KEY_SIZE = 2048;
-  private static final String RSA_ALGORITHM = "RSA";
+  private static final String ALGORITHM = "RSA";
   private static final String SIGNATURE_ALGORITHM = "SHA512withRSA";
 
   static {
@@ -35,7 +35,7 @@ public final class RsaUtils {
 
   public static KeyPair generateKeyPair() {
     try {
-      KeyPairGenerator generator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
+      KeyPairGenerator generator = KeyPairGenerator.getInstance(ALGORITHM);
       generator.initialize(DEFAULT_KEY_SIZE, new SecureRandom());
       return generator.generateKeyPair();
     } catch (Exception e) {
@@ -45,7 +45,7 @@ public final class RsaUtils {
 
   public static String encrypt(PublicKey publicKey, String plainText) {
     try {
-      Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
+      Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.ENCRYPT_MODE, publicKey);
       byte[] bytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
       return Base64.getEncoder().encodeToString(bytes);
@@ -57,7 +57,7 @@ public final class RsaUtils {
   public static String decrypt(PrivateKey privateKey, String cipherText) {
     try {
       byte[] bytes = Base64.getDecoder().decode(cipherText);
-      Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
+      Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.DECRYPT_MODE, privateKey);
       return new String(cipher.doFinal(bytes), StandardCharsets.UTF_8);
     } catch (Exception e) {
@@ -93,7 +93,7 @@ public final class RsaUtils {
 
   public static PublicKey convertToPublicKey(String stringPublicKey) {
     try {
-      KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+      KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
       byte[] bytePublicKey = Base64.getDecoder().decode(stringPublicKey.getBytes());
       return keyFactory.generatePublic(new X509EncodedKeySpec(bytePublicKey));
     } catch (Exception e) {
@@ -103,7 +103,7 @@ public final class RsaUtils {
 
   public static PrivateKey convertToPrivateKey(String stringPrivateKey) {
     try {
-      KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+      KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
       byte[] bytePrivateKey = Base64.getDecoder().decode(stringPrivateKey.getBytes());
       return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePrivateKey));
     } catch (Exception e) {
@@ -121,7 +121,7 @@ public final class RsaUtils {
           .replace("-----END PUBLIC KEY-----", "");
 
       byte[] bytePublicKey = Base64.getDecoder().decode(pem.getBytes());
-      KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+      KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
       return keyFactory.generatePublic(new X509EncodedKeySpec(bytePublicKey));
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -138,7 +138,7 @@ public final class RsaUtils {
           .replace("-----END PRIVATE KEY-----", "");
 
       byte[] bytePrivateKey = Base64.getDecoder().decode(pem.getBytes());
-      KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+      KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
       return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(bytePrivateKey));
     } catch (Exception e) {
       throw new RuntimeException(e);
