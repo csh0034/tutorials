@@ -33,6 +33,9 @@ public final class RsaUtils {
     Security.addProvider(new BouncyCastleProvider());
   }
 
+  private RsaUtils() {
+  }
+
   public static KeyPair generateKeyPair() {
     try {
       KeyPairGenerator generator = KeyPairGenerator.getInstance(ALGORITHM);

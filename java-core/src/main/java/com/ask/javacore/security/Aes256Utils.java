@@ -21,6 +21,9 @@ public final class Aes256Utils {
     IV_SPEC = new IvParameterSpec(IV_KEY.getBytes(StandardCharsets.UTF_8));
   }
 
+  private Aes256Utils() {
+  }
+
   public static String encrypt(String plainText) {
     try {
       Cipher cipher = Cipher.getInstance(ALGORITHM);
