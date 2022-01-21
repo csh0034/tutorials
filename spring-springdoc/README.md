@@ -28,3 +28,4 @@ swagger-ui 스크립트 의 SwaggerUIBundle 객체 생성 부분에
 
 ## 참조
 - [swagger-ui, Configuration](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
+- [springdoc](https://springdoc.org/)
