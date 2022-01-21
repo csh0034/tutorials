@@ -32,6 +32,7 @@
     <module>spring-cloud</module>
     <module>spring-event</module>
     <module>spring-test</module>
+    <module>spring-swagger</module>
   </modules>
 
   <properties>
