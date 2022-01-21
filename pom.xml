@@ -33,6 +33,7 @@
     <module>spring-event</module>
     <module>spring-test</module>
     <module>spring-swagger</module>
+    <module>spring-springdoc</module>
   </modules>
 
   <properties>
