@@ -1,5 +1,52 @@
 # spring - springdoc
 
+## 개발환경
+- spring boot 2.6.2
+- Java 8
+- Maven
+
+## Springdoc 이란?
+Annotation 기반으로 OpenAPI 3 Specification API 문서를 만들 수 있게 지원한다.    
+또한 스프링 부트와의 통합하여 문서 생성 자동화에 도움을 준다.
+
+지원 목록
+- OpenAPI 3
+- Spring Boot 1, Spring Boot 2
+- JSR-303 (ex. @NotNull, @Min, @Max, @Size)
+- Swagger-ui
+- OAuth 2
+
+## SpringFox vs Springdoc
+SpringFox 2.9.2 가 2018.06 이후 업데이트가 끊긴 이후에 2020.06 부터 다시 시작됨  
+2018.06 업데이트 끊긴 시점에 Springdoc 가 나타남 2019.07 부터 2022.01 까지 꾸준한 업데이트 지원
+
+spring boot 2.6.x 부터 path matcher 처리 구현체가 AntPathMatcher 에서 PathPatternParser 로 변경 되고나서  
+SpringFox 제일 최신버전(3.0.0)에서도 NPE로 인하여 서버 실행이 안됨.
+
+해당 사항은 [Spring Boot v2.6 release note](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.6-Release-Notes) `PathPattern Based Path Matching Strategy for Spring MVC` 부분에도 나와있음
+
+Springdoc 는 문제없이 실행되니 Springdoc 로 개발하는게 좋아보임 
+
+swagger 개발 lib 
+- SpringFox Swagger2 
+  - latest : 3.0.0, 2020.07
+- Springdoc 
+  - latest: 1.6.4, 2022.01
+
+## Swagger Annotations
+| swagger 3 annotation                                                | swagger 2 annotation                        | description                            |
+|---------------------------------------------------------------------|---------------------------------------------|----------------------------------------|
+| @Tag                                                                | @Api                                        | 클래스를 Swagger 리소스로 표시                   |
+| @Parameter(hidden = true),<br>@Operation(hidden = true),<br>@Hidden | @ApiIgnore                                  | API 문서 숨김 처리                           |
+| @Parameter                                                          | @ApiImplicitParam                           | API 작업에서 단일 매개 변수를 나타냄                 | 
+| @Parameters                                                         | @ApiImplicitParams                          | API 작업에서 복수 매개 변수를 나타냄                 |
+| @Schema                                                             | @ApiModel                                   | Swagger 모델에 대한 추가 정보를 제공               |
+| @Schema(accessMode = READ_ONLY)                                     | @ApiModelProperty(hidden = true)            | 모델 속성의 데이터가 요청시엔 없지만<br/> 응답시 추가될 수 있음 |
+| @Schema                                                             | @ApiModelProperty                           | Swagger 모델에 대한 추가 정보를 제공               |
+| @Operation(summary = "foo", description = "bar")                    | @ApiOperation(value = "foo", notes = "bar") | 특정 경로에 대한 작업 또는 일반적으로 HTTP 메서드를 설명     |
+| @Parameter                                                          | @ApiParam                                   | 작업 매개 변수에 대한 추가 메타 데이터를 추가             |
+| @ApiResponse(responseCode = "404", description = "foo")             | @ApiResponse(code = 404, message = "foo")   | 작업의 가능한 응답을 설명                         |
+
 ## Springdoc 의 Swagger-UI SearchBar url 변경 처리
 springdoc 은 webjar 의 swagger-ui 를 사용하는데 Search Bar 의 데이터를 어떻게 바꿀수 있을까?
 
@@ -29,3 +76,4 @@ swagger-ui 스크립트 의 SwaggerUIBundle 객체 생성 부분에
 ## 참조
 - [swagger-ui, Configuration](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
 - [springdoc](https://springdoc.org/)
+- [Baeldung, springdoc](https://www.baeldung.com/spring-rest-openapi-documentation)
