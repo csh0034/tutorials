@@ -1,7 +1,7 @@
 # Spring Event
 
 ## 개발환경
-- spring boot 2.6.2
+- spring boot 2.6.3
 - Java 8
 - Maven
 - H2 1.4.200

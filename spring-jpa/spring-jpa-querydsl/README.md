@@ -3,7 +3,7 @@
 ## 이슈 사항
 
 ### 이슈 1
-- spring boot 2.6.2 의 querydsl version 은 5.0.0 이다.
+- spring boot 2.6.3 의 querydsl version 은 5.0.0 이다.
 - QClass 생성시에 `javax.annotation.processing.Generated` 가 존재 하지 않음.
 ```java
 import com.querydsl.core.types.PathMetadata;

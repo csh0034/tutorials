@@ -1,7 +1,7 @@
 # Spring Cloud Config Server
 
 개발환경
-- spring boot 2.6.2
+- spring boot 2.6.3
 - spring cloud 2020.0.4
 - Java 8
 - Maven
