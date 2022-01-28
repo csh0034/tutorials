@@ -1,6 +1,17 @@
 # Spring Cloud Stream Producer
 
-## Functional 방식
+## Spring Cloud Stream
+Message 기반 마이크로 서비스 어플리케이션을 만들기위한 Framework 로 메시징 시스템과   
+연동하여 확장성 높은 이벤트 기반 마이크로 서비스를 구축 가능하게 해준다.
+
+Spring Integration 을 기반으로 높은 추상화 수준의 API 를 제공한다.
+
+3.x 버전 부터 spring-cloud-stream-reactive 가 중단 되었으며 Spring Cloud Function 을 지원함에 따라  
+@EnableBinding, @StreamListener 등의 Annotation-based programming model 이 사용되지 않고 Function 기반으로 처리된다.
+
+> Servlet 방식보다 Reactive 방식으로 적용하는게 나아 보인다.
+
+## Functional Programming Model
 
 ### Binding Name 규칙
 **Input** : `<function name> + -in- + <index>`  
