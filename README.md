@@ -10,6 +10,7 @@
 - [spring-cloud](https://github.com/csh0034/tutorials/tree/master/spring-cloud)
   - [spring-cloud-config-client](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-config-client)
   - [spring-cloud-config-server](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-config-server)
+  - [spring-cloud-stream](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-stream)
 - [spring-core](https://github.com/csh0034/tutorials/tree/master/spring-core)
 - [spring-dbunit](https://github.com/csh0034/tutorials/tree/master/spring-dbunit)
 - [spring-docker](https://github.com/csh0034/tutorials/tree/master/spring-docker)
