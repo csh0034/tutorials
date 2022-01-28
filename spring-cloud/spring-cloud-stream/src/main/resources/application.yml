@@ -1,0 +1,14 @@
+spring:
+  rabbitmq:
+    virtual-host: cloud
+  cloud:
+    stream:
+      bindings:
+        uppercase-in-0:
+          destination: uppercase.input
+        uppercase-out-0:
+          destination: uppercase.output
+        print-in-0:
+          destination: uppercase.output
+    function:
+      definition: uppercase;print
