@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.ask</groupId>
-  <artifactId>stream</artifactId>
+  <artifactId>stream-consumer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>spring-cloud-stream</name>
-  <description>spring-cloud-stream</description>
+  <name>spring-cloud-stream-consumer</name>
+  <description>spring-cloud-stream-consumer</description>
   <properties>
     <java.version>1.8</java.version>
     <spring-cloud.version>2021.0.0</spring-cloud.version>

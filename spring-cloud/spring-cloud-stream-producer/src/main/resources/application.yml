@@ -1,0 +1,12 @@
+spring:
+  rabbitmq:
+    virtual-host: cloud
+  cloud:
+    function:
+      definition: outSample1;outSample2
+    stream:
+      bindings:
+        outSample1-out-0:
+          destination: sample1
+        outSample2-out-0:
+          destination: sample2

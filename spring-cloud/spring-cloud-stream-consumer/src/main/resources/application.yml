@@ -1,0 +1,16 @@
+server:
+  port: 9999
+
+spring:
+  rabbitmq:
+    virtual-host: cloud
+  cloud:
+    function:
+      definition: inSample1;inSample2
+    stream:
+      bindings:
+        inSample1-in-0:
+          destination: sample1
+        inSample2-in-0:
+          destination: sample2
+
