@@ -34,6 +34,7 @@
     <module>spring-test</module>
     <module>spring-swagger</module>
     <module>spring-springdoc</module>
+    <module>spring-webflux</module>
   </modules>
 
   <properties>
