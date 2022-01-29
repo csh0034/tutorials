@@ -33,6 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
   }
 }
 ```
+> Spring Boot 2.6.x 부터는 자동 설정되므로 Validator 설정을 안해줘도된다. `ValidationAutoConfiguration`  
+> [Spring-Boot-2.6-Release-Notes](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.6-Release-Notes#messagesource-based-interpolation-of-bean-validation-messages)
 
 > MessageSource 는 MessageSourceAutoConfiguration 이용
 
