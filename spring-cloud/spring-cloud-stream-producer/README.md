@@ -28,4 +28,5 @@ Spring Integration 의 PollerMetadata 에 polling mechanism 에 의해 호출된
 ## 참조
 - [Spring Cloud Stream](https://docs.spring.io/spring-cloud-stream/docs/3.2.1/reference/html/)
 - [Spring Cloud Stream Samples, GitHub](https://github.com/spring-cloud/spring-cloud-stream-samples)
+- [MS Docs, Cloud Stream Azure Kafka](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-kafka-azure-event-hub)
 - [Blog 1](https://medium.com/@odysseymoon/spring-cloud-stream-with-rabbitmq-c273ed9a79b)
