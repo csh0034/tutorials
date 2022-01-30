@@ -21,6 +21,7 @@
     <module>spring-cloud-config-client</module>
     <module>spring-cloud-stream-consumer</module>
     <module>spring-cloud-stream-producer</module>
+    <module>spring-cloud-function</module>
   </modules>
 
 </project>
