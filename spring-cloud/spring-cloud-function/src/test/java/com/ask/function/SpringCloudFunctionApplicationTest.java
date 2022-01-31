@@ -6,16 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.function.context.test.FunctionalSpringBootTest;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-@SpringBootTest
+@FunctionalSpringBootTest
 @AutoConfigureWebTestClient
 @Slf4j
 class SpringCloudFunctionApplicationTest {
@@ -25,15 +20,13 @@ class SpringCloudFunctionApplicationTest {
 
   @Test
   void uppercase() {
-    String result = webTestClient.post()
+    webTestClient.post()
         .uri("/uppercase")
         .body(Mono.just("hello"), String.class)
         .exchange()
         .expectStatus().isOk()
-        .expectBody(String.class).returnResult()
-        .getResponseBody();
-
-    assertThat(result).isEqualTo("HELLO");
+        .expectBody(String.class)
+        .isEqualTo("HELLO");
   }
 
   @Test
