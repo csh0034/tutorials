@@ -35,5 +35,8 @@ Spring Boot 의 빌드 결과를 uber(fat) jar 가 아닌 실행 가능한 thin 
 ## 참조
 - [Spring Cloud Function, Reference](https://docs.spring.io/spring-cloud-function/docs/3.2.1/reference/html/)
 - [Spring Cloud Function, GitHub](https://github.com/spring-cloud/spring-cloud-function)
+- [AWS Lambda Java, Reference](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-java.html)
+- [AWS Lambda Java, GitHub](https://github.com/aws/aws-lambda-java-libs)
+- [AWS Lambda functions Testing, Blog](https://aws.amazon.com/ko/blogs/opensource/testing-aws-lambda-functions-written-in-java/)
 - [Blog 1, Introduce](https://binux.tistory.com/61?category=907689)
 - [Blog 2, AWS Deploy](https://siyoon210.tistory.com/174)
