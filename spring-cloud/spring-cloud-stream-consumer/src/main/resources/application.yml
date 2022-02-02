@@ -11,6 +11,16 @@ spring:
       bindings:
         inSample1-in-0:
           destination: sample1
+          group: qeueue
         inSample2-in-0:
           destination: sample2
+          group: qeueue
 
+#      rabbit:
+#        bindings:
+#          inSample1-in-0:
+#            consumer:
+#              durableSubscription: false
+#          inSample2-in-0:
+#            consumer:
+#              durableSubscription: false
