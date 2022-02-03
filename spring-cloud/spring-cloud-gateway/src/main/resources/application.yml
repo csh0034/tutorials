@@ -7,17 +7,26 @@ management:
 spring:
   cloud:
     gateway:
+      default-filters:
+#        - PrefixPath=/v1
+        - AddRequestHeader=X-Request-Header, req
+        - AddResponseHeader=X-Response-Header, res
       routes:
         - id: user_route
-          uri: http://localhost:8081
+          uri: http://localhost:9999
           predicates:
             - Path=/user/**
           filters:
-            - RewritePath=/user/(?<segment>.*),/$\{segment}
+            - RewritePath=/user/?(?<segment>.*), /$\{segment}
 
         - id: board_route
-          uri: http://localhost:8081
+          uri: http://localhost:9999
           predicates:
             - Path=/board/**
           filters:
-            - RewritePath=/board/(?<segment>.*),/$\{segment}
+            - RewritePath=/board/?(?<segment>.*), /$\{segment}
+
+        - id: default_route
+          uri: http://localhost:9999
+          predicates:
+            - Path=/**
