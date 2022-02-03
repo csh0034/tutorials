@@ -5,6 +5,9 @@ management:
         include:
           - "gateway"
 spring:
+  application:
+    name: gateway-server
+
   cloud:
     gateway:
       default-filters:
