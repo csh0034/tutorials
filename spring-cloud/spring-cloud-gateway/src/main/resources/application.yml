@@ -1,1 +1,23 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "gateway"
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user_route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/user/**
+          filters:
+            - RewritePath=/user/(?<segment>.*),/$\{segment}
 
+        - id: board_route
+          uri: http://localhost:8081
+          predicates:
+            - Path=/board/**
+          filters:
+            - RewritePath=/board/(?<segment>.*),/$\{segment}
