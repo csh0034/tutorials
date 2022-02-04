@@ -32,7 +32,6 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Component;
 
 @Configuration
 @RequiredArgsConstructor
@@ -48,7 +47,6 @@ public class MqttPubSubChannelConfig {
   public static final String MQTT_HANDLER_1 = "handler-1";
   public static final String MQTT_HANDLER_2 = "handler-2";
 
-  private final CustomMqttOutboundMessageHandler customMqttOutboundMessageHandler;
   private final MqttPahoClientFactory mqttClientFactory;
   private final ObjectMapper objectMapper;
 
@@ -129,7 +127,7 @@ public class MqttPubSubChannelConfig {
     return IntegrationFlows
         .from(mqttPubSubOutboundChannel())
         .log("mqttPubSubOutboundFlow1")
-        .handle(customMqttOutboundMessageHandler)
+        .handle(new CustomMqttMultiMessageHandler(mqttClientFactory))
         .get();
   }
 
@@ -180,10 +178,9 @@ public class MqttPubSubChannelConfig {
     private String name;
   }
 
-  @Component
   @RequiredArgsConstructor
   @Slf4j
-  public static class CustomMqttOutboundMessageHandler  extends AbstractMessageHandler implements Lifecycle {
+  public static class CustomMqttMultiMessageHandler extends AbstractMessageHandler implements Lifecycle {
 
     private final AtomicBoolean running = new AtomicBoolean();
 
@@ -193,16 +190,16 @@ public class MqttPubSubChannelConfig {
     @Override
     protected void handleMessageInternal(Message<?> message) {
       if (mqttHandlerMap.isEmpty()) {
-        throw new IllegalStateException("등록된 핸들러가 없습니다.");
+        throw new RuntimeException("There is no registered handler");
       }
 
       String mqttHandlerId = message.getHeaders().get(MQTT_HANDLER_ID, String.class);
-      MessageHandler messageHandler = mqttHandlerMap.get(mqttHandlerId);
+      CustomMqttPahoMessageHandler messageHandler = (CustomMqttPahoMessageHandler) mqttHandlerMap.get(mqttHandlerId);
       if (messageHandler == null) {
-        throw new IllegalArgumentException("등록된 핸들러가 없습니다. id : [" + mqttHandlerId + "]");
+        throw new RuntimeException(String.format("There is no registered handler. id : %s", mqttHandlerId));
       }
 
-      messageHandler.handleMessage(message);
+      messageHandler.handleMessageInternal(message);
 
       // 모든 핸들러에 메세지 전송
       //mqttHandlerMap.forEach((k, v) -> v.handleMessage(message));
@@ -210,16 +207,21 @@ public class MqttPubSubChannelConfig {
 
     @Override
     public void start() {
-      if (running.getAndSet(true)) {
-        return;
+      if (!running.getAndSet(true)) {
+        initialize();
       }
-      initializeDefaultHandlers();
     }
 
-    public void initializeDefaultHandlers() {
+    private void initialize() {
       clearRegisteredHandlers();
       createDefaultHandlers();
-      log.info("Invoke initializeDefaultHandlers, Current Handler Count : {}", mqttHandlerMap.size());
+      log.info("finish initialize, current handler count : {}", mqttHandlerMap.size());
+      mqttHandlerMap.forEach((k, v) -> log.info("outboundHandlerId : {}", k));
+    }
+
+    private void clearRegisteredHandlers() {
+      stop();
+      mqttHandlerMap.clear();
     }
 
     private void createDefaultHandlers() {
@@ -228,28 +230,50 @@ public class MqttPubSubChannelConfig {
     }
 
     private MessageHandler createHandler(String url, MqttPahoClientFactory mqttClientFactory) {
-      MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(url, MqttClient.generateClientId(), mqttClientFactory);
-      messageHandler.setAsync(true);
-      messageHandler.setDefaultQos(1);
+      String clientId = MqttClient.generateClientId();
+
+      CustomMqttPahoMessageHandler messageHandler = new CustomMqttPahoMessageHandler(url, clientId, mqttClientFactory);
+      messageHandler.setDefaultTopic("defaultTopic");
+      messageHandler.setDefaultQos(0);
+      messageHandler.setCompletionTimeout(5000);
       messageHandler.afterPropertiesSet();
       return messageHandler;
     }
 
     @Override
     public void stop() {
-      // TODO stop 호출시에 내부적으로 running.getAndSet false 여서 처리가 안됨 상속받아서 doStop 호출하게 해야할듯
-      mqttHandlerMap.forEach((k, v) -> ((MqttPahoMessageHandler)v).stop());
+      mqttHandlerMap.forEach((k, v) -> ((CustomMqttPahoMessageHandler)v).doStop());
     }
 
     @Override
     public boolean isRunning() {
       return running.get();
     }
+  }
 
-    public void clearRegisteredHandlers() {
-      log.info("Invoke clearRegisteredHandlers");
-      stop();
-      mqttHandlerMap.clear();
+  public static class CustomMqttPahoMessageHandler extends MqttPahoMessageHandler {
+
+    public CustomMqttPahoMessageHandler(String pnsUrl, String clientId, MqttPahoClientFactory clientFactory) {
+      super(pnsUrl, clientId, clientFactory);
+    }
+
+    @Override
+    public void doStop() {
+      super.doStop();
+    }
+
+    @Override
+    public void handleMessageInternal(Message<?> message) {
+      super.handleMessageInternal(message);
+    }
+
+    @Override
+    public void onInit() {
+      try {
+        super.onInit();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 }

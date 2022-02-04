@@ -155,14 +155,15 @@ public class AmqpConfig {
   }
 
   //spring.jmx.enabled false 해도 켜지는 이유 : intellij spring boot run/debug Enable jmx agent 켜져있음
-  @Bean
-  public MBeanExporter mbeanExporter() {
-    MBeanExporter mBeanExporter = new MBeanExporter();
-    mBeanExporter.setAutodetectMode(MBeanExporter.AUTODETECT_MBEAN);
-    mBeanExporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
-    mBeanExporter.setNamingStrategy(new MetadataNamingStrategy(new AnnotationJmxAttributeSource()));
-    return mBeanExporter;
-  }
+  // spring-integration-jmx 추가후에 주석처리 함
+//  @Bean
+//  public MBeanExporter mbeanExporter() {
+//    MBeanExporter mBeanExporter = new MBeanExporter();
+//    mBeanExporter.setAutodetectMode(MBeanExporter.AUTODETECT_MBEAN);
+//    mBeanExporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
+//    mBeanExporter.setNamingStrategy(new MetadataNamingStrategy(new AnnotationJmxAttributeSource()));
+//    return mBeanExporter;
+//  }
 
   private MqttPahoMessageDrivenChannelAdapter mqttChannelAdapter() {
     //BROKER_URL 없을 경우 MqttConnectOptions serverURIs 사용
