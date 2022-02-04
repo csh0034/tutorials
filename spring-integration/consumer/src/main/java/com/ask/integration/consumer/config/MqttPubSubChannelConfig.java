@@ -208,20 +208,15 @@ public class MqttPubSubChannelConfig {
     @Override
     public void start() {
       if (!running.getAndSet(true)) {
-        initialize();
+        doStart();
       }
     }
 
-    private void initialize() {
-      clearRegisteredHandlers();
+    private void doStart() {
       createDefaultHandlers();
+
       log.info("finish initialize, current handler count : {}", mqttHandlerMap.size());
       mqttHandlerMap.forEach((k, v) -> log.info("outboundHandlerId : {}", k));
-    }
-
-    private void clearRegisteredHandlers() {
-      stop();
-      mqttHandlerMap.clear();
     }
 
     private void createDefaultHandlers() {
