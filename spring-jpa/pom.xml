@@ -23,6 +23,7 @@
     <module>spring-jpa-redisson</module>
     <module>hibernate-multitenancy</module>
     <module>spring-jpa-querydsl</module>
+    <module>spring-jpa-core</module>
   </modules>
 
 </project>

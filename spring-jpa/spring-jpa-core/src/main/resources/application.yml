@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        "[session.events.log.LOG_QUERIES_SLOWER_THAN_MS]": 1
+    open-in-view: false
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.SQL_SLOW]": debug
+    "[org.hibernate.type.descriptor.sql]": trace
