@@ -228,8 +228,8 @@ public class MqttPubSubChannelConfig {
       String clientId = MqttClient.generateClientId();
 
       CustomMqttPahoMessageHandler messageHandler = new CustomMqttPahoMessageHandler(url, clientId, mqttClientFactory);
-      messageHandler.setDefaultTopic("defaultTopic");
-      messageHandler.setDefaultQos(0);
+      messageHandler.setDefaultQos(1);
+      messageHandler.setAsync(true);
       messageHandler.setCompletionTimeout(5000);
       messageHandler.afterPropertiesSet();
       return messageHandler;
