@@ -2,17 +2,17 @@ package com.ask.integration.consumer.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.annotation.PostConstruct;
+import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,34 +50,31 @@ public class MqttPubSubChannelConfig {
   private final MqttPahoClientFactory mqttClientFactory;
   private final ObjectMapper objectMapper;
 
-  @PostConstruct
-  public void init() {
-    for (int i = 0; i < 5; i++) {
-      int finalI = i;
-
-      CompletableFuture.runAsync(() -> {
+  @Bean
+  public ApplicationRunner mqttSendRunner(MessageChannel pubSubOutboundChannel) {
+    return args -> IntStream.rangeClosed(0, 4).parallel()
+        .forEach(i -> {
           try {
             TimeUnit.SECONDS.sleep(5);
 
             String handlerId = MQTT_HANDLER_1;
-            if (finalI % 2 == 0) {
+            if (i % 2 == 0) {
               handlerId = MQTT_HANDLER_2;
             }
 
             Message<String> message = MessageBuilder
-                .withPayload(objectMapper.writeValueAsString(new SampleMessage(finalI, "ask")))
+                .withPayload(objectMapper.writeValueAsString(new SampleMessage(i, "ask")))
                 .setHeader(MqttHeaders.TOPIC, MQTT_PUB_SUB_TOPIC)
                 .setHeader(MqttHeaders.QOS, 1)
                 .setHeader(MQTT_HANDLER_ID, handlerId)
                 .build();
 
-            mqttPubSubOutboundChannel().send(message);
+            pubSubOutboundChannel.send(message);
 
           } catch (Exception e) {
             e.printStackTrace();
           }
-      });
-    }
+        });
   }
 
   @Bean
