@@ -23,6 +23,7 @@
     <module>spring-cloud-stream-producer</module>
     <module>spring-cloud-function</module>
     <module>spring-cloud-gateway</module>
+    <module>spring-cloud-sleuth</module>
   </modules>
 
 </project>

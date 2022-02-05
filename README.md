@@ -12,6 +12,7 @@
   - [spring-cloud-config-server](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-config-server)
   - [spring-cloud-function](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-function)
   - [spring-cloud-gateway](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-gateway)
+  - [spring-cloud-sleuth](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-sleuth)
   - [spring-cloud-stream-consumer](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-stream-consumer)
   - [spring-cloud-stream-producer](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-stream-producer)
 - [spring-core](https://github.com/csh0034/tutorials/tree/master/spring-core)
