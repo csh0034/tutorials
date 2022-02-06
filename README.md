@@ -10,6 +10,8 @@
 - [spring-cloud](https://github.com/csh0034/tutorials/tree/master/spring-cloud)
   - [spring-cloud-config-client](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-config-client)
   - [spring-cloud-config-server](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-config-server)
+  - [spring-cloud-eureka-client](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-eureka-client)
+  - [spring-cloud-eureka-server](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-eureka-server)
   - [spring-cloud-function](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-function)
   - [spring-cloud-gateway](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-gateway)
   - [spring-cloud-sleuth](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-sleuth)

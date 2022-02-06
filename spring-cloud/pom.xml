@@ -24,6 +24,8 @@
     <module>spring-cloud-function</module>
     <module>spring-cloud-gateway</module>
     <module>spring-cloud-sleuth</module>
+    <module>spring-cloud-eureka-server</module>
+    <module>spring-cloud-eureka-client</module>
   </modules>
 
 </project>
