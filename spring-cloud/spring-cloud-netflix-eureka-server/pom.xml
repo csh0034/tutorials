@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.ask</groupId>
-  <artifactId>eureka-client</artifactId>
+  <artifactId>eureka-server</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>spring-cloud-eureka-client</name>
-  <description>spring-cloud-eureka-client</description>
+  <name>spring-cloud-netflix-eureka-server</name>
+  <description>spring-cloud-netflix-eureka-server</description>
   <properties>
     <java.version>1.8</java.version>
     <spring-cloud.version>2021.0.0</spring-cloud.version>
@@ -20,11 +20,7 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

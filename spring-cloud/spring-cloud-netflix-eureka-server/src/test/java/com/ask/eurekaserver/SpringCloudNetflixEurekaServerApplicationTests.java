@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Disabled
-class SpringCloudEurekaServerApplicationTests {
+class SpringCloudNetflixEurekaServerApplicationTests {
 
   @Test
   void contextLoads() {
