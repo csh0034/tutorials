@@ -17,4 +17,5 @@ public class SampleController {
   public Flux<String> sample2() {
     return Flux.just("Hello", "World");
   }
+
 }

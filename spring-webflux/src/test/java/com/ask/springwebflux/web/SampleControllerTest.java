@@ -18,7 +18,7 @@ class SampleControllerTest {
   @Test
   void sample() {
     String result = webTestClient.get()
-        .uri("/")
+        .uri("/mono")
         .exchange()
         .expectStatus().isOk()
         .expectBody(String.class).returnResult()

@@ -9,9 +9,9 @@ class FluxTest {
 
   @Test
   void doOnNext() {
-    Flux<Integer> mono = Flux.just(10, 20)
+    Flux<Integer> flux = Flux.just(10, 20)
         .doOnNext(i -> log.info("doOnNext : {}", i));
 
-    mono.subscribe(i -> log.info("subscribe : {}", i));
+    flux.subscribe(i -> log.info("subscribe : {}", i));
   }
 }
