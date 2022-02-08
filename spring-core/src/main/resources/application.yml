@@ -3,6 +3,9 @@ spring:
     basename: message/message
     use-code-as-default-message: true
 
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss # LocalDateTime 에는 적용 안됨
+
 conditional:
   enabled: true
   name: ask
