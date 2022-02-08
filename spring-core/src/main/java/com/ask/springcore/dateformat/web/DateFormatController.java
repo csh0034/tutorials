@@ -23,12 +23,22 @@ public class DateFormatController {
   }
 
   @PostMapping("/3")
-  public TestVO1 method3(@RequestBody TestVO1 testVO1) {
+  public TestVO1 method3(TestVO1 testVO1) {
     return testVO1;
   }
 
   @PostMapping("/4")
-  public TestVO2 method4(@RequestBody TestVO2 testVO2) {
+  public TestVO2 method4(TestVO2 testVO2) {
+    return testVO2;
+  }
+
+  @PostMapping("/5")
+  public TestVO1 method5(@RequestBody TestVO1 testVO1) {
+    return testVO1;
+  }
+
+  @PostMapping("/6")
+  public TestVO2 method6(@RequestBody TestVO2 testVO2) {
     return testVO2;
   }
 

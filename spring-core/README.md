@@ -140,3 +140,25 @@ spring:
     locale-resolver: accept_header or fixed # accept_header default
     locale: ko # Accept-Language 헤더가 없는 경우 대체할 고정 기본 로케일을 구성
 ```
+
+## @DateTimeFormat, @JsonFormat
+@DateTimeFormat
+- Spring annotation
+- @RequestParam, @ModelAttribute 에서 사용 가능
+- GET, POST 요청시 사용 가능
+  - POST 일 경우 @JsonFormat 이 없어야함
+
+@JsonFormat
+- jackson annotation
+- POST RequestBody, ResponseBody 에서의 date format 에 적용됨
+
+하단 방식은 Java8 날짜 유형(LocalDate, LocalDateTime..) 엔 적용이 안된다.  
+Date, Calendar 에 적용됨
+```yaml
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+```
+
+### 참조
+- [spring-boot-formatting-json-dates](https://www.baeldung.com/spring-boot-formatting-json-dates) 

@@ -32,7 +32,7 @@ class DateFormatControllerTest {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @DisplayName("GET method DateTimeFormat Binding")
+  @DisplayName("GET DateTimeFormat Binding")
   @Test
   void method1() throws Exception {
     // given
@@ -55,12 +55,57 @@ class DateFormatControllerTest {
     );
   }
 
-  @DisplayName("GET method JsonFormat Binding, Exception")
+  @DisplayName("GET JsonFormat Binding, Exception")
   @Test
   void method2() throws Exception {
     // given
     String name = "ASk2";
     String requestDateTime = "2022-02-08T02:00:00";
+
+    MultiValueMap<String, String> request = new LinkedMultiValueMap<>();
+    request.add("name", name);
+    request.add("requestDateTime", requestDateTime);
+
+    // when
+    ResultActions resultActions = mockMvc.perform(get("/date-format/2")
+        .queryParams(request));
+
+    // then
+    resultActions.andExpectAll(
+        status().isBadRequest(),
+        result -> assertThat(result.getResolvedException()).isInstanceOf(BindException.class)
+    );
+  }
+
+  @DisplayName("POST @ModelAttribute DateTimeFormat Binding")
+  @Test
+  void method3() throws Exception {
+    // given
+    String name = "ASk3";
+    String requestDateTime = "2022-02-08T03:00:00";
+
+    MultiValueMap<String, String> request = new LinkedMultiValueMap<>();
+    request.add("name", name);
+    request.add("requestDateTime", requestDateTime);
+
+    // when
+    ResultActions resultActions = mockMvc.perform(get("/date-format/1")
+        .params(request));
+
+    // then
+    resultActions.andExpectAll(
+        status().isOk(),
+        jsonPath("$.name").value(name),
+        jsonPath("$.requestDateTime").value(requestDateTime)
+    );
+  }
+
+  @DisplayName("POST @ModelAttribute JsonFormat Binding, Exception")
+  @Test
+  void method4() throws Exception {
+    // given
+    String name = "ASk4";
+    String requestDateTime = "2022-02-08T04:00:00";
 
     MultiValueMap<String, String> request = new LinkedMultiValueMap<>();
     request.add("name", name);
@@ -77,19 +122,19 @@ class DateFormatControllerTest {
     );
   }
 
-  @DisplayName("POST method DateTimeFormat Binding")
+  @DisplayName("POST @RequestBody DateTimeFormat Binding")
   @Test
-  void method3() throws Exception {
+  void method5() throws Exception {
     // given
-    String name = "ASk3";
-    String requestDateTime = "2022-02-08T03:00:00";
+    String name = "ASk5";
+    String requestDateTime = "2022-02-08T05:00:00";
 
     Map<String, String> request = new HashMap<>();
     request.put("name", name);
     request.put("requestDateTime", requestDateTime);
 
     // when
-    ResultActions resultActions = mockMvc.perform(post("/date-format/3")
+    ResultActions resultActions = mockMvc.perform(post("/date-format/5")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)));
 
@@ -101,19 +146,19 @@ class DateFormatControllerTest {
     );
   }
 
-  @DisplayName("POST method JsonFormat Binding")
+  @DisplayName("POST @RequestBody method JsonFormat Binding")
   @Test
-  void method4() throws Exception {
+  void method6() throws Exception {
     // given
-    String name = "ASk4";
-    String requestDateTime = "2022-02-08T04:00:00";
+    String name = "ASk6";
+    String requestDateTime = "2022-02-08T06:00:00";
 
     Map<String, String> request = new HashMap<>();
     request.put("name", name);
     request.put("requestDateTime", requestDateTime);
 
     // when
-    ResultActions resultActions = mockMvc.perform(post("/date-format/4")
+    ResultActions resultActions = mockMvc.perform(post("/date-format/6")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)));
 
