@@ -22,6 +22,8 @@ spring:
       routes:
         - id: user_route
           uri: http://localhost:9999
+          metadata:
+            sampleKey: sampleValue
           predicates:
             - Path=/user/**
           filters:
