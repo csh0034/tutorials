@@ -43,7 +43,6 @@ public class MqttPubSubChannelConfig {
   public static final String MQTT_SERVER_1 = "tcp://localhost:1883";
   public static final String MQTT_SERVER_2 = "tcp://localhost:1884";
 
-  public static final String MQTT_HANDLER_ID = MqttHeaders.PREFIX + "handlerId";
   public static final String MQTT_HANDLER_1 = "handler-1";
   public static final String MQTT_HANDLER_2 = "handler-2";
 
@@ -66,7 +65,7 @@ public class MqttPubSubChannelConfig {
                 .withPayload(objectMapper.writeValueAsString(new SampleMessage(i, "ask")))
                 .setHeader(MqttHeaders.TOPIC, MQTT_PUB_SUB_TOPIC)
                 .setHeader(MqttHeaders.QOS, 1)
-                .setHeader(MQTT_HANDLER_ID, handlerId)
+                .setHeader(CustomMqttMultiMessageHandler.MQTT_HANDLER_ID, handlerId)
                 .build();
 
             pubSubOutboundChannel.send(message);
@@ -156,7 +155,7 @@ public class MqttPubSubChannelConfig {
   public interface MqttPubSubOutboundGateway {
 
     @Gateway
-    void publish(@Header(MQTT_HANDLER_ID) String mqttHandlerId, @Header(MqttHeaders.TOPIC) String topic, String data);
+    void publish(@Header(CustomMqttMultiMessageHandler.MQTT_HANDLER_ID) String mqttHandlerId, @Header(MqttHeaders.TOPIC) String topic, String data);
   }
 
   @Bean
@@ -179,10 +178,12 @@ public class MqttPubSubChannelConfig {
   @Slf4j
   public static class CustomMqttMultiMessageHandler extends AbstractMessageHandler implements Lifecycle {
 
+    public static final String MQTT_HANDLER_ID = MqttHeaders.PREFIX + "handlerId";
+
     private final AtomicBoolean running = new AtomicBoolean();
+    private final Map<String, MessageHandler> mqttHandlerMap = new ConcurrentHashMap<>();
 
     private final MqttPahoClientFactory mqttClientFactory;
-    private final Map<String, MessageHandler> mqttHandlerMap = new ConcurrentHashMap<>();
 
     @Override
     protected void handleMessageInternal(Message<?> message) {
@@ -197,9 +198,6 @@ public class MqttPubSubChannelConfig {
       }
 
       messageHandler.handleMessageInternal(message);
-
-      // 모든 핸들러에 메세지 전송
-      //mqttHandlerMap.forEach((k, v) -> v.handleMessage(message));
     }
 
     @Override
@@ -211,9 +209,7 @@ public class MqttPubSubChannelConfig {
 
     private void doStart() {
       createDefaultHandlers();
-
-      log.info("finish initialize, current handler count : {}", mqttHandlerMap.size());
-      mqttHandlerMap.forEach((k, v) -> log.info("outboundHandlerId : {}", k));
+      printCreationLog();
     }
 
     private void createDefaultHandlers() {
@@ -232,9 +228,16 @@ public class MqttPubSubChannelConfig {
       return messageHandler;
     }
 
+    private void printCreationLog() {
+      log.info("finish doStart, current handler count : {}", mqttHandlerMap.size());
+      mqttHandlerMap.forEach((k, v) -> log.info("outboundHandlerId : {}", k));
+    }
+
     @Override
     public void stop() {
-      mqttHandlerMap.forEach((k, v) -> ((CustomMqttPahoMessageHandler)v).doStop());
+      if (running.getAndSet(false)) {
+        mqttHandlerMap.forEach((k, v) -> ((CustomMqttPahoMessageHandler)v).doStop());
+      }
     }
 
     @Override
@@ -245,8 +248,8 @@ public class MqttPubSubChannelConfig {
 
   public static class CustomMqttPahoMessageHandler extends MqttPahoMessageHandler {
 
-    public CustomMqttPahoMessageHandler(String pnsUrl, String clientId, MqttPahoClientFactory clientFactory) {
-      super(pnsUrl, clientId, clientFactory);
+    public CustomMqttPahoMessageHandler(String brokerUrl, String clientId, MqttPahoClientFactory clientFactory) {
+      super(brokerUrl, clientId, clientFactory);
     }
 
     @Override
