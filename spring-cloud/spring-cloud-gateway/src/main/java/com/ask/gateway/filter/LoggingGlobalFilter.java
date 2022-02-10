@@ -1,7 +1,5 @@
 package com.ask.gateway.filter;
 
-import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
-
 import java.net.URI;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +24,7 @@ public class LoggingGlobalFilter implements GlobalFilter {
       log.info("metadata : {}", metadata);
     }
 
-    URI requestUrl = exchange.getRequiredAttribute(GATEWAY_REQUEST_URL_ATTR);
+    URI requestUrl = exchange.getRequiredAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
     log.info("called request url : {}", requestUrl);
 
     return chain.filter(exchange);

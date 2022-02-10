@@ -1,0 +1,3 @@
+### jwt 인증 테스트
+GET http://localhost:8080/jwt
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBU2siLCJyb2xlIjoiUk9MRV9VU0VSIiwiZXhwIjoxOTU5ODU3NDI3LCJpYXQiOjE2NDQ0OTc0Mjd9.Gc7FqMIAkCpQPGEf6DelEfGbqi7pWGbtZYO4Qif2tdQOaIf7bmqptDPzr2tNG8FnvXxnAXPnEZnYSWimNpfbUg

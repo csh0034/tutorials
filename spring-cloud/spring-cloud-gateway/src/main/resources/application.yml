@@ -40,3 +40,7 @@ spring:
           uri: http://localhost:9999
           predicates:
             - Path=/**
+
+jwt:
+  secret: secret
+  expiration-second: 28800

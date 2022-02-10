@@ -10,4 +10,5 @@ public class SpringCloudGatewayApplication {
     System.setProperty("reactor.netty.http.server.accessLogEnabled", "true");
     SpringApplication.run(SpringCloudGatewayApplication.class, args);
   }
+
 }
