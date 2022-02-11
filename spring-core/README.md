@@ -160,5 +160,36 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 ```
 
+### 추가 사항
+ObjectMapper 생성이 AutoConfiguration 으로 될 경우 `JacksonAutoConfiguration` 에서 처리한다.  
+
+Jackson2ObjectMapperBuilder.build() 를 호출 하여 생성하는데 해당 코드를 보면  
+
+```java
+// Jackson2ObjectMapperBuilder.configure()
+if (this.findWellKnownModules) {
+  registerWellKnownModulesIfAvailable(modulesToRegister);
+}
+```
+
+클래스패스에 하단 클래스가 존재할경우 ObjectMapper Module 에 등록한다.
+
+- com.fasterxml.jackson.datatype.jdk8.Jdk8Module
+- com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+- org.joda.time.YearMonth -> com.fasterxml.jackson.datatype.joda.JodaModule
+- com.fasterxml.jackson.module.kotlin.KotlinModule
+
+그중 `JavaTimeModule` 이 Java8 날짜 유형에 대한 Serializer 및 Deserializer 를 등록한다 따라서  
+ObjectMapper AutoConfiguration 을 사용할 경우 Java8 날짜 유형은 Json 처리시에 @JsonFormat 없이 처리 가능하다.
+
+> 기본적으로 ISO 8601 포맷을 따르는데 변경하려면 @JsonFormat 을 사용 해야 할듯하다. 
+
+### Default Property 변경
+`JacksonAutoConfiguration` 최상단을 보면 하단 프로퍼티 디폴트를 변경해 두었다.
+```java
+featureDefaults.put(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+featureDefaults.put(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
+```
+
 ### 참조
 - [spring-boot-formatting-json-dates](https://www.baeldung.com/spring-boot-formatting-json-dates) 
