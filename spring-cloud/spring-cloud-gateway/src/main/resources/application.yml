@@ -36,6 +36,13 @@ spring:
           filters:
             - RewritePath=/board/?(?<segment>.*), /$\{segment}
 
+        - id: auth_route
+          uri: http://localhost:9999
+          predicates:
+            - Path=/auth/**
+          filters:
+            - JwtAuthentication=ROLE_ADMIN
+
         - id: default_route
           uri: http://localhost:9999
           predicates:

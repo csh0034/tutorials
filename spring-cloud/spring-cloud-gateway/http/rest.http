@@ -1,3 +1,11 @@
-### jwt 인증 테스트
+### Global Filter jwt 인증 테스트, 성공
 GET http://localhost:8080/jwt
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBU2siLCJyb2xlIjoiUk9MRV9VU0VSIiwiZXhwIjoxOTU5ODU3NDI3LCJpYXQiOjE2NDQ0OTc0Mjd9.Gc7FqMIAkCpQPGEf6DelEfGbqi7pWGbtZYO4Qif2tdQOaIf7bmqptDPzr2tNG8FnvXxnAXPnEZnYSWimNpfbUg
+
+### Gateway Filter jwt 인증 테스트, 성공
+GET http://localhost:8080/auth
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBU2siLCJyb2xlIjoiUk9MRV9BRE1JTiIsImV4cCI6MTk1OTkzODg0MiwiaWF0IjoxNjQ0NTc4ODQyfQ.pn_PIOGTmTfY9a9Nham6vAXq3y--BRRG2bIvNku15WmlQtLoea6ATTp-ktaKJOggmiEP6Z6rq-HBg3wuHBHo9Q
+
+### Gateway Filter jwt 인증 테스트, 권한 없음
+GET http://localhost:8080/auth
 Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBU2siLCJyb2xlIjoiUk9MRV9VU0VSIiwiZXhwIjoxOTU5ODU3NDI3LCJpYXQiOjE2NDQ0OTc0Mjd9.Gc7FqMIAkCpQPGEf6DelEfGbqi7pWGbtZYO4Qif2tdQOaIf7bmqptDPzr2tNG8FnvXxnAXPnEZnYSWimNpfbUg
