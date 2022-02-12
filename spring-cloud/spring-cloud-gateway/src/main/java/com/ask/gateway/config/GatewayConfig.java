@@ -37,9 +37,8 @@ public class GatewayConfig {
                         return Mono.just("emptybody");
                       }
                       return Mono.just(s.toUpperCase());
-                    })
-
-            ).uri(DOWNSTREAM_URI_2))
+                    }))
+            .uri(DOWNSTREAM_URI_2))
 
         .route("debug_route", r -> r
             .order(-1)
