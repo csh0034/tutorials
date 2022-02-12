@@ -89,6 +89,13 @@ pom.xml
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-gateway-webflux</artifactId>
   </dependency>
+
+  <!-- JWT 인증처리 에서 사용  -->
+  <dependency>
+    <groupId>com.auth0</groupId>
+    <artifactId>java-jwt</artifactId>
+    <version>3.18.3</version>
+  </dependency>
 </dependencies>
 ```
 
