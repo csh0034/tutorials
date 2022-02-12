@@ -16,7 +16,8 @@ public class GatewayConfig {
   @Bean
   public RouteLocator customRouteLocator(RouteLocatorBuilder builder, DebugGatewayFilter debugGatewayFilter) {
     return builder.routes()
-        .route("order_route", r -> r.path("/order/**")
+        .route("order_route", r -> r
+            .path("/order/**")
             .filters(f -> f
                 .rewritePath("/order/(.*)", "/$1")
 //                .rewritePath("/order/?(?<segment>.*)", "/${segment}")
@@ -25,8 +26,10 @@ public class GatewayConfig {
             .metadata("orderKey", "orderValue")
             .uri(DOWNSTREAM_URI_1))
 
-        .route("host_rewrite_route", r -> r.host("*.test.com")
-            .filters(f -> f.prefixPath("/v1")
+        .route("host_rewrite_route", r -> r
+            .host("*.test.com")
+            .filters(f -> f
+                .prefixPath("/v1")
                 .addResponseHeader("X-TestHeader", "rewrite_empty_response")
                 .modifyResponseBody(String.class, String.class,
                     (exchange, s) -> {
@@ -36,10 +39,10 @@ public class GatewayConfig {
                       return Mono.just(s.toUpperCase());
                     })
 
-            ).uri(DOWNSTREAM_URI_2)
-        )
+            ).uri(DOWNSTREAM_URI_2))
 
-        .route("debug_route", r -> r.order(-1)
+        .route("debug_route", r -> r
+            .order(-1)
             .query("debug", "1")
             .filters(f -> f
                 .filter(debugGatewayFilter))
