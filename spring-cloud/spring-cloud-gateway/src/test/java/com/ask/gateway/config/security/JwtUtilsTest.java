@@ -35,4 +35,16 @@ class JwtUtilsTest {
     assertThat(decodedUser).isEqualTo(tokenUser);
   }
 
+  @Test
+  void isValid() {
+    // given
+    String invalidToke = "invalidToken";
+
+    // when
+    boolean valid = jwtUtils.isValid(invalidToke);
+
+    // then
+    assertThat(valid).isFalse();
+  }
+
 }
