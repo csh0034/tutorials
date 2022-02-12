@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtUtils implements InitializingBean {
 
+  private static final String ROLE_CLAIM_KEY = "role";
+
   private final JwtProperties jwtProperties;
 
   private Algorithm algorithm;
@@ -39,7 +41,7 @@ public class JwtUtils implements InitializingBean {
     DecodedJWT jwt = JWT.decode(token);
 
     String id = jwt.getSubject();
-    String role = jwt.getClaim("role").asString();
+    String role = jwt.getClaim(ROLE_CLAIM_KEY).asString();
 
     return new TokenUser(id, role);
   }
@@ -50,7 +52,7 @@ public class JwtUtils implements InitializingBean {
 
     return JWT.create()
         .withSubject(user.getId())
-        .withClaim("role", user.getRole())
+        .withClaim(ROLE_CLAIM_KEY, user.getRole())
         .withExpiresAt(expiresAt)
         .withIssuedAt(now)
         .sign(algorithm);
