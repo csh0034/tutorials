@@ -443,7 +443,7 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: admin_route
+        - id: partner_route
           uri: http://localhost:9999
           predicates:
             - Host=partner.example.com
