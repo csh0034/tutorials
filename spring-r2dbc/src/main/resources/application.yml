@@ -1,1 +1,9 @@
+spring:
+  r2dbc:
+    url: r2dbc:mariadb://127.0.0.1:3306/db_r2dbc
+    username: root
+    password: 111111
 
+logging:
+  level:
+    "[org.springframework.r2dbc]": debug
