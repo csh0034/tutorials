@@ -35,6 +35,7 @@
     <module>spring-swagger</module>
     <module>spring-springdoc</module>
     <module>spring-webflux</module>
+    <module>spring-r2dbc</module>
   </modules>
 
   <properties>
