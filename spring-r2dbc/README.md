@@ -45,7 +45,7 @@ Reactive Relational Database Connectivity 의 줄임말로서 관계형 데이�
 
 ### 새로운 모델 저장시 이슈
 
-R2DBC Repository 는 모델 저장시에 id 필드의 값이 있을 경우 Update 로 동작하여 해당 모델이 DB에 없을 경우 익셉션이 발생한다.
+R2DBC Repository 는 모델 저장시에 id 필드의 값이 있을 경우 Update 로 동작하여 해당 모델이 DB에 없을 경우 예외가 발생한다.
 
 ![01.png](images/01.png)
 
@@ -57,7 +57,7 @@ repository.save 호출시 새로운 객체일 경우에만 insert 를 호출 한
 
 ![02.png](images/02.png)
 
-따라서 DB 에 Auto Increment 또는 Sequence 등을 세팅하지 않고 직접 할당 해야 할 경우에는 Persistable 구현후에    
+따라서 DB 에 Auto Increment 등을 세팅하지 않고 직접 할당 해야 할 경우에는 Persistable 구현후에    
 id 필드가 null 일때 할당과 동시에 true 를 반환하면 된다.
 
 ```java
@@ -106,10 +106,25 @@ public class User implements Persistable<String> {
 `ReactiveIsNewAwareAuditingHandler` 에서 Auditing 수행할때도 isNew 를 호출한다.  
 따라서 미리 isNew 가 호출되어 id 가 채워져있으면 무조건 Modified 로만 동작됨
 
-
-
 ![03.png](images/03.png)
 
+#### 해결
+
+Auditing 기능에 의해 createdDt 가 들어가기 자동으로 때문에 createdDt 가 null 이면 새로운 객체로 처리하면됨
+
+```java
+@Override
+@JsonIgnore
+public boolean isNew() {
+  if (createdDt == null) {
+    if (id == null) {
+      id = UUID.randomUUID().toString();
+    }
+    return true;
+  }
+  return false;
+}
+```
 
 ## 참조
 - [Spring-Data-r2dbc](https://docs.spring.io/spring-data/r2dbc/docs/current/reference/html)

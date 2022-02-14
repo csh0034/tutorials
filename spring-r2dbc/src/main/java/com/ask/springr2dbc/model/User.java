@@ -3,7 +3,10 @@ package com.ask.springr2dbc.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -12,10 +15,14 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("mt_user")
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Persistable<String> {
 
   @Id
+  @EqualsAndHashCode.Include
   private String id;
 
   private String name;
@@ -45,8 +52,10 @@ public class User implements Persistable<String> {
   @Override
   @JsonIgnore
   public boolean isNew() {
-    if (id == null) {
-      id = UUID.randomUUID().toString();
+    if (createdDt == null) {
+      if (id == null) {
+        id = UUID.randomUUID().toString();
+      }
       return true;
     }
     return false;
