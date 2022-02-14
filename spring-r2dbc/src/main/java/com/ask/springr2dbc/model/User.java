@@ -2,14 +2,12 @@ package com.ask.springr2dbc.model;
 
 import java.util.UUID;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("mt_user")
 @Data
-@NoArgsConstructor
 public class User implements Persistable<String> {
 
   @Id
@@ -22,6 +20,11 @@ public class User implements Persistable<String> {
     user.name = name;
     user.age = age;
     return user;
+  }
+
+  public void update(User other) {
+    this.name = other.name;
+    this.age = other.age;
   }
 
   @Override
