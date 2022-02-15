@@ -40,6 +40,18 @@ logging:
 Reactive Relational Database Connectivity 의 줄임말로서 관계형 데이터베이스 접근을 위한 리액티브 API 이다.  
 즉, 적은수의 스레드로 동시성을 처리하며 적은 리소스로 확장가능한 not-blocking 스택이다.
 
+### [R2DBC Drivers](https://docs.spring.io/spring-data/r2dbc/docs/current/reference/html/#reference)
+
+Spring Data R2DBC 는 ConnectionFactory 를 통하여 Database Dialect 를 선택한다.  
+사용하는 드라이버가 아직 등록된 상태가 아니라면 자체 `R2dbcDialect` 를 설정해야한다.
+
+- H2 (io.r2dbc:r2dbc-h2)
+- MariaDB (org.mariadb:r2dbc-mariadb)
+- Microsoft SQL Server (io.r2dbc:r2dbc-mssql)
+- MySQL (dev.miku:r2dbc-mysql)
+- jasync-sql MySQL (com.github.jasync-sql:jasync-r2dbc-mysql)
+- Postgres (io.r2dbc:r2dbc-postgresql)
+- Oracle (com.oracle.database.r2dbc:oracle-r2dbc)
 
 ## Troubleshooting
 
