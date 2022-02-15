@@ -111,23 +111,23 @@ spring:
   cloud:
     gateway:
       routes:
-      - id: user_route
-        uri: http://localhost:9999
-        metadata:
-          sampleKey: sampleValue    # 필터에서 사용 가능한 별도 파라미터
-        predicates:
-          - After=2022-01-01T08:00:00.000+09:00[Asia/Seoul]
-          - Before=2022-12-31T22:00:00.000+09:00[Asia/Seoul]
-          - Between=2022-01-01T08:00:00.000+09:00[Asia/Seoul], 2022-12-31T22:00:00.000+09:00[Asia/Seoul]
-          - Cookie=chocolate, ch.p
-          - Header=X-Request-Id, \d+
-          - Host=**.example.com,**.example.org  # Host Header 기반
-          - Method=GET,POST
-          - Path=/user/{segment}                # Path 기반
-          - Query=green
-          - Query=debug, true
-          - RemoteAddr=192.168.1.1/24
-          - #...
+        - id: user_route
+          uri: http://localhost:9999
+          metadata:
+            sampleKey: sampleValue    # 필터에서 사용 가능한 별도 파라미터
+          predicates:
+            - After=2022-01-01T08:00:00.000+09:00[Asia/Seoul]
+            - Before=2022-12-31T22:00:00.000+09:00[Asia/Seoul]
+            - Between=2022-01-01T08:00:00.000+09:00[Asia/Seoul], 2022-12-31T22:00:00.000+09:00[Asia/Seoul]
+            - Cookie=chocolate, ch.p
+            - Header=X-Request-Id, \d+
+            - Host=**.example.com,**.example.org  # Host Header 기반
+            - Method=GET,POST
+            - Path=/user/{segment}                # Path 기반
+            - Query=green
+            - Query=debug, true
+            - RemoteAddr=192.168.1.1/24
+            - #...
 ```
 
 ### GatewayFilter Factories
@@ -137,19 +137,19 @@ spring:
   cloud:
     gateway:
       routes:
-      - id: user_route
-        uri: lb://user
-        predicates:
-          - Path=/user/**
-        filters:
-          - AddRequestHeader=X-Request-red, blue
-          - AddRequestParameter=red, blue
-          - AddResponseHeader=X-Response-Red, Blue
-          - PrefixPath=/v1
-          - RedirectTo=302, https://acme.org
-          - RewritePath=/user/?(?<segment>.*), /$\{segment}
-          - SetPath=/{segment}
-          - #...
+        - id: user_route
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+          filters:
+            - AddRequestHeader=X-Request-red, blue
+            - AddRequestParameter=red, blue
+            - AddResponseHeader=X-Response-Red, Blue
+            - PrefixPath=/v1
+            - RedirectTo=302, https://acme.org
+            - RewritePath=/user/?(?<segment>.*), /$\{segment}
+            - SetPath=/{segment}
+            - #...
 ```
 
 ## Java Config 을 통한 Gateway 설정
