@@ -126,6 +126,64 @@ public boolean isNew() {
 }
 ```
 
+### 테스트에서 Transaction rollback 안되는 이슈
+
+- [GitHub Issue](https://github.com/spring-projects/spring-framework/issues/24226)
+
+@Transactional 을 통한 리액터 테스트시에 전파 방법이 부족하다.
+
+동기식일 경우 트랜잭션은 ThreadLocal 에 저장되지만 비동기식일 경우엔 Context 에 저장된다.  
+트랜잭션 상태를 적용하기위해선 Publisher 를 리턴해야하는데 테스트 메서드에선 void 를 리턴하므로 이를 처리할 수 없다.
+
+또한, Assertions 를 사용 할 경우 StepVerifier 를 사용하는데 이는 블록킹을 발생시킨다.  
+Assertions 는 Publisher 를 Subscribe 하여 처리하므로 외부에서 블록킹 방식으로 트랜잭션을 처리가 안된다. 
+
+따라서 트랜잭션 처리가 필요 할 경우 테스트 마다 StepVerifier 에 트랜잭션 롤백 기능을 추가해야 한다.
+
+```java
+@Component
+public class Transaction {
+
+  private static TransactionalOperator rxtx;
+
+  @Autowired
+  public Transaction(final TransactionalOperator rxtx) {
+    Transaction.rxtx = rxtx;
+  }
+
+  public static <T> Mono<T> withRollback(final Mono<T> publisher) {
+    return rxtx.execute(tx -> {
+          tx.setRollbackOnly();
+          return publisher;
+        })
+        .next();
+  }
+
+  public static <T> Flux<T> withRollback(final Flux<T> publisher) {
+    return rxtx.execute(tx -> {
+      tx.setRollbackOnly();
+      return publisher;
+    });
+  }
+
+}
+```
+
+```java
+userRepository.save(User.create(name, age))
+    .as(Transaction::withRollback)
+    .as(StepVerifier::create)
+    .assertNext(user -> {
+      log.info("user : {}", user);
+      assertAll(
+          () -> assertThat(user.getName()).isEqualTo(name),
+          () -> assertThat(user.getAge()).isEqualTo(age)
+      );
+    })
+    .verifyComplete();
+```
+
 ## 참조
 - [Spring-Data-r2dbc](https://docs.spring.io/spring-data/r2dbc/docs/current/reference/html)
 - [Unblock Your Applications with R2DBC, Spring Data and MariaDB](https://mariadb.com/ko/resources/blog/unblock-your-applications-with-r2dbc-spring-data-and-mariadb/)
+- [reactive-transactions-with-spring](https://spring.io/blog/2019/05/16/reactive-transactions-with-spring)
