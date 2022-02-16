@@ -41,6 +41,13 @@ Mono.fromCallable(() -> {
 `Schedulers.boundedElastic()` 은 다른 논블로킹 처리에 영향을 주지 않으면서 블로킹 리소스를 기다릴 전용 스레드를 생성해주며,   
 생성할 수 있는 스레드 수에 제한을 두기 때문에 요청이 몰렸을 때 블로킹 태스크를 큐에 넣어 연기시킬 수 있다.
 
+## Troubleshooting
+
+### Security 적용하면 Request 실행하는 Thread 가 변경됨.
+
+Security Filter Chain 을 적용하면 초기엔 reactor-http-nio-숫자 쓰레드로 실행되지만  
+`ServerRequestCacheWebFilter` 를 지나가면 다음 필터(`LogoutWebFilter`) 에선 parallel-숫자 쓰레드로 실행된다. 
+
 
 ## 참조
 
