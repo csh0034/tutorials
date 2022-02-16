@@ -1,4 +1,4 @@
-package com.ask.springwebflux.web.config;
+package com.ask.springwebflux.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

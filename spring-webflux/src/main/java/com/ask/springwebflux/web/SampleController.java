@@ -18,4 +18,14 @@ public class SampleController {
     return Flux.just("Hello", "World");
   }
 
+  @GetMapping("/exception1")
+  public Mono<String> exception1() {
+    throw new RuntimeException("exception1");
+  }
+
+  @GetMapping("/exception2")
+  public Mono<String> exception2() {
+    return Mono.error(new RuntimeException("exception2"));
+  }
+
 }

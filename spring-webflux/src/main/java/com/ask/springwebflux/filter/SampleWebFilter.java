@@ -1,4 +1,4 @@
-package com.ask.springwebflux.web.filter;
+package com.ask.springwebflux.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
