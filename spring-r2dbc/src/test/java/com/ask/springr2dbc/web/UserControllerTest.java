@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
@@ -45,7 +46,13 @@ class UserControllerTest {
         .consumeWith(System.out::println);
   }
 
+  /**
+   * Security 인증 처리 방법 <br>
+   * - @WithMockUser(username = "ASk@test.com") <br>
+   * - webTestClient.mutateWith(mockUser("ASk@test.com")).post()
+   */
   @Test
+  @WithMockUser(username = "ASk@test.com")
   void post() {
     // given
     String name = "ASk";
