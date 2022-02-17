@@ -17,15 +17,22 @@ public class CompanyService {
   private final CompanyRepository companyRepository;
 
   public Flux<Company> findAll() {
-
     return Flux.fromStream(() -> {
           log.info("invoke Supplier in fromStream");
           return companyRepository.findAll().stream();
         })
         .subscribeOn(Schedulers.boundedElastic())
         .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("company not exists!!"))))
-        .doOnError(e -> log.info("occur error"))
-        .log();
+        .doOnError(e -> log.info("occur error"));
+  }
+
+  public Mono<String> saveTemporaryCompany() {
+    return Mono.fromCallable(() -> {
+          Company company = Company.create("tempCompany", String.valueOf(System.currentTimeMillis()));
+          return companyRepository.save(company);
+        })
+        .subscribeOn(Schedulers.boundedElastic())
+        .map(Company::getId);
   }
 
 }

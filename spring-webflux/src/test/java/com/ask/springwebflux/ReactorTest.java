@@ -8,11 +8,14 @@ import java.util.function.Supplier;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
+import reactor.util.context.Context;
 import reactor.util.function.Tuple2;
 
 @Slf4j
@@ -412,6 +415,114 @@ class ReactorTest {
         .as(StepVerifier::create)
         .expectError(RuntimeException.class)
         .verify();
+  }
+
+  @Test
+  void publishOn() {
+    Flux.range(1, 2)
+        .log()
+        .doOnNext(i -> log.info("range: {}", i))
+        .publishOn(Schedulers.newSingle("ooo"))
+        .map(i -> 10 + i)
+        .doOnNext(i -> log.info("map1: {}", i))
+        .publishOn(Schedulers.newSingle("***"))
+        .map(i -> "value " + i)
+        .doOnNext(i -> log.info("map2: {}", i))
+        .subscribe();
+  }
+
+  @Test
+  void subscribeOn() {
+    Flux.range(1, 2)
+        .log()
+        .doOnNext(i -> log.info("range: {}", i))
+        .subscribeOn(Schedulers.newSingle("@@@1"))
+        .map(i -> 10 + i)
+        .doOnNext(i -> log.info("map1: {}", i))
+        .subscribeOn(Schedulers.newSingle("@@@2"))
+        .map(i -> "value " + i)
+        .doOnNext(i -> log.info("map2: {}", i))
+        .subscribeOn(Schedulers.newSingle("@@@3"))
+        .subscribe();
+  }
+
+  @Test
+  void publishOnAndSubscribeOn() {
+    Flux.range(1, 2)
+        .log()
+        .doOnNext(i -> log.info("range: {}", i))
+        .subscribeOn(Schedulers.newSingle("###1"))
+        .publishOn(Schedulers.newSingle("ooo"))
+        .map(i -> 10 + i)
+        .doOnNext(i -> log.info("map1: {}", i))
+        .subscribeOn(Schedulers.newSingle("###2"))
+        .publishOn(Schedulers.newSingle("***"))
+        .map(i -> "value " + i)
+        .doOnNext(i -> log.info("map2: {}", i))
+        .subscribeOn(Schedulers.newSingle("###3"))
+        .subscribe();
+  }
+
+  @DisplayName("withInitialContext 세팅 및 검증")
+  @Test
+  void context1() {
+    StepVerifier.create(Mono.just(1).map(i -> i + 10),
+            StepVerifierOptions.create().withInitialContext(Context.of("thing1", "thing2")))
+        .expectAccessibleContext()
+        .contains("thing1", "thing2")
+        .then()
+        .expectNext(11)
+        .verifyComplete();
+  }
+
+  @DisplayName("contextWrite 및 검증")
+  @Test
+  void context2() {
+    Mono.just("ASk")
+        .log()
+        .contextWrite(context -> context.put("age", 29))
+        .as(StepVerifier::create)
+        .expectAccessibleContext()
+        .hasKey("age")
+        .contains("age", 29)
+        .hasSize(1)
+        .then()
+        .expectNext("ASk")
+        .verifyComplete();
+  }
+
+  @DisplayName("deferContextual 검증")
+  @Test
+  void context3() {
+    Mono.just("ASk")
+        .log()
+        .flatMap(name -> Mono.deferContextual(contextView -> Mono.just(name + " : " + contextView.get("lang"))))
+        .contextWrite(context -> context.put("lang", "ko"))
+        .as(StepVerifier::create)
+        .expectNext("ASk : ko")
+        .verifyComplete();
+  }
+
+  @DisplayName("thread 가 변경되어도 Context 값 처리 가능한지 검증")
+  @Test
+  void context4() {
+    Mono.just("ASk")
+        .log()
+        .subscribeOn(Schedulers.newSingle("subscribeOn"))
+        .publishOn(Schedulers.newSingle("publishOn-A"))
+        .flatMap(name -> {
+          log.info("thread : {}", Thread.currentThread().getName());
+          return Mono.deferContextual(contextView -> Mono.just(contextView.get("lang")));
+        })
+        .publishOn(Schedulers.newSingle("publishOn-B"))
+        .flatMap(name -> {
+          log.info("thread : {}", Thread.currentThread().getName());
+          return Mono.deferContextual(contextView -> Mono.just(contextView.get("lang")));
+        })
+        .contextWrite(context -> context.put("lang", "ko"))
+        .as(StepVerifier::create)
+        .expectNext("ko")
+        .verifyComplete();
   }
 
 }
