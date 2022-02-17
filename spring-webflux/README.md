@@ -29,6 +29,17 @@
   - 데이터의 방출을 구독전까지 지연시키면서 Mono 로 반환한다.
   - null 을 반환 할 경우 Mono.empty() 로 처리된다. 
 
+### Context
+
+명령형 프로그래밍에서 리액티브 프로그래밍으로 사고방식을 전환할때 만나는 기술적인 어려움 중 하나가 스레드 처리 방식이다.    
+리액티브 프로그래밍에선 실행중 쉽게 스레드간 전환이 이루어진다.
+
+따라서 ThreadLocal 같이 안정적인 스레드 모델을 생각하면 특히 어렵게 느껴질수있다.
+
+reactor 3.1.0 부터 ThreadLocal 과 비슷하지만, Thread 대신 Flux, Mono 에 적용가능한 Context 를 제공한다.  
+`Context` 는 Reactive Sequence 상에서 공유되는 데이터이다.
+
+
 ### [Synchronous, Blocking Call 처리](https://projectreactor.io/docs/core/release/reference/#faq.wrap-blocking)
 
 ```java
@@ -48,6 +59,31 @@ Mono.fromCallable(() -> {
 Security Filter Chain 을 적용하면 초기엔 reactor-http-nio-숫자 쓰레드로 실행되지만  
 `ServerRequestCacheWebFilter` 를 지나가면 다음 필터(`LogoutWebFilter`) 에선 parallel-숫자 쓰레드로 실행된다. 
 
+### Webflux 에서 JPA AuditorAware 적용시 이슈
+
+Spring Servlet stack 과 다르게 Webflux 사용시 인증정보를 ThreadLocal 이 아닌 Context 에 저장한다.  
+이 정보를 AuditorAware 에서 꺼내올때 `AuditorAware<String> ` interface 구현후 `Optional<T>` 을 리턴해야하는데 블록킹콜을 호출하면
+`blockOptional() is blocking, which is not supported in thread {thread name}` 익셉션이 발생한다.
+
+```java
+@Bean
+public AuditorAware<String> auditorProvider() {
+  return () -> ReactiveSecurityContextHolder.getContext()
+      .map(SecurityContext::getAuthentication)
+      .filter(Authentication::isAuthenticated)
+      .map(Authentication::getName)
+      .switchIfEmpty(Mono.just("SYSTEM"))
+      .blockOptional();
+}
+```
+
+Reactor 의 Context 는 Reactive Sequence 상에서 공유되는 데이터이다.   
+따라서 쓰레드가 변경되어도(publishOn, subscribeOn) Context 안에 값을 사용할 수 있다. 
+
+위의 경우에는 JPA 가 PrePost 시점에 AuditorAware 를 호출하는데 동일한 Reactive Sequence 에서 실행되는게 아니므로  
+인증유저의 데이터를 가져올 수 없다.
+
+> Jpa Audit 는 @CreatedDate 만 사용하고, @CreatedBy 는 사용 못하는것 같다..
 
 ## 참조
 
