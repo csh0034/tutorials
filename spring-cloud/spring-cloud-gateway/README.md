@@ -15,7 +15,7 @@ Spring Cloud 는 분산 시스템 및 MSA 환경에서의 일부 공통 패턴�
 
 ### Spring Cloud Netflix
 Netflix OSS(Open Source Software) 와 스프링에 통합을 지원한다.  
-Spring Boot 2.6.x, Spring Cloud 2021.0.0 기준 Spring Cloud Netflix Eureka 만 남아있다.
+Spring Boot 2.6.x, Spring Cloud 2021.0.1 기준 Spring Cloud Netflix Eureka 만 남아있다.
 
 [Replacements, Spring Blog](https://spring.io/blog/2018/12/12/spring-cloud-greenwich-rc1-available-now)
 
@@ -58,14 +58,14 @@ Netflix OSS 에 포함된 컴포넌트 중 하나로서 API Gateway 패턴을 �
 
 ## 개발환경
 - spring boot 2.6.3
-- spring cloud 2021.0.0
+- spring cloud 2021.0.1
 - Maven
 
 pom.xml
 
 ```xml
 <properties>
-  <spring-cloud.version>2021.0.0</spring-cloud.version>
+  <spring-cloud.version>2021.0.1</spring-cloud.version>
 </properties>
 <dependencyManagement>
   <dependencies>

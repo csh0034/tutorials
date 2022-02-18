@@ -2,7 +2,6 @@
 
 개발환경
 - spring boot 2.6.3
-- spring cloud 2021.0.0
 - Java 8
 - Maven
 
@@ -10,7 +9,7 @@ pom.xml
 ```xml
 <properties>
   <java.version>1.8</java.version>
-  <spring-cloud.version>2021.0.0</spring-cloud.version>
+  <spring-cloud.version>2021.0.1</spring-cloud.version>
 </properties>
 
 <dependencyManagement>
