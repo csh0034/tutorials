@@ -14,6 +14,7 @@
   - [spring-cloud-gateway](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-gateway)
   - [spring-cloud-netflix-eureka-client](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-netflix-eureka-client)
   - [spring-cloud-netflix-eureka-server](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-netflix-eureka-server)
+  - [spring-cloud-openfeign](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-openfeign)
   - [spring-cloud-sleuth](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-sleuth)
   - [spring-cloud-stream-consumer](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-stream-consumer)
   - [spring-cloud-stream-producer](https://github.com/csh0034/tutorials/tree/master/spring-cloud/spring-cloud-stream-producer)
