@@ -85,8 +85,14 @@ Reactor 의 Context 는 Reactive Sequence 상에서 공유되는 데이터이다
 
 > Jpa Audit 는 @CreatedDate 만 사용하고, @CreatedBy 는 사용 못하는것 같다..
 
+### Webflux 에서 Cache 사용하기
+
+Webflux 사용시엔 @Cacheable 을 사용할 수 없다.  
+따라서 reactor-extra 라이브러리를 추가하여 CacheMono, CacheFlux 를 사용해야한다.
+
 ## 참조
 
 - [Project Reactor](https://projectreactor.io/docs/core/release/reference/)
 - [Project Reactor, 번역](https://godekdls.github.io/Reactor%20Core/contents/)
 - [Blog 1](https://tries1.github.io/spring/2020/01/28/spring_webflux_1.html)
+- [Blog 2, reactor cache](https://dreamchaser3.tistory.com/m/17)
