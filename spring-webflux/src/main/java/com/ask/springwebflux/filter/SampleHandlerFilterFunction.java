@@ -17,7 +17,7 @@ public class SampleHandlerFilterFunction implements HandlerFilterFunction<Server
 
   @Override
   public Mono<ServerResponse> filter(ServerRequest serverRequest, HandlerFunction<ServerResponse> handlerFunction) {
-    log.info("invoke SampleHandlerFilterFunction.filter");
+    log.debug("invoke SampleHandlerFilterFunction.filter");
     return handlerFunction.handle(serverRequest);
   }
 

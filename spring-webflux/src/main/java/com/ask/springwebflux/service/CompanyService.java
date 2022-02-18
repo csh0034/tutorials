@@ -1,5 +1,7 @@
 package com.ask.springwebflux.service;
 
+import com.ask.springwebflux.config.cache.CacheConstants;
+import com.ask.springwebflux.config.cache.ReactorCache;
 import com.ask.springwebflux.entity.Company;
 import com.ask.springwebflux.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +18,15 @@ public class CompanyService {
 
   private final CompanyRepository companyRepository;
 
-  public Flux<Company> findAll() {
+  @ReactorCache(CacheConstants.COMPANIES)
+  public Flux<Company> findAllByNameContains(String name) {
     return Flux.fromStream(() -> {
-          log.info("invoke Supplier in fromStream");
-          return companyRepository.findAll().stream();
+          log.debug("invoke Supplier in fromStream");
+          return companyRepository.findAllByNameContains(name).stream();
         })
         .subscribeOn(Schedulers.boundedElastic())
         .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("company not exists!!"))))
-        .doOnError(e -> log.info("occur error"));
+        .doOnError(e -> log.debug("occur error"));
   }
 
   public Mono<String> saveTemporaryCompany() {
@@ -33,6 +36,13 @@ public class CompanyService {
         })
         .subscribeOn(Schedulers.boundedElastic())
         .map(Company::getId);
+  }
+
+  @ReactorCache(CacheConstants.COMPANY)
+  public Mono<Company> findById(String id) {
+    return Mono.fromCallable(() -> companyRepository.findById(id).orElse(null))
+        .subscribeOn(Schedulers.boundedElastic())
+        .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("company not exists!!, id : " + id))));
   }
 
 }

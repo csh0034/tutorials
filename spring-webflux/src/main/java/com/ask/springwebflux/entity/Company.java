@@ -3,6 +3,7 @@ package com.ask.springwebflux.entity;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +24,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @ToString
-public class Company {
+public class Company implements Serializable {
+
+  private static final long serialVersionUID = 8941143368931195109L;
 
   @Id
   @GeneratedValue(generator = "uuid")

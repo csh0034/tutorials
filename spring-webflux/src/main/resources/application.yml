@@ -9,9 +9,15 @@ spring:
       hibernate:
         show_sql: false
         format_sql: true
+        "[query.in_clause_parameter_padding]": true
     open-in-view: false
+
+  redis:
+    host: localhost
+    port: 6379
 
 logging:
   level:
+    "[com.ask.springwebflux]": debug
     "[org.hibernate.SQL]": debug
     "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
