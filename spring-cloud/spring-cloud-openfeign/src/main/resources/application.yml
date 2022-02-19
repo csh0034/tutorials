@@ -7,3 +7,7 @@ feign:
 
   circuitbreaker:
     enabled: true
+
+logging:
+  level:
+    "[com.ask.openfeign]": debug
