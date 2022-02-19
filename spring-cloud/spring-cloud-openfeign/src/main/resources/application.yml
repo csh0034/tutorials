@@ -1,1 +1,9 @@
+server:
+  port: 8080
 
+feign:
+  custom:
+    google-url: https://google.com
+
+  circuitbreaker:
+    enabled: true
