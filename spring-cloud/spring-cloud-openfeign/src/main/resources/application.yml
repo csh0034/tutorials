@@ -4,6 +4,7 @@ server:
 feign:
   custom:
     google-url: https://google.com
+    facebook-url: https://test.facebook.com
 
   circuitbreaker:
     enabled: true

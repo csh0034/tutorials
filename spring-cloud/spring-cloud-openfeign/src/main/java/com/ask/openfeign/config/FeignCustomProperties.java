@@ -12,5 +12,6 @@ import org.springframework.stereotype.Component;
 public class FeignCustomProperties {
 
   private String googleUrl;
+  private String facebookUrl;
 
 }

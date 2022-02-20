@@ -16,7 +16,7 @@ public class SpringCloudOpenfeignApplication {
 
   @Bean
   public Logger.Level feignLoggerLevel() {
-    return Logger.Level.FULL;
+    return Logger.Level.BASIC;
   }
 
 }
