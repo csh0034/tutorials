@@ -34,6 +34,34 @@ pom.xml
 </dependency>
 ```
 
+### Feign Logging
+
+생성된 각 Feign 클라이언트에 대해 로거가 생성되며 Feign 클라이언트 생성에 이용된 인터페이스의 전체 클래스이름이다.  
+또한 debug level 로 로그를 출력한다.
+
+Bean 으로 Logger.Level 를 설정해야 한다.
+
+- NONE : 로깅 없음(default).
+- BASIC : request method, url, response status code, 실행 시간만 기록한다.
+- HEADERS : 요청 및 응답 헤더와 함께 기본 정보를 기록한다.
+- FULL : 요청과 응답 모두에 대한 헤더, 본문 및 메타데이터를 기록한다.
+
+feign 클라이언트가 있는 패키지 debug 설정
+```yaml
+logging:
+  level:
+    "[com.ask.openfeign]": debug
+```
+
+```java
+import feign.Logger;
+
+@Bean
+public Logger.Level feignLoggerLevel() {
+  return Logger.Level.BASIC;
+}
+```
+
 ### [Reactive Support?](https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/#reactive-support)
 
 현재 OpenFeign project 는 Spring WebClient 와 같은 reactive client 를 지원하지 않는다.  
