@@ -1,6 +1,5 @@
 package com.ask.contractstubrunner;
 
-import static com.ask.contractstubrunner.support.WireMockTest.MOCK_URI_PLACEHOLDER;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -36,9 +34,6 @@ class ContractStubRunnerApplicationTests {
 
   @Autowired
   private ObjectMapper objectMapper;
-
-  @Value(MOCK_URI_PLACEHOLDER)
-  private String mockUri;
 
   @DisplayName("mappings 하위 json 파일을 통한 mock 처리 검증1")
   @Test
