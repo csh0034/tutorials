@@ -1,0 +1,42 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/v1/check",
+        "queryParameters": {
+          "username": {
+            "matches": ".*"
+          }
+        }
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "status": 200,
+        "body": "true"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "/v1/headers"
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": [
+          "response-template"
+        ],
+        "status": 200,
+        "jsonBody": {
+          "request.host": "{{request.host}}",
+          "request.port": "{{request.port}}",
+          "request.headers.user-agent": "{{request.headers.user-agent}}"
+        }
+      }
+    }
+  ]
+}
