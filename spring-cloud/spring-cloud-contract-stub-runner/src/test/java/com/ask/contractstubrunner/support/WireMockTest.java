@@ -7,6 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 @Target(ElementType.TYPE)
@@ -17,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
     "mock-uri=http://localhost:${wiremock.server.port}"
 })
+@Import(WireMockTestConfig.class)
 public @interface WireMockTest {
 
   String MOCK_URI_PLACEHOLDER = "${mock-uri}";

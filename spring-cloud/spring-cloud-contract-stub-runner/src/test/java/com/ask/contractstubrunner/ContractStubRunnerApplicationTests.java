@@ -44,7 +44,7 @@ class ContractStubRunnerApplicationTests {
   @Test
   void jsonStub1() {
     // when
-    String result = restTemplate.getForObject(mockUri + "/v1/check?username=test", String.class);
+    String result = restTemplate.getForObject("/v1/check?username=test", String.class);
 
     // then
     log.info("result : {}", result);
@@ -55,7 +55,7 @@ class ContractStubRunnerApplicationTests {
   @Test
   void jsonStub2() {
     // when
-    String result = restTemplate.getForObject(mockUri + "/v1/headers", String.class);
+    String result = restTemplate.getForObject("/v1/headers", String.class);
 
     // then
     log.info("result : {}", result);
@@ -72,7 +72,7 @@ class ContractStubRunnerApplicationTests {
             .withBody("stub1")));
 
     // when
-    String result = restTemplate.getForObject(mockUri + "/v1/stub1", String.class);
+    String result = restTemplate.getForObject("/v1/stub1", String.class);
 
     // then
     wireMockServer.verify(getRequestedFor(urlEqualTo("/v1/stub1")));
@@ -97,7 +97,7 @@ class ContractStubRunnerApplicationTests {
             .withTransformers(ResponseTemplateTransformer.NAME)));
 
     // when
-    String result = restTemplate.getForObject(mockUri + "/v1/stub2", String.class);
+    String result = restTemplate.getForObject("/v1/stub2", String.class);
 
     // then
     wireMockServer.verify(getRequestedFor(urlEqualTo("/v1/stub2")));
