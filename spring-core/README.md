@@ -193,3 +193,22 @@ featureDefaults.put(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
 
 ### 참조
 - [spring-boot-formatting-json-dates](https://www.baeldung.com/spring-boot-formatting-json-dates) 
+
+## LifeCycle, SmartLifeCycle
+
+`DefaultLifecycleProcessor` 에서 처리됨
+
+### LifeCycle
+
+시작/중지 수명 주기 제어를 위한 방법을 정의하는 공통 인터페이스이다.  
+시작이 자동으로 동작하지 않는다.
+
+종료시점에 isRunning() 을 확인하여 stop() 을 호출한다. 
+
+### SmartLifeCycle
+
+특정 순서로 ApplicationContext refresh and/or shutdown 시에 호출되어야 하는 Lifecycle 인터페이스의 확장이다.
+
+LifeCycle 과 다르게 isAutoStartup() true (default) 일 경우 start() 를 호출한다.
+
+종료시점에 isRunning() 을 확인하여 stop() 을 호출한다.
