@@ -11,7 +11,7 @@ spring:
       hibernate:
         show_sql: false
         format_sql: true
-        generate_statistics: true
+        generate_statistics: false
         "[session.events.log.LOG_QUERIES_SLOWER_THAN_MS]": 1
     open-in-view: false
 

@@ -51,5 +51,31 @@ Session Metrics {
 }
 ```
 
-## 참조
+### 참조
 - [hibernate-slow-query-log](https://vladmihalcea.com/hibernate-slow-query-log/)
+
+## Hibernate Validator
+
+Entity 에 JSR303, JSR349, JSR 380 관련 어노테이션을 추가하면  
+DDL 생성시에 validation 어노테이션을 읽어서 스키마 생성시 적용한다.  
+또한 pre-persist, pre-update, pre-remove 시점에 validation 이 동작한다.   
+
+### Schema 에 적용
+
+Entity 에 javax.validation annotation (ex. @NotNull) 이 있을 경우 스키마 생성 시점에 동작한다.    
+- ex) @NotNull 추가시 nullable false 로 동작함
+- `org.hibernate.cfg.beanvalidation.BeanValidationIntegrator` 에서 처리됨
+- [추가 제약 사항 적용 설명](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#section-builtin-constraints)
+
+### pre-persist, pre-update, pre-remove 시점에 적용
+
+- `org.hibernate.cfg.beanvalidation.BeanValidationEventListener` 에서 처리됨
+
+트랜잭션 안에서 validation 에 실패하여 ConstraintViolationException 이 발생한 경우  
+RuntimeException 의 하위 클래스이므로 TransactionSystemException 으로 처리되며 롤백된다.
+
+
+### 참조
+- [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
+- [validate entities with hibernate validator](https://thorben-janssen.com/automatically-validate-entities-with-hibernate-validator/)
+- [hibernate-notnull-vs-nullable, baeldung](https://www.baeldung.com/hibernate-notnull-vs-nullable)
