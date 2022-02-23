@@ -13,5 +13,6 @@ public class FeignCustomProperties {
 
   private String googleUrl;
   private String facebookUrl;
+  private String sampleUrl;
 
 }

@@ -5,6 +5,7 @@ feign:
   custom:
     google-url: https://google.com
     facebook-url: https://test.facebook.com
+    sample-url: http://localhost:${server.port}
 
   circuitbreaker:
     enabled: true
