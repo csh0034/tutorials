@@ -1,0 +1,23 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "/auth"
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": [
+          "response-template"
+        ],
+        "status": 200,
+        "jsonBody": {
+          "X-Authorization-Id": "{{request.headers.X-Authorization-Id}}",
+          "X-Authorization-Role": "{{request.headers.X-Authorization-Role}}"
+        }
+      }
+    }
+  ]
+}
