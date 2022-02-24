@@ -1,6 +1,6 @@
-package com.ask.springtest.contextcaching;
+package com.ask.springtestcore.contextcaching;
 
-import com.ask.springtest.config.WebConfig;
+import com.ask.springtestcore.config.WebConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

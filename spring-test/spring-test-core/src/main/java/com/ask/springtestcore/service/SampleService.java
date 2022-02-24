@@ -1,4 +1,4 @@
-package com.ask.springtest.service;
+package com.ask.springtestcore.service;
 
 import org.springframework.stereotype.Service;
 

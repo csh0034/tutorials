@@ -1,4 +1,4 @@
-package com.ask.springtest.contextcaching;
+package com.ask.springtestcore.contextcaching;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Nested;

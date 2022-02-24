@@ -1,6 +1,6 @@
-package com.ask.springtest.constructor;
+package com.ask.springtestcore.constructor;
 
-import com.ask.springtest.service.SampleService;
+import com.ask.springtestcore.service.SampleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

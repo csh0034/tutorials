@@ -1,4 +1,4 @@
-package com.ask.springtest.config;
+package com.ask.springtestcore.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

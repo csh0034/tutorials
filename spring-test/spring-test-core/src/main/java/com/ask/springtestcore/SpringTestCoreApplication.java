@@ -1,13 +1,13 @@
-package com.ask.springtest;
+package com.ask.springtestcore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringTestApplication {
+public class SpringTestCoreApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(SpringTestApplication.class, args);
+    SpringApplication.run(SpringTestCoreApplication.class, args);
   }
 
 }

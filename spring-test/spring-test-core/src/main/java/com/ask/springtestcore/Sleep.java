@@ -1,4 +1,4 @@
-package com.ask.springtest;
+package com.ask.springtestcore;
 
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
