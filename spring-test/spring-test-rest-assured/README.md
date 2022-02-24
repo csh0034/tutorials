@@ -11,6 +11,8 @@ REST 웹 서비스를 검증하기 위한 라이브러리이며 End-to-End Test(
 
 ## Rest Assured VS MockMvc
 
+![01.png](images/01.png)
+
 ### Rest Assured
 
 HttpClient 를 호출하여 실제 HTTP 호출을 하므로 `@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)` 로  
