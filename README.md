@@ -50,5 +50,6 @@
 - [spring-swagger](https://github.com/csh0034/tutorials/tree/master/spring-swagger)
 - [spring-test](https://github.com/csh0034/tutorials/tree/master/spring-test)
   - [spring-test-core](https://github.com/csh0034/tutorials/tree/master/spring-test/spring-test-core)
+  - [spring-test-rest-assured](https://github.com/csh0034/tutorials/tree/master/spring-test/spring-test-rest-assured)
 - [spring-validator](https://github.com/csh0034/tutorials/tree/master/spring-validator)
 - [spring-webflux](https://github.com/csh0034/tutorials/tree/master/spring-webflux)

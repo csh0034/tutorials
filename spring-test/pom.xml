@@ -17,6 +17,7 @@
 
   <modules>
     <module>spring-test-core</module>
+    <module>spring-test-rest-assured</module>
   </modules>
 
 </project>
