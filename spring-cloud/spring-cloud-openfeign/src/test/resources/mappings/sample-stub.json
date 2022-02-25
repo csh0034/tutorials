@@ -1,0 +1,38 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/"
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "status": 200,
+        "body": "success"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/time",
+        "queryParameters": {
+          "startDt": {
+            "matches": ".*"
+          }
+        }
+      },
+      "response": {
+        "headers": {
+          "Content-Type": "text/plain"
+        },
+        "transformers": [
+          "response-template"
+        ],
+        "status": 200,
+        "body": "now-{{request.query.startDt}}"
+      }
+    }
+  ]
+}
