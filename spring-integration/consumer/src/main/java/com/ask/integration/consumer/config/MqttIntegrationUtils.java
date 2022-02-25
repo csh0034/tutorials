@@ -93,6 +93,7 @@ public class MqttIntegrationUtils {
     adapter.setCompletionTimeout(5000);
     adapter.setConverter(new DefaultPahoMessageConverter());
     adapter.setQos(1);
+    adapter.setErrorChannelName("errorChannel");
     return adapter;
   }
 

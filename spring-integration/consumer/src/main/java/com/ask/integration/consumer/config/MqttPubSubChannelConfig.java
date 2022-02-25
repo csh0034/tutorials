@@ -29,6 +29,7 @@ import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageBuilder;
@@ -81,7 +82,9 @@ public class MqttPubSubChannelConfig {
     return IntegrationFlows
         .from(MqttIntegrationUtils.mqttChannelAdapter(MQTT_SERVER_1, MQTT_PUB_SUB_TOPIC, mqttClientFactory))
         .transform(Transformers.fromJson(SampleMessage.class))  // 클래스 지정안하면 json 을 LinkedHashMap 로 변환함
-        .handle(message -> log.info("mqttPubSubInboundFlow1 : {}", message.getPayload()))
+        .handle(message -> {
+          throw new RuntimeException("asdf");
+        })
         .get();
   }
 
@@ -158,11 +161,25 @@ public class MqttPubSubChannelConfig {
     void publish(@Header(CustomMqttMultiMessageHandler.MQTT_HANDLER_ID) String mqttHandlerId, @Header(MqttHeaders.TOPIC) String topic, String data);
   }
 
+  @Bean("errorChannel")
+  public MessageChannel errorChannel() {
+    return MessageChannels.publishSubscribe().get();
+  }
+
   @Bean
   public IntegrationFlow errorHandlingFlow() {
     return IntegrationFlows
         .from("errorChannel")
-        .handle(message -> log.error("error occurred!! : {}", message.getPayload()))
+        .handle(message -> {
+          MessagingException exception = (MessagingException) message.getPayload();
+          Message<?> failedMessage = exception.getFailedMessage();
+
+          if (failedMessage != null) {
+            log.error("Exception -> payload:{}, message:{}", failedMessage.getPayload(), exception.getMessage());
+          } else {
+            log.error("Exception -> message:{}", exception.getMessage());
+          }
+        })
         .get();
   }
 

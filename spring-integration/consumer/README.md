@@ -61,3 +61,43 @@ DirectChannel           : Channel 'application.mqttPubSubOutboundFlow2.channel#1
 </dependency>
 ```
 - [Github issue, spring-integration](https://github.com/spring-projects/spring-integration/issues/3051)
+
+## Integration Flow Error 처리
+
+DefaultConfiguringBeanFactoryPostProcessor registerErrorChannel 에서 기본적으로 처리된다.  
+`errorChannel` 이라는 이름의 채널을 등록하지 않을경우 자동으로 PublishSubscribeChannel 로 생성하여 Bean 으로 등록한다. 
+
+또한 LoggingHandler 를 Bean 으로 등록한후에 `errorChannel` subscribe 한다.  
+따라서 수동으로 설정해야 할 경우 반드시 `errorChannel` 을 bean 으로 등록해야 LoggingHandler 가 자동 등록 되지 않는다.
+
+### 수동 error channel 설정
+
+```java
+public static String ERROR_CHANNEL_NAME = "errorChannel";
+
+// 수동으로 errorChannel 등록.
+@Bean(ERROR_CHANNEL_NAME)
+public MessageChannel errorChannel() {
+  return MessageChannels.publishSubscribe().get();
+}
+
+// errorChannel 을 처리하는 Flow 등록
+@Bean
+public IntegrationFlow errorHandlingFlow() {
+  return IntegrationFlows
+    .from(ERROR_CHANNEL_NAME)
+    .handle(message -> log.error("error occurred!! : {}", message.getPayload()))
+    .get();
+}
+
+// adapter 등록시에 error channel 등록
+public MqttPahoMessageDrivenChannelAdapter mqttChannelAdapter(String url, String topic, MqttPahoClientFactory mqttClientFactory) {
+    MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(url, MqttAsyncClient.generateClientId(), mqttClientFactory, topic);
+    adapter.setCompletionTimeout(5000);
+    adapter.setConverter(new DefaultPahoMessageConverter());
+    adapter.setQos(1);
+    adapter.setErrorChannelName(ERROR_CHANNEL_NAME);
+    return adapter;
+}
+```
+
