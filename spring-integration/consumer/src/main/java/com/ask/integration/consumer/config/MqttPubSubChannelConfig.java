@@ -82,9 +82,7 @@ public class MqttPubSubChannelConfig {
     return IntegrationFlows
         .from(MqttIntegrationUtils.mqttChannelAdapter(MQTT_SERVER_1, MQTT_PUB_SUB_TOPIC, mqttClientFactory))
         .transform(Transformers.fromJson(SampleMessage.class))  // 클래스 지정안하면 json 을 LinkedHashMap 로 변환함
-        .handle(message -> {
-          throw new RuntimeException("asdf");
-        })
+        .handle(message -> log.info("mqttPubSubInboundFlow1 : {}", message.getPayload()))
         .get();
   }
 
