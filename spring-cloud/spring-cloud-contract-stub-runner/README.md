@@ -1,6 +1,6 @@
 # Spring Cloud Contract Stub Runner
 
-## 소비자 주도 계약 패턴(Consumer-Driven Contract) 이란?
+## 소비자 주도 계약(Consumer-Driven Contract) 이란?
 
 제공자(Producer) 가 소비자(Consumer) 에 대한 기대치와 호환되는지 확인하면서 격리된 시스템 구성 요소를 테스트하는데   
 사용되는 소프트웨어 테스트 방법론이다.
@@ -68,7 +68,7 @@ Pact 와 반대로 Producer 측에서 Contract 를 등록한다.
 4. Producer 프로젝트를 maven install 한다.
 5. build 후에 repository 에 배포되어 있는 stub.jar 를 확인한다.
 6. Consumer 프로젝트에서 stub.jar 를 활용하여 통합 테스트를 진행한다.
-7. 결과에 만족하는 테스트 결과가 나왔을 경우 Producer 프로젝트에 pull request 를 보낸다.
+7. 만족하는 테스트 결과가 나왔을 경우 Producer 프로젝트에 pull request 를 보낸다.
 
 #### Producer Side
 
