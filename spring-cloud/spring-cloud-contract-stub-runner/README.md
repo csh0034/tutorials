@@ -13,12 +13,12 @@
 
 CDC 는 자동화된 E2E (End to End) 테스트의 몇가지 단점을 극복하려고 한다.
 
-- E2E 테스트가 느리다.
+- E2E 테스트는 느리다.
 - E2E 테스트는 쉽게 중단된다.
 - E2E 테스트는 비용이 많이 들고 유지 관리가 어렵다.
 - 대규모 시스템의 E2E 테스트는 전용 테스트 환경 외부에서 실행하기 어렵거나 불가능할 수 있다.
 
-CDC 는 공유되어 문서화 되어있는 **Contract** 를 따르는 Mocking 을 통하여 격리된 components 간의  
+CDC 는 공유되어 문서화 되어있는 **Contract** 를 따르는 제공된 Mock 을 통하여 격리된 components 간의  
 상호 작용을 테스트하여 이러한 문제를 해결한다.
 
 ### CDC Testing Frameworks and Tools
@@ -65,9 +65,10 @@ Pact 와 반대로 Producer 측에서 Contract 를 등록한다.
 1. Consumer 측에서 테스트중 Producer 측의 API 가 필요할 경우 Producer 프로젝트를 Clone 한다.
 2. Producer 프로젝트에 Contract 를 작성한다.
 3. Spring Cloud Contract(SCC) 플러그인을 추가한다.
-4. maven install 후에 생성되어 repository 에 배포되어 있는 stub.jar 를 확인한다.
-5. Consumer 프로젝트에서 stub.jar 를 활용하여 통합 테스트를 진행한다.
-6. 결과에 만족하는 테스트 결과가 나왔을 경우 Producer 프로젝트에 pull request 를 보낸다.
+4. Producer 프로젝트를 maven install 한다.
+5. build 후에 repository 에 배포되어 있는 stub.jar 를 확인한다.
+6. Consumer 프로젝트에서 stub.jar 를 활용하여 통합 테스트를 진행한다.
+7. 결과에 만족하는 테스트 결과가 나왔을 경우 Producer 프로젝트에 pull request 를 보낸다.
 
 #### Producer Side
 
