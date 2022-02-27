@@ -1,11 +1,11 @@
-package contracts
+package contracts.sampleController
 
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
     request {
         method 'GET'
-        url '/sample'
+        url '/name'
         body([
                 "id": "ASk"
         ])
@@ -15,11 +15,9 @@ Contract.make {
     }
     response {
         status OK()
-        body([
-                "id": "ASk!!!"
-        ])
+        body("name...")
         headers {
-            contentType('application/json')
+            contentType('text/plain')
         }
     }
 }

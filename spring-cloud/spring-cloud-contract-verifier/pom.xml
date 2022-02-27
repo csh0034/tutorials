@@ -77,7 +77,7 @@
         <version>${spring-cloud-contract-maven-plugin.version}</version>
         <extensions>true</extensions>
         <configuration>
-          <testFramework>JUNIT5</testFramework>
+          <packageWithBaseClasses>com.ask.contractverifier.base</packageWithBaseClasses>
         </configuration>
       </plugin>
     </plugins>
