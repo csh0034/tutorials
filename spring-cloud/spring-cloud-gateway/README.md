@@ -57,7 +57,7 @@ Netflix OSS 에 포함된 컴포넌트 중 하나로서 API Gateway 패턴을 �
 - 출처 : [카카오 광고 플랫폼 MSA 적용 사례 및 API Gateway 와 인증 구현에 대한 소개](https://www.slideshare.net/ifkakao/msa-api-gateway)
 
 ## 개발환경
-- spring boot 2.6.3
+- spring boot 2.6.4
 - spring cloud 2021.0.1
 - Maven
 

@@ -2,7 +2,7 @@
 
 ## 스프링 부트 + JPA LOCK
 개발환경
-- spring boot 2.6.3
+- spring boot 2.6.4
 - Java 8
 - Maven
 - H2 1.4.200

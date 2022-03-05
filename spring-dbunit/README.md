@@ -3,7 +3,7 @@
 ## spring boot + dbunit
 개발환경
 
-- spring boot 2.6.3
+- spring boot 2.6.4
 - Java 8
 - Maven
 
@@ -87,7 +87,7 @@ pom.xml
 --- maven-surefire-plugin:2.22.2:test (insert-db) @ spring-dbunit ---
 --- maven-surefire-plugin:2.22.2:test (default-test) @ spring-dbunit ---
 --- maven-jar-plugin:3.2.0:jar (default-jar) @ spring-dbunit ---
---- spring-boot-maven-plugin:2.6.3:repackage (repackage) @ spring-dbunit ---
+--- spring-boot-maven-plugin:2.6.4:repackage (repackage) @ spring-dbunit ---
 --- maven-install-plugin:2.5.2:install (default-install) @ spring-dbunit ---
 ```
 ***

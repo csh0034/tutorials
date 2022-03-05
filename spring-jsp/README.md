@@ -2,7 +2,7 @@
 
 ## spring boot + jsp
 개발환경
-- spring boot 2.6.3
+- spring boot 2.6.4
 - Java 8
 - Maven
 

@@ -1,7 +1,7 @@
 # Spring r2dbc
 
 ## 개발환경
-- spring boot 2.6.3
+- spring boot 2.6.4
 - MariaDB 10.4.20
 
 ### pom.xml
