@@ -297,5 +297,7 @@ public EmptyInterceptor hibernateInterceptor() {
 ```
 
 ***
+
 ## 참조
-[hibernate document](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#envers-configuration)
+- [spring data envers](https://docs.spring.io/spring-data/envers/docs/current/reference/html/#reference)
+- [hibernate document](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#envers-configuration)

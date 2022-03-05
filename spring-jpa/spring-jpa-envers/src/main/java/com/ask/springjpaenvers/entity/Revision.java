@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Getter;
-import org.hibernate.annotations.Proxy;
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
@@ -18,7 +17,7 @@ import org.hibernate.envers.RevisionTimestamp;
 @Getter
 @RevisionEntity
 @Table(name = "tb_revinfo")
-@Proxy(lazy = false)
+//@Proxy(lazy = false)
 public class Revision implements Serializable {
 
   private static final long serialVersionUID = 7703526253442389993L;
