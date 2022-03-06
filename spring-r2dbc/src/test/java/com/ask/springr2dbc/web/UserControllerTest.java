@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.test.StepVerifier;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -24,7 +25,10 @@ class UserControllerTest {
 
   @AfterEach
   void tearDown() {
-    userRepository.deleteAll().subscribe();
+    userRepository.deleteAll()
+        .as(StepVerifier::create)
+        .expectComplete()
+        .verify();
   }
 
   @Test
