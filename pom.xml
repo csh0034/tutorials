@@ -36,6 +36,7 @@
     <module>spring-springdoc</module>
     <module>spring-webflux</module>
     <module>spring-r2dbc</module>
+    <module>pinpoint</module>
   </modules>
 
   <properties>
