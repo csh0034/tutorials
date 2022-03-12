@@ -28,6 +28,17 @@ $ git checkout tags/{tag} # 선택
 $ docker-compose pull && docker-compose up -d
 ```
 
+### quickstart, agent sample 주석처리
+
+pinpoint-docker 에는 agent 연결 테스트용도로 QuickStart application 이 포함되어있다.  
+따라서 운영환경에선 제외해야한다.
+
+```shell
+$ vi docker-compose.yml 
+```
+
+- services 목록중에 `pinpoint-quickstart`, `pinpoint-agent` 주석 또는 제거
+
 ## agent 세팅
 
 ```shell
