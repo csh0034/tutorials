@@ -47,7 +47,7 @@ $ wget https://github.com/pinpoint-apm/pinpoint/releases/download/v2.3.3/pinpoin
 && rm pinpoint-agent-*.tar.gz \
 && ln -sf pinpoint-agent-* pinpoint-agent
 
-$ cd pinpoint-agent-2.3.3
+$ cd pinpoint-agent
 $ vi pinpoint-root.config
 ```
 
