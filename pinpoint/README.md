@@ -56,7 +56,7 @@ $ vi pinpoint-root.config
 - profiler.transport.grpc.collector.ip=127.0.0.1
 - profiler.collector.ip=127.0.0.1
 
-### Executable jar
+### Executable jar or war
 
 ```shell
 java -jar \
@@ -66,7 +66,18 @@ java -jar \
   application.jar
 ```
 
-### Tomcat
+### Executable jar or war with .conf file
+
+1. jar 또는 war 파일 위치에 동일한 이름으로 `.conf` 파일 생성 후 하단 정보 세팅
+2. `java -jar application.jar`
+
+ex. application.conf
+
+```text
+JAVA_OPTS="-javaagent:$AGENT_PATH/pinpoint-bootstrap-2.3.3.jar -Dpinpoint.agentId=app-1 -Dpinpoint.applicationName=app"
+```
+
+### 외장 Tomcat
 ```shell
 CATALINA_OPTS="$CATALINA_OPTS -javaagent:$AGENT_PATH/pinpoint-bootstrap-2.3.3.jar"
 CATALINA_OPTS="$CATALINA_OPTS -Dpinpoint.agentId=app-1"
