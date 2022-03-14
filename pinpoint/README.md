@@ -68,7 +68,7 @@ java -jar \
   application.jar
 ```
 
-### Executable jar or war with .conf file
+### [Executable jar or war with .conf file](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.installing.nix-services.script-customization.when-running.conf-file)
 
 1. jar 또는 war 파일 위치에 동일한 이름으로 `.conf` 파일 생성 후 하단 정보 세팅
 2. `java -jar application.jar`
