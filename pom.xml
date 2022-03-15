@@ -37,6 +37,7 @@
     <module>spring-webflux</module>
     <module>spring-r2dbc</module>
     <module>pinpoint</module>
+    <module>serverless-framework</module>
   </modules>
 
   <properties>
