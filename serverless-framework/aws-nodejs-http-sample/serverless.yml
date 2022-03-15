@@ -1,0 +1,14 @@
+service: aws-nodejs-http-sample
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  currentTime:
+    handler: handler.endpoint
+    events:
+      - httpApi:
+          path: /time
+          method: get
