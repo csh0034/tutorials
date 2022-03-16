@@ -64,6 +64,7 @@ $ sls invoke local -f hello -p sample.json
 - [Serverless Framework, Reference](https://www.serverless.com/framework/docs/getting-started)
 - [Serverless Examples, GitHub](https://github.com/serverless/examples/)
 - [AWS Lambda Node.js, Reference](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-nodejs.html)
+- [Amazon API Gateway 에서 AWS Lambda 사용, Reference](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-apigateway.html)
 - [AWS Lambda SES 이메일에 대한 SNS 알림 DynamoDB에 저장, Reference](https://aws.amazon.com/ko/premiumsupport/knowledge-center/lambda-sns-ses-dynamodb/)
 - [Blog 1, Monitoring Your Email Bounces and Bounce Rate using Amazon SES, Lambda, SNS, and DynamoDB](https://medium.com/swlh/monitoring-your-email-bounces-and-bounce-rate-using-amazon-ses-lambda-sns-and-dynamodb-ce74859da18f)
 - [Blog 2, AWS SES Bounce 처리](https://isntyet.tistory.com/140)
