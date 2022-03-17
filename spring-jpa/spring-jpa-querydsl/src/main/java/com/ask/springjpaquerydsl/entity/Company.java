@@ -1,7 +1,5 @@
 package com.ask.springjpaquerydsl.entity;
 
-import static lombok.AccessLevel.PROTECTED;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.ToString.Exclude;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "tb_company")
-@NoArgsConstructor(access = PROTECTED)
+//@NoArgsConstructor(access = PROTECTED)
 @Getter
+@Setter
 @ToString
 public class Company {
 
