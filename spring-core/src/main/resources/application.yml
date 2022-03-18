@@ -9,3 +9,7 @@ spring:
 conditional:
   enabled: true
   name: ask
+
+logging:
+  level:
+    "[org.springframework.web.filter]": debug
