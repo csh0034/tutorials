@@ -38,6 +38,7 @@
     <module>spring-r2dbc</module>
     <module>pinpoint</module>
     <module>serverless-framework</module>
+    <module>jmeter</module>
   </modules>
 
   <properties>
