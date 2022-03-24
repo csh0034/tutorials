@@ -22,7 +22,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "test_topic:1:1"
+      KAFKA_CREATE_TOPICS: "test-topic:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
@@ -37,6 +37,12 @@ $ cd /opt/kafka/bin
 
 # 토픽 조회
 $ kafka-topics.sh --list --zookeeper zookeeper
+
+# 토픽 추가
+$ kafka-topics.sh --create --zookeeper zookeeper --replication-factor 1 -partition 1 --topic new_topic
+
+# 토픽 삭제
+$ kafka-topics.sh --delete --zookeeper zookeeper --topic test_topic
 
 # environment 를 통해 등록한 토픽 상세 정보
 $ kafka-topics.sh --describe --topic test_topic --zookeeper zookeeper
