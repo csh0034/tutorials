@@ -40,6 +40,7 @@
   - [spring-jpa-querydsl](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-querydsl)
   - [spring-jpa-redisson](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-redisson)
 - [spring-jsp](https://github.com/csh0034/tutorials/tree/master/spring-jsp)
+- [spring-kafka](https://github.com/csh0034/tutorials/tree/master/spring-kafka)
 - [spring-lock](https://github.com/csh0034/tutorials/tree/master/spring-lock)
   - [spring-lock-redisson](https://github.com/csh0034/tutorials/tree/master/spring-lock/spring-lock-redisson)
 - [spring-mail](https://github.com/csh0034/tutorials/tree/master/spring-mail)

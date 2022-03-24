@@ -39,6 +39,7 @@
     <module>pinpoint</module>
     <module>serverless-framework</module>
     <module>jmeter</module>
+    <module>spring-kafka</module>
   </modules>
 
   <properties>
