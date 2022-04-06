@@ -1,11 +1,14 @@
 package com.ask.springjpaquerydsl.repository;
 
-import static com.ask.springjpaquerydsl.entity.QUser.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.ask.springjpaquerydsl.entity.QUser.user;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ask.springjpaquerydsl.config.JpaConfig;
+import com.ask.springjpaquerydsl.entity.Company;
+import com.ask.springjpaquerydsl.entity.User;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import java.util.Objects;
-
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import com.ask.springjpaquerydsl.config.JpaConfig;
-import com.ask.springjpaquerydsl.entity.Company;
-import com.ask.springjpaquerydsl.entity.User;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import lombok.extern.slf4j.Slf4j;
 
 @DataJpaTest
 @Import(JpaConfig.class)
