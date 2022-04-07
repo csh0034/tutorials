@@ -5,12 +5,14 @@ import org.apache.commons.configuration.DatabaseConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 
 public class CachedDatabaseConfiguration extends DatabaseConfiguration {
 
   private static final String CACHE_DB = "cache_DB";
 
   @Autowired
+  @Lazy
   private CachedDatabaseConfiguration self;
 
   public CachedDatabaseConfiguration(DataSource datasource, String table, String keyColumn, String valueColumn) {
