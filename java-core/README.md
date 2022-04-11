@@ -30,6 +30,22 @@
 - Exchanger
 - SynchronousQueue
 
+## Maven Test
+
+- Surefire 플러그인은 빌드 수명 주기 의 테스트 단계에서 애플리케이션의 단위 테스트를 실행하는데 사용 된다.
+- maven-surefire-plugin 을 추가 하지 않을 경우 Maven `test` LifeCycle 에 Junit 을 실행 안함.
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>2.22.2</version>
+    </plugin>
+  </plugins>
+</build>
+```
 
 ## 참고
 - [동기화 클래스, 블로그](https://multifrontgarden.tistory.com/266)
