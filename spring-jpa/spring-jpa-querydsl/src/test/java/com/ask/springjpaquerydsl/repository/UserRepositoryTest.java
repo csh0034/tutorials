@@ -2,10 +2,14 @@ package com.ask.springjpaquerydsl.repository;
 
 import static com.ask.springjpaquerydsl.entity.QUser.user;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import com.ask.springjpaquerydsl.config.JpaConfig;
 import com.ask.springjpaquerydsl.entity.Company;
 import com.ask.springjpaquerydsl.entity.User;
+import com.ask.springjpaquerydsl.vo.UserVO;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +27,7 @@ import org.springframework.data.domain.Pageable;
 @Import(JpaConfig.class)
 @Slf4j
 class UserRepositoryTest {
-  
+
   @Autowired
   private UserRepository userRepository;
 
@@ -77,6 +81,40 @@ class UserRepositoryTest {
     log.info("totalElements: {}", page.getTotalElements());
     log.info("totalPages: {}", page.getTotalPages());
     log.info("number: {}", page.getNumber());
+  }
+
+  @DisplayName("constant 사용 검증")
+  @Test
+  void constant() {
+    // given
+    String constantValue = "constant-value...";
+
+    // when
+    List<UserVO> users = queryFactory.select(Projections.fields(UserVO.class,
+            user.id,
+            user.name,
+            Expressions.asString(constantValue).as("constant")
+            // Expressions.as(Expressions.constant(constantValue), "constant") 와 결과 동일.
+        ))
+        .from(user)
+        .fetch();
+
+    // that
+    users.forEach(userVO -> log.info("userVO: {}", userVO));
+  }
+
+  @DisplayName("constant 에 as 없을 경우 예외 발생 검증")
+  @Test
+  void constantException() {
+    // given
+    String constantValue = "constant";
+
+    // when then
+    assertThatIllegalArgumentException().isThrownBy(() -> Projections.fields(UserVO.class,
+        user.id,
+        user.name,
+        Expressions.constant(constantValue)
+    ));
   }
 
 }
