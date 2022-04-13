@@ -10,6 +10,7 @@ import com.ask.springjpaquerydsl.entity.User;
 import com.ask.springjpaquerydsl.vo.UserVO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +70,7 @@ class UserRepositoryTest {
         .limit(pageable.getPageSize())
         .fetch();
 
-    Long total = queryFactory.select(user.count())
+    Long total = queryFactory.select(Wildcard.count) // or user.count()
         .from(user)
         .fetchOne();
 
