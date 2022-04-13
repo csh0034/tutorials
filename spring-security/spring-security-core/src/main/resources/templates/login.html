@@ -5,7 +5,7 @@
   <title>Main Login</title>
 </head>
 <body>
-  <form action="/sub/login" method="post">
+  <form th:action="${login}" method="post">
     <input type="text" name="username" value="ask">
     <input type="password" name="password" value="ask111">
     <button>login!</button>

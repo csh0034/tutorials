@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,7 +31,8 @@ public class IndexController {
   }
 
   @GetMapping("/main/login")
-  public String mainLogin() {
+  public String mainLogin(Model model) {
+    model.addAttribute("login", "/main/login");
     return "login";
   }
 
@@ -48,7 +50,8 @@ public class IndexController {
   }
 
   @GetMapping("/sub/login")
-  public String subLogin() {
+  public String subLogin(Model model) {
+    model.addAttribute("login", "/sub/login");
     return "login";
   }
 

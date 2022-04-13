@@ -168,5 +168,39 @@ public class HttpSessionEventPublisher implements HttpSessionListener, HttpSessi
 }
 ```
 
+## [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)
+
+- Spring Security 5.7.0 부터 WebSecurityConfigurerAdapter 가 Deprecate 될 예정임.
+- 하단과 같이 설정 가능, SecurityFilterChain Bean + security Lambda dsl
+
+```java
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  return http.httpBasic(withDefaults())
+      .authorizeHttpRequests(authorize -> authorize
+          .anyRequest().authenticated())
+      .build();
+}
+```
+
+## [web.ignoring().antMatchers() not recommended](https://github.com/spring-projects/spring-security/issues/10938)
+
+- web.ignoring()이는 Spring Security 가 해당 엔드포인트에 보안 헤더 또는 기타 보호 조치를   
+  제공할 수 없음을 의미하므로 authorizeHttpRequests permitAll 을 사용하는것을 권장함.
+
+
+```java
+@Bean 
+@Order(0)
+public SecurityFilterChain resources(HttpSecurity http) throws Exception {
+    return http.requestMatchers((matchers) -> matchers.antMatchers("/static/**"))
+        .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+        .requestCache().disable()
+        .securityContext().disable()
+        .sessionManagement().disable()
+        .build();
+}
+```
+
 ## 참조
 - [Spring, Security](https://docs.spring.io/spring-security/reference/index.html)
