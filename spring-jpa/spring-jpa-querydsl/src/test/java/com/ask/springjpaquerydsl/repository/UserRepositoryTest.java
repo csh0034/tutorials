@@ -16,6 +16,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -116,6 +118,21 @@ class UserRepositoryTest {
         user.name,
         Expressions.constant(constantValue)
     ));
+  }
+
+  @DisplayName("querydsl exists 처리")
+  @ParameterizedTest
+  @CsvSource({
+      "user,true",
+      "none,false"
+  })
+  void exists(String keyword, boolean expected) {
+    boolean exists = queryFactory.selectOne()
+        .from(user)
+        .where(user.id.contains(keyword))
+        .fetchFirst() != null;  // limit(1).fetchOne() != null;
+
+    assertThat(exists).isEqualTo(expected);
   }
 
 }
