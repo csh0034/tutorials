@@ -1,5 +1,7 @@
 package com.ask.javacore.reflection;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import org.junit.jupiter.api.DisplayName;
@@ -20,24 +22,22 @@ public class GenericTest {
     Class<?> string = (Class<?>) parameterizedType.getActualTypeArguments()[0];
     String value = (String) string.getDeclaredConstructor(String.class).newInstance("TEST");
 
-    assert value.equals("TEST");
+    assertThat(value).isEqualTo("TEST");
 
     Class<?> exception = (Class<?>) parameterizedType.getActualTypeArguments()[1];
     RuntimeException runtimeException = (RuntimeException) exception.getDeclaredConstructor(String.class)
         .newInstance("message...");
 
-    assert runtimeException.getMessage().equals("message...");
+    assertThat(runtimeException.getMessage()).isEqualTo("message...");
   }
 
 
   public static abstract class GenericSample<T, U> {
-
     public T t;
     public U u;
   }
 
   public static class ConcreteGenericSample extends GenericSample<String, RuntimeException> {
-
   }
 
 }
