@@ -43,6 +43,8 @@
 - [spring-kafka](https://github.com/csh0034/tutorials/tree/master/spring-kafka)
 - [spring-lock](https://github.com/csh0034/tutorials/tree/master/spring-lock)
   - [spring-lock-redisson](https://github.com/csh0034/tutorials/tree/master/spring-lock/spring-lock-redisson)
+- [spring-logging](https://github.com/csh0034/tutorials/tree/master/spring-logging)
+  - [spring-logging-logback](https://github.com/csh0034/tutorials/tree/master/spring-logging/spring-logging-logback)
 - [spring-mail](https://github.com/csh0034/tutorials/tree/master/spring-mail)
 - [spring-quartz](https://github.com/csh0034/tutorials/tree/master/spring-quartz)
 - [spring-quickperf](https://github.com/csh0034/tutorials/tree/master/spring-quickperf)
