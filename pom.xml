@@ -40,6 +40,7 @@
     <module>serverless-framework</module>
     <module>jmeter</module>
     <module>spring-kafka</module>
+    <module>spring-logging</module>
   </modules>
 
   <properties>
