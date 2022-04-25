@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="5 seconds">
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+  <appender name="MASK_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="com.ask.logback.layout.MaskingPatternLayout">
+        <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern>
+        <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+      </layout>
+      <charset>${CONSOLE_LOG_CHARSET}</charset>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="MASK_CONSOLE"/>
+  </root>
+</configuration>
