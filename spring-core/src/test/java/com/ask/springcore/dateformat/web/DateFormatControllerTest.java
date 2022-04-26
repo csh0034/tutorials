@@ -3,7 +3,6 @@ package com.ask.springcore.dateformat.web;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +44,7 @@ class DateFormatControllerTest {
 
     // when
     ResultActions resultActions = mockMvc.perform(get("/date-format/1")
-        .params(request));
+        .queryParams(request));
 
     // then
     resultActions.andExpectAll(
@@ -89,7 +88,7 @@ class DateFormatControllerTest {
     request.add("requestDateTime", requestDateTime);
 
     // when
-    ResultActions resultActions = mockMvc.perform(get("/date-format/1")
+    ResultActions resultActions = mockMvc.perform(post("/date-format/3")
         .params(request));
 
     // then
@@ -112,7 +111,7 @@ class DateFormatControllerTest {
     request.add("requestDateTime", requestDateTime);
 
     // when
-    ResultActions resultActions = mockMvc.perform(get("/date-format/2")
+    ResultActions resultActions = mockMvc.perform(post("/date-format/4")
         .params(request));
 
     // then
