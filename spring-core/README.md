@@ -212,3 +212,23 @@ featureDefaults.put(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
 LifeCycle 과 다르게 isAutoStartup() true (default) 일 경우 start() 를 호출한다.
 
 종료시점에 isRunning() 을 확인하여 stop() 을 호출한다.
+
+
+## Request Body Logging
+
+Request Body Logging 을 할때 페이로드를 복사하지않고 스트림으로 읽을 경우 다시 읽으려할때 하단 예외 발생  
+따라서 request stream 을 캐싱해야한다.
+
+```text
+"message": "Could not read document: Stream closed; 
+  nested exception is java.io.IOException: Stream closed",
+```
+
+`ContentCachingRequestWrapper` 의 경우 하단 조건일 경우에만 지원한다.
+
+- Content-Type:application/x-www-form-urlencoded
+- Method-Type:POST
+
+### 참조
+
+-[spring-http-logging, baeldung](https://www.baeldung.com/spring-http-logging)
