@@ -1,7 +1,7 @@
 # Spring Cloud Config Client
 
 개발환경
-- spring boot 2.6.4
+- spring boot 2.6.7
 - Java 8
 - Maven
 
@@ -68,6 +68,7 @@ spring:
 - 우선 Native (File System) 모드에선 정상 작동함 다른곳에서도 동작하는지 테스트 해봐야함
   - 추가. git 모드에서도 동작 확인함
 
+> Reference QuickStart 부분 For example 보면 콤마로 구분하여 가져오는게 있는걸로 보아 모두 정상 지원 하는듯.
 
 ## [spring.config.import](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/#config-data-import)
 > spring.config.import=optional:configserver:
