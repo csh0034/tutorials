@@ -1,8 +1,8 @@
 ### actuator env
-GET http://localhost:9999/actuator/env
+GET http://localhost:8888/actuator/env
 
 ### actuator env update
-POST http://localhost:9999/actuator/env
+POST http://localhost:8888/actuator/env
 Content-Type: application/json
 
 {
@@ -12,4 +12,8 @@ Content-Type: application/json
 
 ### actuator 'spring.application.name' env 조회
 ### actuator env
-GET http://localhost:9999/actuator/env/spring.application.name
+GET http://localhost:8888/actuator/env/spring.application.name
+
+### 프로퍼티 조회
+### /{application}/{profile}[/{label}]
+GET http://localhost:8888/api/dev

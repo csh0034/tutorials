@@ -1,5 +1,5 @@
 server:
-  port: 9999
+  port: 8888
 
 management:
   endpoint:
@@ -16,5 +16,22 @@ management:
 spring:
   application:
     name: config-server
-  profiles:
-    active: native
+#  profiles:
+#    active:
+#      native
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:${user.home}/DEV/config-server-git
+#          delete-untracked-branches: true
+#          force-pull: true
+#        encrypt:
+#          enabled: false
+
+encrypt:
+  key-store:
+    location: classpath:config-server.jks
+    alias: config-server-key
+    password: ask112
+    secret: ask112

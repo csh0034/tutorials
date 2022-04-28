@@ -3,3 +3,4 @@ server:
 
 profile:
   name: api-default
+  password: '{cipher}AQAyKGQ1C3N7051C6bvf2udjx403v5pa8944wKsFr1JzkEnL6aWVdnUx+z4MasnTORakG1QdaPgCJ5elSq8srvT97iinnNlcyjOFmdCQdWuj1ocNZHW9XuZ2uDHzDCBpMGCW9WsutrchkgvXLAaYxe+43Fr4c/Mk3yM4RwLbizc+KFHUo3bsXm9uSyPMc4dJucxE3zc+YVhmdGEnhck3Dt/EdyHrqU/15adHh6xW2qxKUHa/m2+pLUg8WMx469RgaeULqD3DBAPUqPkuERcrdGtbpFsTHfCANC+o1wjDhxCe6TTw+fFa5fk7Xfmw4fG59oCb8LoL87detDOK83I6H56ASYCWew27NcedcP0iU9v8soadr4UWQ2SU9b5oYjpsjcU='
