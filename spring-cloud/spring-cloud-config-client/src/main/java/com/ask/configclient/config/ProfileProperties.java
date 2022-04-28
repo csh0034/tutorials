@@ -12,4 +12,6 @@ import org.springframework.stereotype.Component;
 public class ProfileProperties {
 
   private String name;
+  private String password;
+
 }

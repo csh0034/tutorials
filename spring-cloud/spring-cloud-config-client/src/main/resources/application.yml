@@ -8,5 +8,12 @@ spring:
 
   cloud:
     config:
-      uri: "http://localhost:9999"
+      uri: "http://localhost:8888"
       name: core,${spring.application.name}
+
+encrypt:
+  key-store:
+    location: classpath:config-server.jks
+    alias: config-server-key
+    password: ask112
+    secret: ask112

@@ -26,8 +26,8 @@ spring:
           uri: file:${user.home}/DEV/config-server-git
 #          delete-untracked-branches: true
 #          force-pull: true
-#        encrypt:
-#          enabled: false
+        encrypt:
+          enabled: false
 
 encrypt:
   key-store:
