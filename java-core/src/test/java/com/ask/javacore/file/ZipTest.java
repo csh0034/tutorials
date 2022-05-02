@@ -21,6 +21,11 @@ public class ZipTest {
     zos.write("test..".getBytes(StandardCharsets.UTF_8));
     zos.closeArchiveEntry();
 
+    ZipArchiveEntry entry2 = new ZipArchiveEntry("test2.txt");
+    zos.putArchiveEntry(entry2);
+    zos.write("test2..".getBytes(StandardCharsets.UTF_8));
+    zos.closeArchiveEntry();
+
     zos.close();
     bos.close();
 
