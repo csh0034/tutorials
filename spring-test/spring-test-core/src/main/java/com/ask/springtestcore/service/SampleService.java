@@ -8,4 +8,9 @@ public class SampleService {
   public String formatParam(String param) {
     return "param : " + param;
   }
+
+  public long unixTimestamp() {
+    return System.currentTimeMillis();
+  }
+
 }
