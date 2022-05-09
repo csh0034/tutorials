@@ -1,1 +1,12 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: @tutorials.oauth2.clientId@
+            client-secret: @tutorials.oauth2.clientSecret@
 
+logging:
+  level:
+    "[org.springframework.web.client.RestTemplate]": debug
