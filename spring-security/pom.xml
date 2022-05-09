@@ -20,6 +20,7 @@
     <module>authorization-server</module>
     <module>spring-security-core</module>
     <module>resource-server</module>
+    <module>oauth2-client</module>
   </modules>
 
 </project>
