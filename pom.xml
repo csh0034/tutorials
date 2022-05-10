@@ -41,6 +41,7 @@
     <module>jmeter</module>
     <module>spring-kafka</module>
     <module>spring-logging</module>
+    <module>spring-aop</module>
   </modules>
 
   <properties>
