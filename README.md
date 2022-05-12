@@ -32,6 +32,7 @@
 - [spring-integration](https://github.com/csh0034/tutorials/tree/master/spring-integration)
   - [consumer](https://github.com/csh0034/tutorials/tree/master/spring-integration/consumer)
   - [producer](https://github.com/csh0034/tutorials/tree/master/spring-integration/producer)
+  - [spring-integration-amqp](https://github.com/csh0034/tutorials/tree/master/spring-integration/spring-integration-amqp)
 - [spring-jpa](https://github.com/csh0034/tutorials/tree/master/spring-jpa)
   - [hibernate-multitenancy](https://github.com/csh0034/tutorials/tree/master/spring-jpa/hibernate-multitenancy)
   - [spring-jpa-core](https://github.com/csh0034/tutorials/tree/master/spring-jpa/spring-jpa-core)
