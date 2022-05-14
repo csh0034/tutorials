@@ -38,6 +38,21 @@ StringEncryptorBuilder 사용하여 프로퍼티를 기반으로 `StringEncrypto
 
 > 정리: 별도 StringEncryptor Bean 을 설정하지 않고 property 설정을 통해 사용하는것이 좋다.  
 
+## Default Encryption Algorithm
+
+- jasypt-spring-boot 기준
+- 2019/11/24, 3.0.0 Version Release 되면서 Default 가 `PBEWITHHMACSHA512ANDAES_256` 로 변경됨.
+- 이전엔 `PBEWithMD5AndDES` 였음
+
+이전 버전을 유지하기위해선 하단과 같이 프로퍼티 설정 해야함.
+
+```yaml
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+```
+
 ## jasypt-maven-plugin
 
 - property 설정을 기반으로 `DefaultLazyEncryptor` 를 사용한다.
