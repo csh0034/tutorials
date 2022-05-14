@@ -42,6 +42,7 @@
     <module>spring-kafka</module>
     <module>spring-logging</module>
     <module>spring-aop</module>
+    <module>spring-jasypt</module>
   </modules>
 
   <properties>
