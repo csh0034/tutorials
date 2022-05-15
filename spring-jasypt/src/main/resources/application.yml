@@ -2,7 +2,10 @@ jasypt:
   encryptor:
     password: secret-password
 
-
 custom:
   name: ASk
   password: ENC(WB65brCwKnwgELtHzXL9docoEazIEUMAg5Ih6ezfyTEhsHu2P04vRjerqsu+RILo)
+
+logging:
+  level:
+    "[com.ask]": debug

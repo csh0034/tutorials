@@ -1,28 +1,44 @@
 package com.ask.springjasypt.config;
 
+import com.ulisesbocchio.jasyptspringboot.configuration.EnvCopy;
+import com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder;
+import com.ulisesbocchio.jasyptspringboot.properties.JasyptEncryptorConfigurationProperties;
+import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
-import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * StringEncryptor Bean 을 설정하지 말고 property 설정을 기반으로 DefaultLazyEncryptor 를 사용하는것이 좋다.
  */
-//@Configuration
+@Configuration
+@RequiredArgsConstructor
 public class JasyptConfig {
 
-  //  @Bean
+  private static final String JASYPT_PREFIX = "jasypt.encryptor";
+
+  private final EnvCopy envCopy;
+
+  @Bean
   public StringEncryptor jasyptStringEncryptor() {
-    PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
-    SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-    config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
-    config.setPassword("asdf");
-    config.setKeyObtentionIterations("1000");
-    config.setPoolSize("1");
-    config.setProviderName("SunJCE");
-    config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
-    config.setStringOutputType("base64");
-    encryptor.setConfig(config);
-    return encryptor;
+    return new LenientPBStringEncryptor(
+        new StringEncryptorBuilder(JasyptEncryptorConfigurationProperties.bindConfigProps(envCopy.get()), JASYPT_PREFIX)
+            .build());
   }
+
+//  @Bean
+//  public StringEncryptor jasyptStringEncryptor() {
+//    PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+//    SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+//    config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
+//    config.setPassword("asdf");
+//    config.setKeyObtentionIterations("1000");
+//    config.setPoolSize("1");
+//    config.setProviderName("SunJCE");
+//    config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+//    config.setStringOutputType("base64");
+//    encryptor.setConfig(config);
+//    return encryptor;
+//  }
 
 }
