@@ -38,6 +38,69 @@ StringEncryptorBuilder 사용하여 프로퍼티를 기반으로 `StringEncrypto
 
 > 정리: 별도 StringEncryptor Bean 을 설정하지 않고 property 설정을 통해 사용하는것이 좋다.  
 
+## Custom StringEncryptor 설정
+
+### application.yml 값을 기반으로 생성
+
+```java
+@Configuration
+@RequiredArgsConstructor
+public class JasyptConfig {
+
+  private static final String JASYPT_PREFIX = "jasypt.encryptor";
+
+  private final EnvCopy envCopy;
+
+  @Bean
+  public StringEncryptor jasyptStringEncryptor() {
+    return new StringEncryptorBuilder(JasyptEncryptorConfigurationProperties.bindConfigProps(envCopy.get()), JASYPT_PREFIX)
+        .build();
+  }
+}
+```
+
+### 직접 필드 세팅하여 생성
+
+```java
+@Bean
+public StringEncryptor jasyptStringEncryptor() {
+  PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+  SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+  config.setPassword("password");
+  config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
+  config.setKeyObtentionIterations("1000");
+  config.setPoolSize("1");
+  config.setProviderName("SunJCE");
+  config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+  config.setIvGeneratorClassName("org.jasypt.iv.RandomIvGenerator");
+  config.setStringOutputType("base64");
+  encryptor.setConfig(config);
+  return encryptor;
+}
+```
+
+## StringEncryptor 설정 로그
+
+### 커스텀 Bean 을 찾지 못했을 경우 로그
+
+```text
+c.u.j.encryptor.DefaultLazyEncryptor     : String Encryptor custom Bean not found with name 'jasyptStringEncryptor'. Initializing Default String Encryptor
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.algorithm, using default value: PBEWITHHMACSHA512ANDAES_256
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.key-obtention-iterations, using default value: 1000
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.pool-size, using default value: 1
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.provider-name, using default value: null
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.provider-class-name, using default value: null
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.salt-generator-classname, using default value: org.jasypt.salt.RandomSaltGenerator
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.iv-generator-classname, using default value: org.jasypt.iv.RandomIvGenerator
+c.u.j.c.StringEncryptorBuilder           : Encryptor config not found for property jasypt.encryptor.string-output-type, using default value: base64
+```
+
+### 커스텀 Bean 을 찾았을 경우 로그
+
+```text
+c.u.j.encryptor.DefaultLazyEncryptor     : Found Custom Encryptor Bean org.jasypt.encryption.pbe.PooledPBEStringEncryptor@680bddf5 with name: jasyptStringEncryptor
+```
+
 ## Default Encryption Algorithm
 
 - jasypt-spring-boot 기준
