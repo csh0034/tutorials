@@ -44,18 +44,14 @@ StringEncryptorBuilder 사용하여 프로퍼티를 기반으로 `StringEncrypto
 
 ```java
 @Configuration
-@RequiredArgsConstructor
 public class JasyptConfig {
 
-  private static final String JASYPT_PREFIX = "jasypt.encryptor";
-
-  private final EnvCopy envCopy;
-
   @Bean
-  public StringEncryptor jasyptStringEncryptor() {
-    return new StringEncryptorBuilder(JasyptEncryptorConfigurationProperties.bindConfigProps(envCopy.get()), JASYPT_PREFIX)
+  public StringEncryptor jasyptStringEncryptor(EnvCopy envCopy) {
+    return new StringEncryptorBuilder(bindConfigProps(envCopy.get()), "jasypt.encryptor")
         .build();
   }
+  
 }
 ```
 

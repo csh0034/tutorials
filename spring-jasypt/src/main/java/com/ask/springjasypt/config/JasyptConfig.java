@@ -1,9 +1,9 @@
 package com.ask.springjasypt.config;
 
+import static com.ulisesbocchio.jasyptspringboot.properties.JasyptEncryptorConfigurationProperties.bindConfigProps;
+
 import com.ulisesbocchio.jasyptspringboot.configuration.EnvCopy;
 import com.ulisesbocchio.jasyptspringboot.configuration.StringEncryptorBuilder;
-import com.ulisesbocchio.jasyptspringboot.properties.JasyptEncryptorConfigurationProperties;
-import lombok.RequiredArgsConstructor;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,18 +12,12 @@ import org.springframework.context.annotation.Configuration;
  * StringEncryptor Bean 을 설정하지 말고 property 설정을 기반으로 DefaultLazyEncryptor 를 사용하는것이 좋다.
  */
 @Configuration
-@RequiredArgsConstructor
 public class JasyptConfig {
 
-  private static final String JASYPT_PREFIX = "jasypt.encryptor";
-
-  private final EnvCopy envCopy;
-
   @Bean
-  public StringEncryptor jasyptStringEncryptor() {
-    return new LenientPBStringEncryptor(
-        new StringEncryptorBuilder(JasyptEncryptorConfigurationProperties.bindConfigProps(envCopy.get()), JASYPT_PREFIX)
-            .build());
+  public StringEncryptor jasyptStringEncryptor(EnvCopy envCopy) {
+    return new StringEncryptorBuilder(bindConfigProps(envCopy.get()), "jasypt.encryptor")
+        .build();
   }
 
 //  @Bean
