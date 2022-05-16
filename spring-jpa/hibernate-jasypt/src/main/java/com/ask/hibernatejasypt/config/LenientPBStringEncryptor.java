@@ -1,18 +1,16 @@
 package com.ask.hibernatejasypt.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PBEStringCleanablePasswordEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 
 @Slf4j
+@RequiredArgsConstructor
 public class LenientPBStringEncryptor implements PBEStringCleanablePasswordEncryptor {
 
   private final PooledPBEStringEncryptor pooledPBEStringEncryptor;
-
-  public LenientPBStringEncryptor(StringEncryptor stringEncryptor) {
-    this.pooledPBEStringEncryptor = (PooledPBEStringEncryptor) stringEncryptor;
-  }
 
   @Override
   public String encrypt(String message) {
