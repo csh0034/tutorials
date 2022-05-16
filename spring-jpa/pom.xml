@@ -24,6 +24,7 @@
     <module>hibernate-multitenancy</module>
     <module>spring-jpa-querydsl</module>
     <module>spring-jpa-core</module>
+    <module>hibernate-jasypt</module>
   </modules>
 
 </project>
