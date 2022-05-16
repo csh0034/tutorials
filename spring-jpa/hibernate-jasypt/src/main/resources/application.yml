@@ -1,1 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
 
+  sql:
+    init:
+      data-locations: classpath:sql/data.sql
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+    open-in-view: false
+    defer-datasource-initialization: true
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
+
+jasypt:
+  password: b71c6f52
