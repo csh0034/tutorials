@@ -43,6 +43,7 @@
     <module>spring-logging</module>
     <module>spring-aop</module>
     <module>spring-jasypt</module>
+    <module>spring-flyway</module>
   </modules>
 
   <properties>
