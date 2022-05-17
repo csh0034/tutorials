@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/tb_flyway?createDatabaseIfNotExist=true
+    username: root
+    password: 111111
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+    open-in-view: false
+
+  flyway:
+    baseline-on-migrate: true
+#    baseline-version: 1
+
+logging:
+  level:
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
