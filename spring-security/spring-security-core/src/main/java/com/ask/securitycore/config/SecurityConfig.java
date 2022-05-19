@@ -20,6 +20,7 @@ public class SecurityConfig {
             .antMatchers("/main/css/**", "/sub/css/**"))
         .authorizeHttpRequests(authorize -> authorize
             .anyRequest().permitAll())
+        .csrf().disable()
         .requestCache().disable()
         .securityContext().disable()
         .sessionManagement().disable()
