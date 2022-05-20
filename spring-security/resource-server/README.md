@@ -45,6 +45,12 @@ org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 OAuth2ResourceServerJwtConfiguration
 - Spring boot 사용시 프로퍼티 기반 jwk url, public-key-location 을 지정하여 사용 가능하다.
 
+## ECDSA
+
+- Elliptic Curve Digital Signature Algorithm
+- 타원곡선을 활용한 디지털 서명
+- 서명체계로는 p-256, secp256k1, prime256v1 등이 있다.
+
 ## EdDSA
 
 - Edwards-curve Digital Signature Algorithm
@@ -60,4 +66,4 @@ OAuth2ResourceServerJwtConfiguration
 - [Spring Security, OAuth 2.0 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html)
 - [Spring Security GitHub, OAuth 2.0 Migration Guide](https://github.com/spring-projects/spring-security/wiki/OAuth-2.0-Migration-Guide)
 - [How to generate a JSON Web Key (JWK)](https://connect2id.com/products/nimbus-jose-jwt/examples/jwk-generation)
-- [GitHub, noimbus jose jwt](https://github.com/felx/nimbus-jose-jwt)
+- [Bitbucket, noimbus jose jwt](https://bitbucket.org/connect2id/nimbus-jose-jwt/src/master/)
