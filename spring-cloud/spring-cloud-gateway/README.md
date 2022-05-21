@@ -593,6 +593,32 @@ $ curl --verbose -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWI
 invalid role* Closing connection 0
 ```
 
+## Troubleshooting
+
+### java.lang.UnsatisfiedLinkError: no netty_resolver_dns_native_macos_aarch_64
+
+M1 에서 하단과 같은 에러 발생
+
+```text
+Caused by: java.io.FileNotFoundException: META-INF/native/libnetty_resolver_dns_native_macos_aarch_64.jnilib
+Suppressed: java.lang.UnsatisfiedLinkError: no netty_resolver_dns_native_macos_aarch_64 in java.library.path
+```
+
+`netty-resolver-dns-native-macos` 의 classifier 를 `osx-aarch_64` 로 지정해줘야함  
+netty 내부 의존성에는 classifier 가 `osx-x86_64` 로 되어있음.
+
+```xml
+<dependency>
+  <groupId>io.netty</groupId>
+  <artifactId>netty-resolver-dns-native-macos</artifactId>
+  <version>4.1.76.Final</version>
+  <classifier>osx-aarch_64</classifier>
+</dependency>
+```
+
+- [관련 Netty GitHub Issue](https://github.com/netty/netty/issues/11020)
+- [Spring Api-Gateway: (M1) java.lang.UnsatisfiedLinkError: no netty_resolver_dns_native_macos_aarch_64](https://stackoverflow.com/questions/71966221/spring-api-gateway-m1-java-lang-unsatisfiedlinkerror-no-netty-resolver-dns-n)
+
 ## 참조
 
 - [Spring Cloud Gateway, Reference](https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/)

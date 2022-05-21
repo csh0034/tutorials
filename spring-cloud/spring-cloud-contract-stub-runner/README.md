@@ -100,6 +100,39 @@ Spring Boot 애플리케이션 에서 WireMock 과의 통합을 지원한다.
 
 json 또는 java dsl 을 사용하여 Wiremock 을 스텁 동작을 등록할 수 있다. 
 
+## Troubleshooting
+
+### no conscrypt_openjdk_jni-osx-aarch_64 in java.library.path
+
+M1 에서 wiremock 사용시 하단과 같은 에러 발생
+
+```text
+Caused by: java.lang.IllegalStateException: No Server ALPNProcessors!
+Suppressed: java.lang.UnsatisfiedLinkError: no conscrypt_openjdk_jni-osx-aarch_64 in java.library.path
+```
+
+이는 com.github.tomakehurst:wiremock-jre8-standalone 라이브러리 이슈임
+
+wiremock:2.32.0 이후에 해결되었음.   
+하단과 같이 wiremock 버전을 올리던가 spring cloud version 2021.0.2 로 올리면됨.
+
+- cloud version 2021.0.2
+- spring-cloud-contract-stub-runner:3.1.2
+- spring-cloud-contract-wiremock:3.1.2
+- com.github.tomakehurst:wiremock-jre8-standalone:2.33.0
+
+```xml
+<dependency>
+  <groupId>com.github.tomakehurst</groupId>
+  <artifactId>wiremock-jre8-standalone</artifactId>
+  <version>2.33.2</version>
+  <scope>test</scope>
+</dependency>
+```
+
+[Not working on Macbook m1 chip + jdk 17](https://github.com/spring-cloud/spring-cloud-contract/issues/1724)  
+[Conscrypt not found on Aarch](https://github.com/wiremock/wiremock/issues/1671)
+
 ## 참조
 - [Spring Cloud Contract Stub Runner](https://docs.spring.io/spring-cloud-contract/docs/current/reference/html/project-features.html#features-stub-runner)
 - [Spring Cloud Contract WireMock](https://docs.spring.io/spring-cloud-contract/docs/current/reference/html/project-features.html#features-wiremock)
