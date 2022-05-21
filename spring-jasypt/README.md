@@ -112,6 +112,17 @@ jasypt:
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
 ```
 
+### PBEWITHHMACSHA512ANDAES_256 이란?
+
+PBKDF2를 적용하여 키를 생성하며 암호화는 AES-256, CBC 를 사용한다.  
+RandomSaltGenerator 와 RandomIvGenerator 를 사용할 경우 암호화 될때 사용되며  
+결과값에 salt 와 iv key 가 포함된다. 따라서 복호화시에 이 값을 추출하여 진행한다.
+
+- PBE(Password based Encryption): 사용자가 제공하는 패스워드(key)를 기반으로 비밀키를 생성
+- PBKDF2: 사용자가 제공하는 패스워드(key)를 기반으로 키를 유도하기 위한 대표적인 함수
+
+> PBKDF2 를 사용해 password 로 부터 키를 유도하여 AES-256 을 통해 암호화한다.
+
 ## jasypt-maven-plugin
 
 - property 설정을 기반으로 `DefaultLazyEncryptor` 를 사용한다.
