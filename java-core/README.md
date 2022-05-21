@@ -47,5 +47,36 @@
 </build>
 ```
 
+## Unicode Normalization (유니코드 정규화)
+
+| -   | NFC                | NFD                | NFKC                 | NFKD                 |
+|-----|--------------------|--------------------|----------------------|----------------------|
+| 유형  | 정규형 C<br>정규형 정준 결합 | 정규형 D<br>정규형 정준 분해 | 정규형 KC<br>정규형 호환성 결합 | 정규형 KD<br>정규형 호환성 분해 |
+| 설명  | 정준분해 후, 정준결합       | 	정준분해              | 	호환성 분해 후, 정준결합      | 	호환성 분해              |
+| 예시  | 각 -> 각             | 각 -> ㄱㅏㄱ           | 각 -> 각               | 각 -> ㄱㅏㄱ             |
+
+Mac 의 경우 NFD 정규화 방식을 사용함  
+Windows 와 Linux 는 NFC 방식을 사용함
+
+> 일반적으로 UTF8 은 NFC 방식을 사용함
+
+Mac 에서 올린 한글 파일명이 윈도우나 리눅스 환경에서는 자, 모음이 분리된 것처럼 보임   
+따라서 NFC 아닐 경우 NFC 로 변환 해줘야함
+
+```java
+import java.text.Normalizer;
+
+// NFC 방식이 아닐경우 NFC 방식으로 변경
+public static String normalizeNfc(String value) {
+  if (!Normalizer.isNormalized(value, Normalizer.Form.NFC)) {
+    return Normalizer.normalize(value, Normalizer.Form.NFC);
+  }
+  return value;
+}
+```
+
+- SublimeText 는 기본적으로 NFC 로 동작 하므로 finder 에서 파일명을 복사해서 붙혀넣기 하면 한글이 분해됨
+- Mac 에서 Numbers 로 엑셀을 보면 안깨져있지만 Microsoft Excel 로 보면 깨져있음
+
 ## 참고
 - [동기화 클래스, 블로그](https://multifrontgarden.tistory.com/266)
