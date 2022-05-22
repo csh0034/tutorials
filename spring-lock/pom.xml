@@ -18,6 +18,7 @@
 
   <modules>
     <module>spring-lock-redisson</module>
+    <module>spring-lock-shedlock</module>
   </modules>
 
 </project>
