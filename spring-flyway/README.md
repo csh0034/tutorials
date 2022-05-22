@@ -5,6 +5,12 @@
   <groupId>org.flywaydb</groupId>
   <artifactId>flyway-core</artifactId>
 </dependency>
+
+<!-- spring boot 2.7.x 부터 필요함 -->
+<dependency>
+  <groupId>org.flywaydb</groupId>
+  <artifactId>flyway-mysql</artifactId>
+</dependency>
 ```
 
 ## Flyway 란?
