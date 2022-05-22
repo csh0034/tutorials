@@ -23,13 +23,14 @@ public class LockRunner implements ApplicationRunner {
     String lockKey = DigestUtils.sha1Hex("key..");
 
     lockingTaskExecutor.executeWithLock((Runnable) () -> {
-
       log.info("LockRunner start...");
+
       try {
         Thread.sleep(3000);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
+
       log.info("LockRunner end...");
     }, new LockConfiguration(Instant.now(), lockKey, Duration.ofSeconds(10), Duration.ofSeconds(10)));
   }
