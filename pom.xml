@@ -44,6 +44,7 @@
     <module>spring-aop</module>
     <module>spring-jasypt</module>
     <module>spring-flyway</module>
+    <module>google-sheets</module>
   </modules>
 
   <properties>
