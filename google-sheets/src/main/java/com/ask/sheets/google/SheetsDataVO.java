@@ -1,7 +1,7 @@
 package com.ask.sheets.google;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +10,6 @@ import lombok.Setter;
 public class SheetsDataVO {
 
   private String language;
-  private SortedMap<String, String> dataMap = new TreeMap<>();
+  private Map<String, String> dataMap = new LinkedHashMap<>();
 
 }
