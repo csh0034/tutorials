@@ -37,7 +37,7 @@ public final class SheetsUtils {
   private static final String DEFAULT_LANGUAGE = "en";
   private static final String TARGET_DIR_PATH = "src/main/resources/message";
 
-  public static void sheetToResources(String spreadsheetId) throws IOException {
+  public static void sheetToResources(String spreadsheetId) throws IOException, GeneralSecurityException {
     Sheets service = readSheets();
     List<String> sheetTitles = getSheetTitles(service, spreadsheetId);
 
@@ -50,28 +50,20 @@ public final class SheetsUtils {
     }
   }
 
-  public static Sheets readSheets() {
+  public static Sheets readSheets() throws IOException, GeneralSecurityException {
     HttpRequestInitializer credential = getCredentials();
-    try {
       return new Builder(GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(), credential)
           .setApplicationName(APPLICATION_NAME)
           .build();
-    } catch (GeneralSecurityException | IOException e) {
-      throw new RuntimeException(e);
-    }
   }
 
-  private static HttpRequestInitializer getCredentials() {
-    try {
-      InputStream is = new ClassPathResource(SERVICE_ACCOUNT_JSON).getInputStream();
-      GoogleCredentials googleCredentials = ServiceAccountCredentials.fromStream(is);
-      return new HttpCredentialsAdapter(googleCredentials);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  private static HttpRequestInitializer getCredentials() throws IOException {
+    InputStream is = new ClassPathResource(SERVICE_ACCOUNT_JSON).getInputStream();
+    GoogleCredentials googleCredentials = ServiceAccountCredentials.fromStream(is);
+    return new HttpCredentialsAdapter(googleCredentials);
   }
 
-  public static List<String> getSheetTitles(Sheets service, String spreadsheetId) throws IOException {
+  private static List<String> getSheetTitles(Sheets service, String spreadsheetId) throws IOException {
     Spreadsheet spreadsheet = service.spreadsheets().get(spreadsheetId).execute();
     List<Sheet> sheets = spreadsheet.getSheets();
     return sheets.stream()
