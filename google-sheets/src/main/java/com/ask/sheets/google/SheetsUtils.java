@@ -1,30 +1,45 @@
 package com.ask.sheets.google;
 
+import static java.util.stream.Collectors.toList;
+
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.Sheets.Builder;
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.SheetProperties;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.auth.http.HttpCredentialsAdapter;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SheetsUtils {
 
-  private static final String COMMENT = "언어리소스";
+  private static final String APPLICATION_NAME = "google-sheet";
+  private static final String SERVICE_ACCOUNT_JSON = "service.json";
   private static final String DEFAULT_LANGUAGE = "en";
   private static final String TARGET_DIR_PATH = "src/main/resources/message";
 
   public static void sheetToResources(String spreadsheetId) throws IOException {
-    Sheets service = SheetsReadUtils.readSheets();
-    List<String> sheetTitles = SheetsReadUtils.getSheetTitles(service, spreadsheetId);
+    Sheets service = readSheets();
+    List<String> sheetTitles = getSheetTitles(service, spreadsheetId);
 
     for (String sheetTitle : sheetTitles) {
       ValueRange response = service.spreadsheets().values()
@@ -35,6 +50,36 @@ public final class SheetsUtils {
     }
   }
 
+  public static Sheets readSheets() {
+    HttpRequestInitializer credential = getCredentials();
+    try {
+      return new Builder(GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(), credential)
+          .setApplicationName(APPLICATION_NAME)
+          .build();
+    } catch (GeneralSecurityException | IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static HttpRequestInitializer getCredentials() {
+    try {
+      InputStream is = new ClassPathResource(SERVICE_ACCOUNT_JSON).getInputStream();
+      GoogleCredentials googleCredentials = ServiceAccountCredentials.fromStream(is);
+      return new HttpCredentialsAdapter(googleCredentials);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static List<String> getSheetTitles(Sheets service, String spreadsheetId) throws IOException {
+    Spreadsheet spreadsheet = service.spreadsheets().get(spreadsheetId).execute();
+    List<Sheet> sheets = spreadsheet.getSheets();
+    return sheets.stream()
+        .map(Sheet::getProperties)
+        .map(SheetProperties::getTitle)
+        .collect(toList());
+  }
+
   private static void generateResources(String title, ValueRange response) {
     List<SheetsDataVO> sheetsDataVOS = new ArrayList<>();
     titleSheetDataVO(sheetsDataVOS, response);
@@ -43,8 +88,8 @@ public final class SheetsUtils {
     for (SheetsDataVO sheetsDataVO : sheetsDataVOS) {
       createPropertiesFile(title, sheetsDataVO, sheetsDataVO.getLanguage());
     }
-    SheetsDataVO defaultSheetsDataVO = getDefaultSheetDataVO(sheetsDataVOS);
-    createPropertiesFile(title, defaultSheetsDataVO, "");
+
+    createPropertiesFile(title, getDefaultSheetDataVO(sheetsDataVOS));
   }
 
   private static void titleSheetDataVO(List<SheetsDataVO> sheetsDataVOS, ValueRange response) {
@@ -79,20 +124,17 @@ public final class SheetsUtils {
     }
   }
 
+  private static void createPropertiesFile(String sheetName, SheetsDataVO sheetsDataVO) {
+    createPropertiesFile(sheetName, sheetsDataVO, "");
+  }
+
   private static void createPropertiesFile(String sheetName, SheetsDataVO sheetsDataVO, String targetLanguage) {
     String resourceFilePath = getResourceFilePath(sheetName, targetLanguage);
 
-    Properties properties = new Properties();
-
-    if (sheetsDataVO != null) {
+    try (OutputStream outputStream = Files.newOutputStream(Paths.get(resourceFilePath))) {
       for (Map.Entry<String, String> entry : sheetsDataVO.getDataMap().entrySet()) {
-        properties.setProperty(entry.getKey(), entry.getValue());
+        outputStream.write(String.format("%s=%s\n", entry.getKey(), entry.getValue()).getBytes(StandardCharsets.UTF_8));
       }
-    }
-
-    try {
-      properties.store(new OutputStreamWriter(Files.newOutputStream(Paths.get(resourceFilePath)), StandardCharsets.UTF_8),
-          COMMENT);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -107,12 +149,10 @@ public final class SheetsUtils {
   }
 
   private static SheetsDataVO getDefaultSheetDataVO(List<SheetsDataVO> sheetsDataVOS) {
-    for (SheetsDataVO vo : sheetsDataVOS) {
-      if (DEFAULT_LANGUAGE.equals(vo.getLanguage())) {
-        return vo;
-      }
-    }
-    return null;
+    return sheetsDataVOS.stream()
+        .filter(vo -> StringUtils.equals(vo.getLanguage(), DEFAULT_LANGUAGE))
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("default language sheet does not exist"));
   }
 
 }
