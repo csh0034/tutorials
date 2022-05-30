@@ -16,7 +16,7 @@
   </properties>
 
   <modules>
-      <module>google-sheets</module>
+    <module>google-sheets</module>
   </modules>
 
 </project>
