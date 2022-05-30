@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/envers
+    url: jdbc:mariadb://localhost:3306/tb_envers?createDatabaseIfNotExist=true
     username: root
     password: 111111
 

@@ -298,6 +298,17 @@ public EmptyInterceptor hibernateInterceptor() {
 
 ***
 
+## JPQL Envers 동작
+
+JPQL 을 사용하여 update (executeUpdate() 사용) 할 경우 **Envers 가 동작하지 않는다.**  
+Hibernate 이벤트 메커니즘을 통과하지 않기 때문임.
+
+EnversIntegrator 에서 처리됨
+
+- [stack overflow, envers only works with persist(), merge()](https://stackoverflow.com/questions/14139856/hibernate-envers-doesnt-write-audit-records-for-createquery-executeupdat)
+
+***
+
 ## 참조
 - [spring data envers](https://docs.spring.io/spring-data/envers/docs/current/reference/html/#reference)
 - [hibernate document](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#envers-configuration)
