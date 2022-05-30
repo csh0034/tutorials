@@ -1,1 +1,4 @@
-
+spring:
+  messages:
+    basename: message/ApplicationResources
+    use-code-as-default-message: true
