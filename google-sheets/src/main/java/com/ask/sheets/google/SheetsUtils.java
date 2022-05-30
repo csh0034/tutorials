@@ -34,97 +34,92 @@ public final class SheetsUtils {
 
   private static final String APPLICATION_NAME = "google-sheet";
   private static final String SERVICE_ACCOUNT_JSON = "service.json";
-  private static final String DEFAULT_LANGUAGE = "en";
-  private static final String TARGET_DIR_PATH = "src/main/resources/message";
+  private static final String DEFAULT_LANGUAGE = "ko";
+  private static final String RESOURCES_PATH = "src/main/resources/message";
 
-  public static void sheetToResources(String spreadsheetId) throws IOException, GeneralSecurityException {
-    Sheets service = readSheets();
-    List<String> sheetTitles = getSheetTitles(service, spreadsheetId);
+  public static void sheetsToResources(String sheetsId) throws IOException, GeneralSecurityException {
+    Sheets sheets = loadSheets();
+    List<String> titles = extractSheetTitles(sheets, sheetsId);
 
-    for (String sheetTitle : sheetTitles) {
-      ValueRange response = service.spreadsheets().values()
-          .get(spreadsheetId, sheetTitle)
+    for (String title : titles) {
+      ValueRange response = sheets.spreadsheets().values()
+          .get(sheetsId, title)
           .execute();
 
-      generateResources(sheetTitle, response);
+      generateResources(title, response);
     }
   }
 
-  public static Sheets readSheets() throws IOException, GeneralSecurityException {
-    HttpRequestInitializer credential = getCredentials();
-      return new Builder(GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(), credential)
-          .setApplicationName(APPLICATION_NAME)
-          .build();
+  private static Sheets loadSheets() throws IOException, GeneralSecurityException {
+    HttpRequestInitializer credential = loadCredentials();
+    return new Builder(GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(), credential)
+        .setApplicationName(APPLICATION_NAME)
+        .build();
   }
 
-  private static HttpRequestInitializer getCredentials() throws IOException {
+  private static HttpRequestInitializer loadCredentials() throws IOException {
     InputStream is = new ClassPathResource(SERVICE_ACCOUNT_JSON).getInputStream();
     GoogleCredentials googleCredentials = ServiceAccountCredentials.fromStream(is);
     return new HttpCredentialsAdapter(googleCredentials);
   }
 
-  private static List<String> getSheetTitles(Sheets service, String spreadsheetId) throws IOException {
-    Spreadsheet spreadsheet = service.spreadsheets().get(spreadsheetId).execute();
-    List<Sheet> sheets = spreadsheet.getSheets();
-    return sheets.stream()
+  private static List<String> extractSheetTitles(Sheets sheets, String sheetsId) throws IOException {
+    Spreadsheet spreadsheet = sheets.spreadsheets().get(sheetsId).execute();
+    return spreadsheet.getSheets()
+        .stream()
         .map(Sheet::getProperties)
         .map(SheetProperties::getTitle)
         .collect(toList());
   }
 
   private static void generateResources(String title, ValueRange response) {
-    List<SheetsDataVO> sheetsDataVOS = new ArrayList<>();
-    titleSheetDataVO(sheetsDataVOS, response);
-    getSheetDataVO(sheetsDataVOS, response);
+    List<SheetsVO> sheetsVOs = extractHead(response);
+    putSheetsBodyToVOs(response, sheetsVOs);
 
-    for (SheetsDataVO sheetsDataVO : sheetsDataVOS) {
-      createPropertiesFile(title, sheetsDataVO, sheetsDataVO.getLanguage());
+    for (SheetsVO sheetsVO : sheetsVOs) {
+      generatePropertiesFile(title, sheetsVO, sheetsVO.getLanguage());
     }
 
-    createPropertiesFile(title, getDefaultSheetDataVO(sheetsDataVOS));
+    generatePropertiesFile(title, getDefaultLanguageVO(sheetsVOs));
   }
 
-  private static void titleSheetDataVO(List<SheetsDataVO> sheetsDataVOS, ValueRange response) {
-    List<List<Object>> values = response.getValues();
-    List<Object> objects = values.get(0);
+  private static List<SheetsVO> extractHead(ValueRange response) {
+    List<SheetsVO> headVOs = new ArrayList<>();
+
+    List<Object> objects = response.getValues().get(0);
     for (int i = 1; i < objects.size(); i++) {
-      SheetsDataVO dataVO = new SheetsDataVO();
-      dataVO.setLanguage(String.valueOf(objects.get(i)));
-      sheetsDataVOS.add(dataVO);
+      SheetsVO sheetsVO = new SheetsVO(String.valueOf(objects.get(i)));
+      headVOs.add(sheetsVO);
     }
+
+    return headVOs;
   }
 
-  private static void getSheetDataVO(List<SheetsDataVO> sheetsDataVOS, ValueRange response) {
+  private static void putSheetsBodyToVOs(ValueRange response, List<SheetsVO> sheetsVOs) {
     List<List<Object>> values = response.getValues();
 
-    for (int i = 0; i < values.size(); i++) {
+    for (int i = 1; i < values.size(); i++) {
+      List<Object> objects = values.get(i);
+      for (int j = 1; j < objects.size(); j++) {
+        Map<String, String> data = sheetsVOs.get(j - 1).getData();
 
-      if (i == 0) {
-        continue;
+        String key = String.valueOf(objects.get(0));
+        String value = String.valueOf(objects.get(j));
+
+        data.put(key, value);
       }
-
-      String key = "";
-      List<Object> rowData = values.get(i);
-      for (int j = 0; j < rowData.size(); j++) {
-        if (j == 0) {
-          key = rowData.get(j).toString();
-        } else {
-          sheetsDataVOS.get(j - 1).getDataMap().put(key, rowData.get(j).toString());
-        }
-      }
-
     }
   }
 
-  private static void createPropertiesFile(String sheetName, SheetsDataVO sheetsDataVO) {
-    createPropertiesFile(sheetName, sheetsDataVO, "");
+  private static void generatePropertiesFile(String title, SheetsVO sheetsVO) {
+    generatePropertiesFile(title, sheetsVO, "");
   }
 
-  private static void createPropertiesFile(String sheetName, SheetsDataVO sheetsDataVO, String targetLanguage) {
-    String resourceFilePath = getResourceFilePath(sheetName, targetLanguage);
+  private static void generatePropertiesFile(String title, SheetsVO sheetsVO, String language) {
+    String propertiesPath = getPropertiesPath(title, language);
 
-    try (OutputStream outputStream = Files.newOutputStream(Paths.get(resourceFilePath))) {
-      for (Map.Entry<String, String> entry : sheetsDataVO.getDataMap().entrySet()) {
+    try (OutputStream outputStream = Files.newOutputStream(Paths.get(propertiesPath))) {
+      for (Map.Entry<String, String> entry : sheetsVO.getData().entrySet()) {
         outputStream.write(String.format("%s=%s\n", entry.getKey(), entry.getValue()).getBytes(StandardCharsets.UTF_8));
       }
     } catch (IOException e) {
@@ -132,16 +127,15 @@ public final class SheetsUtils {
     }
   }
 
-  private static String getResourceFilePath(String sheetName, String targetLanguage) {
-    if (StringUtils.isBlank(targetLanguage)) {
-      return String.format("%s/%s.properties", TARGET_DIR_PATH, sheetName);
-    } else {
-      return String.format("%s/%s_%s.properties", TARGET_DIR_PATH, sheetName, targetLanguage);
+  private static String getPropertiesPath(String title, String language) {
+    if (StringUtils.isBlank(language)) {
+      return String.format("%s/%s.properties", RESOURCES_PATH, title);
     }
+    return String.format("%s/%s_%s.properties", RESOURCES_PATH, title, language);
   }
 
-  private static SheetsDataVO getDefaultSheetDataVO(List<SheetsDataVO> sheetsDataVOS) {
-    return sheetsDataVOS.stream()
+  private static SheetsVO getDefaultLanguageVO(List<SheetsVO> sheetsVOs) {
+    return sheetsVOs.stream()
         .filter(vo -> StringUtils.equals(vo.getLanguage(), DEFAULT_LANGUAGE))
         .findFirst()
         .orElseThrow(() -> new RuntimeException("default language sheet does not exist"));

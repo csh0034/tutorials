@@ -2,14 +2,14 @@ package com.ask.sheets.google;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
-@Setter
-public class SheetsDataVO {
+public class SheetsVO {
 
   private String language;
-  private Map<String, String> dataMap = new LinkedHashMap<>();
+  private final Map<String, String> data = new LinkedHashMap<>();
 
 }
