@@ -229,6 +229,17 @@ Request Body Logging 을 할때 페이로드를 복사하지않고 스트림으�
 - Content-Type:application/x-www-form-urlencoded
 - Method-Type:POST
 
+## Bean LifeCycle
+
+스프링 빈 생명주기 메서드 실행 순서
+
+1. postConstruct
+2. afterPropertiesSet
+3. initMethod
+4. preDestroy
+5. destroy
+6. destroyMethod
+
 ### 참조
 
 -[spring-http-logging, baeldung](https://www.baeldung.com/spring-http-logging)
