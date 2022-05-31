@@ -38,7 +38,7 @@ class RsaUtilsTest extends BaseTest {
 	@Order(1)
 	@DisplayName("RSA KeyPair(PublicKey, PrivateKey) 생성")
 	@Test
-	void KeyPair() {
+	void keyPair() {
 		// when
 		PublicKey publicKey = keyPair.getPublic();
 		PrivateKey privateKey = keyPair.getPrivate();
