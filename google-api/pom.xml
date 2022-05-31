@@ -17,6 +17,7 @@
 
   <modules>
     <module>google-sheets</module>
+    <module>google-drive</module>
   </modules>
 
 </project>
