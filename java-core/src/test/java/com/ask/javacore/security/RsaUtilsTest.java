@@ -112,7 +112,7 @@ class RsaUtilsTest extends BaseTest {
   }
 
 	@Order(5)
-	@DisplayName("String public key를 PublicKey 객체로 변환")
+	@DisplayName("String public key 를 PublicKey 객체로 변환")
 	@Test
 	void convertToPublicKey() {
 		// given
@@ -130,7 +130,7 @@ class RsaUtilsTest extends BaseTest {
 	}
 
 	@Order(6)
-	@DisplayName("String private key를 PublicKey 객체로 변환")
+	@DisplayName("String private key 를 PrivateKey 객체로 변환")
 	@Test
 	void convertToPrivateKey() {
 		// given
