@@ -7,10 +7,12 @@ import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.Sheets.Builder;
+import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.auth.Credentials;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import java.io.IOException;
@@ -58,8 +60,8 @@ public final class SheetsUtils {
 
   private static HttpRequestInitializer loadCredentials() throws IOException {
     InputStream is = new ClassPathResource(SERVICE_ACCOUNT_JSON).getInputStream();
-    ServiceAccountCredentials serviceAccountCredentials = ServiceAccountCredentials.fromStream(is);
-    return new HttpCredentialsAdapter(serviceAccountCredentials);
+    Credentials credentials = ServiceAccountCredentials.fromStream(is).createScoped(SheetsScopes.all());
+    return new HttpCredentialsAdapter(credentials);
   }
 
   private static List<String> extractSheetTitles(Sheets sheets, String sheetsId) throws IOException {
