@@ -24,9 +24,13 @@ public final class DriveUtils {
   private static final String SERVICE_ACCOUNT_JSON = "service.json";
 
   public static void downloadToExcel(String fileId, String path) throws IOException, GeneralSecurityException {
+    download(fileId, path, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  }
+
+  public static void download(String fileId, String path, String mimeType) throws IOException, GeneralSecurityException {
     Drive drive = loadDrive();
     try (FileOutputStream outputStream = new FileOutputStream(path)) {
-      drive.files().export(fileId, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      drive.files().export(fileId, mimeType)
           .executeMediaAndDownloadTo(outputStream);
     } catch (GoogleJsonResponseException e) {
       throw new RuntimeException(e);
