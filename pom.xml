@@ -45,6 +45,7 @@
     <module>spring-jasypt</module>
     <module>spring-flyway</module>
     <module>google-api</module>
+    <module>apache-poi</module>
   </modules>
 
   <properties>
