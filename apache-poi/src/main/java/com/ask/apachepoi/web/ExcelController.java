@@ -33,15 +33,15 @@ public class ExcelController {
       font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
       font.setFontHeightInPoints((short) 13);
 
-      CellStyle headStyle = workbook.createCellStyle();
-      headStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_BLUE.getIndex());
-      headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-      headStyle.setFont(font);
+      CellStyle headerStyle = workbook.createCellStyle();
+      headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_BLUE.getIndex());
+      headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+      headerStyle.setFont(font);
 
       Row headerRow = sheet.createRow(0);
       headerRow.createCell(0).setCellValue("id");
       headerRow.setHeight((short) (20 * 20));
-      headerRow.getCell(0).setCellStyle(headStyle);
+      headerRow.getCell(0).setCellStyle(headerStyle);
 
       for (int i = 1; i <= rows; i++) {
         Row row = sheet.createRow(i);
