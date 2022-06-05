@@ -43,7 +43,7 @@ public class ExcelController {
       headerRow.setHeight((short) (20 * 20));
       headerRow.getCell(0).setCellStyle(headStyle);
 
-      for (int i = 1; i <= rows + 1; i++) {
+      for (int i = 1; i <= rows; i++) {
         Row row = sheet.createRow(i);
 
         row.createCell(0).setCellValue(UUID.randomUUID().toString());
