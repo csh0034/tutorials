@@ -44,6 +44,11 @@ $ docker build --tag csh0034/sample:0.1 .
 - `--load`: 로컬에 이미지 생성함 *) platform 이 하나일 경우에만 사용 가능함
 
 ```shell
+$ docker buildx create --use --name multiarch-builder # Builder 생성 및 사용 설정
+$ docker buildx inspect --bootstrap # 현재 Builder Instance 정보
+```
+
+```shell
 $ docker buildx build \
 --push \
 --platform linux/arm64,linux/amd64 \
