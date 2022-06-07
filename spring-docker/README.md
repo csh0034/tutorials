@@ -70,6 +70,18 @@ $ docker buildx build \
 --tag csh0034/sample:0.3 .
 ```
 
+## Troubleshooting
+
+### amd64 환경에서 arm64 이미지 만들어야 할 경우
+
+- [github, qemu-user-static](https://github.com/multiarch/qemu-user-static#getting-started)
+- 하단 명령어 실행 할 경우 `docker buildx ls` 에 arm64 나옴
+
+```shell
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+
+
 ## 참조
 
 - [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx/)
