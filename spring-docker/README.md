@@ -1,5 +1,13 @@
 # Spring Docker
 
+## [Spring Boot Plugin 사용](https://docs.spring.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/#build-image)
+
+- [BuildPack](https://buildpacks.io) 을 사용하여 Dockerfile 없이 이미지를 생성한다.
+
+```shell
+$ spring-boot:build-image 
+```
+
 ## Docker Build
 
 - [Build Option](https://docs.docker.com/engine/reference/commandline/build/#options)
@@ -8,7 +16,7 @@
 ### Dockerfile
 
 - layertools 모드는 fully executable jar 에는 사용할 수 없다.
-- layertools 를 사용하여 jar file 을 각 layer 로 분리한다.
+- layertools 를 사용하여 jar file 을 각 layer 로 분리하여 레이어드 캐시를 사용한다.
   - dependencies (for regular released dependencies)
   - spring-boot-loader (for everything under org/springframework/boot/loader)
   - snapshot-dependencies (for snapshot dependencies)

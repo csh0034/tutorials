@@ -33,7 +33,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <layers></layers>
           <image>
             <name>csh0034/spring-boot-build-image:${project.version}</name>
             <publish>true</publish>
