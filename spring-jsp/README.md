@@ -69,7 +69,7 @@ spring:
 ## 참고사항
 
 > 만약 멀티 모듈 구성일 경우 인텔리제이 Edit Configuration 선택후  
-> Working directory $MODULE_WORKING_DIR$ 추가 해야 jsp 파일 404 오류 발생하지 않음
+> Working directory `$MODULE_WORKING_DIR$` 추가 해야 jsp 파일 404 오류 발생하지 않음
 
 > jsp 파일 변경시에 리로드 하지 않고 반영하기 위해선  
 > spring-boot-devtools 의존성을 추가 할 경우 DevToolsPropertyDefaultsPostProcessor 에서  
