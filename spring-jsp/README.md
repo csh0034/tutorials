@@ -67,6 +67,7 @@ spring:
 - 상단 프로퍼티 설정이 되지 않았을 경우 /WEB-INF/jsp/error.jsp
 
 ## 참고사항
+
 > 만약 멀티 모듈 구성일 경우 인텔리제이 Edit Configuration 선택후  
 > Working directory $MODULE_WORKING_DIR$ 추가 해야 jsp 파일 404 오류 발생하지 않음
 
@@ -79,4 +80,16 @@ server:
     jsp:
       init-parameters:
         development: true
+```
+
+## 참고사항 2
+
+IntelliJ 에서 컨트롤러 리턴타입이 String 일 경우 해당 view 위치를 찾아주는데  
+application.properties 일땐 정상 동작하지만 application.yml 로 만들면 위치를 못찾는다.
+
+하단값을 읽어서 내부적으로 위치를 찾는걸로 보임.
+
+```properties
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
 ```
