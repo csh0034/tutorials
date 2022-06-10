@@ -18,6 +18,7 @@
   <modules>
     <module>spring-test-core</module>
     <module>spring-test-rest-assured</module>
+    <module>testcontainers</module>
   </modules>
 
 </project>
