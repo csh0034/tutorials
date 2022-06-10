@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:tc:mariadb:10.4:///sample
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
