@@ -46,6 +46,7 @@
     <module>spring-flyway</module>
     <module>google-api</module>
     <module>apache-poi</module>
+    <module>localstack</module>
   </modules>
 
   <properties>
