@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:${mariadb.port}/test_db
+    username: root
+    password: 1234
