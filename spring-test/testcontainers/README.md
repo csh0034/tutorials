@@ -94,7 +94,7 @@ services:
       MARIADB_ROOT_HOST: '%'
       MARIADB_ROOT_PASSWORD: '1234'
       LANG: C.UTF-8
-      TZ: Asia/Seoul
+#      TZ: Asia/Seoul
     ports:
       - '3306'
     command:
