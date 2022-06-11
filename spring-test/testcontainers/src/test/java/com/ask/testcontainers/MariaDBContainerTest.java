@@ -13,7 +13,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
+@SpringBootTest("spring.datasource.url=jdbc:tc:mariadb:10.4:///sample")
 @Testcontainers
 @ActiveProfiles("test")
 class MariaDBContainerTest {
@@ -21,13 +21,13 @@ class MariaDBContainerTest {
   @Autowired
   private UserRepository userRepository;
 
-  @DisplayName("영어는 정상 동작함")
+  @DisplayName("영어 정상 동작")
   @Test
   void save() {
     assertThatNoException().isThrownBy(() -> userRepository.save(User.create("ask", 10)));
   }
 
-  @DisplayName("기본 mariaDB 이미지이기 때문에 한글 입력시 예외 발생함")
+  @DisplayName("기본 mariaDB 이미지이기 때문에 character-set 설정이 안되어있어 한글 입력시 예외 발생함")
   @Test
   void saveException() {
     assertThatExceptionOfType(InvalidDataAccessResourceUsageException.class).isThrownBy(
