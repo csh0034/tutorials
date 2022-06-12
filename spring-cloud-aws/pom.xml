@@ -17,6 +17,7 @@
   </properties>
 
   <modules>
+    <module>spring-cloud-aws-messaging</module>
   </modules>
 
 </project>
