@@ -119,6 +119,12 @@ class LocalStackDockerExtensionTest {
 }
 ```
 
+```text
+12:56:14.990 [main] INFO com.ask.localstack.LocalStackDockerExtensionTest - queue urls: [http://localhost:5001/000000000000/sample-queue]
+12:56:15.027 [main] INFO com.ask.localstack.LocalStackDockerExtensionTest - send message, b11c53c5-f6b6-499a-83f9-d4209db3f126, 563266512e6889f583b2a70e8694f236
+12:56:15.040 [main] INFO com.ask.localstack.LocalStackDockerExtensionTest - receive message, [{MessageId: b11c53c5-f6b6-499a-83f9-d4209db3f126,ReceiptHandle: NjZmMGI2NWUtOWQ3OC00NWUwLTk3YTItMjM5ZmM2MzY4NmFmIGFybjphd3M6c3FzOnVzLWVhc3QtMTowMDAwMDAwMDAwMDA6c2FtcGxlLXF1ZXVlIGIxMWM1M2M1LWY2YjYtNDk5YS04M2Y5LWQ0MjA5ZGIzZjEyNiAxNjU1MDA2MTc1LjAzNjkyNjM=,MD5OfBody: 563266512e6889f583b2a70e8694f236,Body: message...,Attributes: {},MessageAttributes: {}}]
+```
+
 ## 참조
 
 - [Reference, LocalStack ](https://docs.localstack.cloud/get-started/)
