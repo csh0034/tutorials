@@ -8,14 +8,21 @@ import cloud.localstack.docker.LocalstackDockerExtension;
 import cloud.localstack.docker.annotation.LocalstackDockerProperties;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.CreateQueueResult;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
+import com.amazonaws.services.sqs.model.QueueAttributeName;
 import com.amazonaws.services.sqs.model.ReceiveMessageResult;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -44,18 +51,56 @@ class LocalStackDockerExtensionTest {
     assertThat(results.get(0)).isEqualTo(content);
   }
 
-  @Test
-  void sqs() {
-    AmazonSQS sqs = TestUtils.getClientSQS();
+  @Nested
+  class Sqs {
 
-    CreateQueueResult queue = sqs.createQueue("sample-queue");
-    log.info("queue urls: {}", sqs.listQueues().getQueueUrls());
+    @Test
+    void standard() {
+      AmazonSQS sqs = TestUtils.getClientSQS();
 
-    SendMessageResult sendMessageResult = sqs.sendMessage(queue.getQueueUrl(), "message...");
-    log.info("send message, {}, {}", sendMessageResult.getMessageId(), sendMessageResult.getMD5OfMessageBody());
+      CreateQueueResult queue = sqs.createQueue("standard-queue");
+      log.info("queue urls: {}", sqs.listQueues().getQueueUrls());
 
-    ReceiveMessageResult receiveMessageResult = sqs.receiveMessage(queue.getQueueUrl());
-    log.info("receive message, {}", receiveMessageResult.getMessages());
+      SendMessageResult sendMessageResult = sqs.sendMessage(queue.getQueueUrl(), "message...");
+      log.info("send message, {}, {}", sendMessageResult.getMessageId(), sendMessageResult.getMD5OfMessageBody());
+
+      ReceiveMessageResult receiveMessageResult = sqs.receiveMessage(queue.getQueueUrl());
+      log.info("receive message, {}", receiveMessageResult.getMessages());
+    }
+
+    @Test
+    void fifo() {
+      AmazonSQS sqs = TestUtils.getClientSQS();
+
+      Map<String, String> attributes = new HashMap<>();
+      attributes.put(QueueAttributeName.FifoQueue.toString(), Boolean.TRUE.toString());
+      attributes.put(QueueAttributeName.ContentBasedDeduplication.toString(), Boolean.TRUE.toString());
+
+      CreateQueueRequest request = new CreateQueueRequest()
+          .withQueueName("fifo-queue.fifo")
+          .withAttributes(attributes);
+
+      CreateQueueResult queue = sqs.createQueue(request);
+      log.info("queue urls: {}", sqs.listQueues().getQueueUrls());
+
+      Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+      messageAttributes.put("AttributeOne", new MessageAttributeValue()
+          .withStringValue("This is an attribute")
+          .withDataType("String"));
+
+      SendMessageRequest sendMessageRequest = new SendMessageRequest()
+          .withQueueUrl(queue.getQueueUrl())
+          .withMessageBody("message...")
+          .withMessageGroupId("fifo-group-1")
+          .withMessageAttributes(messageAttributes);
+
+      SendMessageResult sendMessageResult = sqs.sendMessage(sendMessageRequest);
+      log.info("send message, {}, {}", sendMessageResult.getMessageId(), sendMessageResult.getMD5OfMessageBody());
+
+      ReceiveMessageResult receiveMessageResult = sqs.receiveMessage(queue.getQueueUrl());
+      log.info("receive message, {}", receiveMessageResult.getMessages());
+    }
+
   }
 
 }

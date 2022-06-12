@@ -131,3 +131,4 @@ class LocalStackDockerExtensionTest {
 - [GitHub, LocalStack](https://github.com/localstack/localstack)
 - [GitHub, LocalStack Java Utils](https://github.com/localstack/localstack-java-utils)
 - [LocalStack 을 활용한 Integration Test 환경 만들기](https://techblog.woowahan.com/2638/)
+- [Baeldung, aws-queues-java](https://www.baeldung.com/aws-queues-java)
