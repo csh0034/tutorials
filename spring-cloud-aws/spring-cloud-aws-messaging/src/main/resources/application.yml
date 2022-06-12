@@ -5,5 +5,7 @@ cloud:
       secret-key: test
     region:
       static: ap-northeast-2
+   stack:
+     auto: false  # \uB85C\uCEEC\uC5D0\uC11C \uC2E4\uD589\uD560 \uACBD\uC6B0 \uC790\uB3D9 \uC2A4\uD0DD\uAC10\uC9C0 \uBE44\uD65C\uC131\uD654
     sqs:
       endpoint: http://localhost:4566
