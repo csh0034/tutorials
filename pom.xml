@@ -47,6 +47,7 @@
     <module>google-api</module>
     <module>apache-poi</module>
     <module>localstack</module>
+    <module>spring-cloud-aws</module>
   </modules>
 
   <properties>
