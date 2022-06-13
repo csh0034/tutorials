@@ -1,1 +1,15 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: web
+  config:
+    import: 'aws-parameterstore:'
 
+aws:
+  paramstore:
+    endpoint: http://localhost:4566
+
+#custom: # \uBC14\uB85C \uC8FC\uC785 \uAC00\uB2A5\uD558\uBBC0\uB85C \uC8FC\uC11D\uCC98\uB9AC\uD568
+#  username: ${custom.username}  # parameter store \uC758 \uAC12 \uC8FC\uC785
+#  password: ${custom.password}  # parameter store \uC758 \uAC12 \uC8FC\uC785
