@@ -10,6 +10,6 @@ aws:
   paramstore:
     endpoint: http://localhost:4566
 
-#custom: # \uBC14\uB85C \uC8FC\uC785 \uAC00\uB2A5\uD558\uBBC0\uB85C \uC8FC\uC11D\uCC98\uB9AC\uD568
-#  username: ${custom.username}  # parameter store \uC758 \uAC12 \uC8FC\uC785
-#  password: ${custom.password}  # parameter store \uC758 \uAC12 \uC8FC\uC785
+#custom: # 바로 주입 가능하므로 주석처리함
+#  username: ${custom.username}  # parameter store 의 값 주입
+#  password: ${custom.password}  # parameter store 의 값 주입

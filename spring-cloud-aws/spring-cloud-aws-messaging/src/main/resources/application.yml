@@ -4,8 +4,8 @@ cloud:
       access-key: test
       secret-key: test
     region:
-      static: us-east-1 # \uB85C\uCEEC\uC5D0\uC11C \uC2E4\uD589\uD560 \uACBD\uC6B0 localstack region
+      static: us-east-1 # 로컬에서 실행할 경우 localstack region
     stack:
-      auto: false  # \uB85C\uCEEC\uC5D0\uC11C \uC2E4\uD589\uD560 \uACBD\uC6B0 \uC790\uB3D9 \uC2A4\uD0DD\uAC10\uC9C0 \uBE44\uD65C\uC131\uD654
+      auto: false  # 로컬에서 실행할 경우 자동 스택감지 비활성화
     sqs:
       endpoint: http://localhost:4566
