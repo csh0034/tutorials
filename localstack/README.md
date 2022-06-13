@@ -96,6 +96,8 @@ $ awslocal ssm put-parameter \
     
 $ awslocal ssm get-parameters --names /config/web_local/custom.username
 $ awslocal ssm get-parameters-by-path --path /config/web_local
+
+$ awslocal ssm delete-parameter --name /config/web_local/custom.username 
 ```
 
 ## Localstack Utils
