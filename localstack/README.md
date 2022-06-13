@@ -26,11 +26,13 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - AWS_ACCESS_KEY_ID=test            # 내부에서 aws 커맨드 사용을 위해 지정 awslocal 을 사용하면 필요없음
       - AWS_SECRET_ACCESS_KEY=test        # 위와 동일
-      - AWS_DEFAULT_REGION=ap-northeast-2 # 위와 동일
+      - AWS_DEFAULT_REGION=us-east-1      # 위와 동일
     volumes:
       - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
 ```
+
+> REGION 의 경우 별도 Region 세팅안할 경우 기본값인 us-east-1 로 하는것이 좋음  
 
 ## Local AWS Services
 
@@ -77,6 +79,23 @@ $ awslocal sqs receive-message --queue-url http://localhost:4566/00000000000/sam
 }
 
 $ awslocal sqs delete-queue --queue-url http://localhost:4566/000000000000/sample-queue
+```
+
+### Systems Manager Parameter Store
+
+```shell
+$ awslocal ssm put-parameter \
+    --name "/config/web_local/custom.username" \
+    --value "ASk" \
+    --type String
+
+$ awslocal ssm put-parameter \
+    --name "/config/web_local/custom.password" \
+    --value "1234" \
+    --type String
+    
+$ awslocal ssm get-parameters --names /config/web_local/custom.username
+$ awslocal ssm get-parameters-by-path --path /config/web_local
 ```
 
 ## Localstack Utils

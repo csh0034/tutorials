@@ -52,6 +52,11 @@
       <artifactId>aws-java-sdk-sqs</artifactId>
       <version>1.11.642</version>
     </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-ssm</artifactId>
+      <version>1.11.642</version>
+    </dependency>
   </dependencies>
 
   <build>

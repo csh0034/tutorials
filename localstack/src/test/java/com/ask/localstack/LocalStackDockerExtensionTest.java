@@ -2,11 +2,22 @@ package com.ask.localstack;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import cloud.localstack.Constants;
+import cloud.localstack.Localstack;
 import cloud.localstack.ServiceName;
 import cloud.localstack.awssdkv1.TestUtils;
 import cloud.localstack.docker.LocalstackDockerExtension;
 import cloud.localstack.docker.annotation.LocalstackDockerProperties;
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
+import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathRequest;
+import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathResult;
+import com.amazonaws.services.simplesystemsmanagement.model.ParameterType;
+import com.amazonaws.services.simplesystemsmanagement.model.PutParameterRequest;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.CreateQueueResult;
@@ -27,7 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(LocalstackDockerExtension.class)
-@LocalstackDockerProperties(services = {ServiceName.S3, ServiceName.SQS}, portEdge = "5001")
+@LocalstackDockerProperties(services = {ServiceName.S3, ServiceName.SQS, ServiceName.SSM}, portEdge = "5001")
 @Slf4j
 class LocalStackDockerExtensionTest {
 
@@ -101,6 +112,33 @@ class LocalStackDockerExtensionTest {
       log.info("receive message, {}", receiveMessageResult.getMessages());
     }
 
+  }
+
+  @Test
+  void ssm() {
+    AWSSimpleSystemsManagement ssm = AWSSimpleSystemsManagementClientBuilder.standard()
+        .withEndpointConfiguration(new EndpointConfiguration(Localstack.INSTANCE.getEndpointSSM(), Constants.DEFAULT_REGION))
+        .withCredentials(TestUtils.getCredentialsProvider())
+        .build();
+
+    PutParameterRequest request = new PutParameterRequest()
+        .withName("/config/web_local/custom.username")
+        .withValue("ASk")
+        .withType(ParameterType.String);
+
+    ssm.putParameter(request);
+
+    GetParametersByPathRequest parametersByPathRequest = new GetParametersByPathRequest()
+        .withPath("/config/web_local/")
+        .withRecursive(true)
+        .withWithDecryption(true);
+
+    GetParametersByPathResult parametersByPath = ssm.getParametersByPath(parametersByPathRequest);
+    log.info("get parameters, {}", parametersByPath);
+
+    GetParameterRequest getParameterRequest = new GetParameterRequest().withName("/config/web_local/custom.username");
+    GetParameterResult parameterResult = ssm.getParameter(getParameterRequest);
+    log.info("get parameter, {}", parameterResult);
   }
 
 }
