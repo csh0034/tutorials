@@ -8,6 +8,8 @@
 - CloudFormation
 - RDS
 - S3
+- Parameter Store
+- Secrets Manager
 
 ## 참조
 
