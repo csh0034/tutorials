@@ -105,9 +105,19 @@ $ awslocal ssm delete-parameter --name /config/web_local/custom.username
 ```shell
 $ awslocal secretsmanager list-secrets
 
-$ awslocal secretsmanager create-secret --name /secret/web_local/custom.username --secret-string ASk
+$ awslocal secretsmanager create-secret --name /secret/web_local --secret-string '{"custom.username":"ASk","custom.password":"1234"}'
 
-$ awslocal secretsmanager get-secret-value --secret-id /secret/web_local/custom.username
+$ awslocal secretsmanager create-secret --name /secret/web_local --secret-string file://web_local.json
+
+$ awslocal secretsmanager update-secret --secret-id /secret/web_local --secret-string file://web_local.json
+
+$ awslocal secretsmanager get-secret-value --secret-id /secret/web_local
+
+$ awslocal secretsmanager delete-secret --secret-id /secret/web_local # 기본 30일 안에 복구 가능
+
+$ awslocal secretsmanager restore-secret --secret-id /secret/web_local
+
+$ awslocal secretsmanager delete-secret --secret-id /secret/web_local --force-delete-without-recovery
 ```
 
 ## Localstack Utils
@@ -158,8 +168,9 @@ class LocalStackDockerExtensionTest {
 
 ## 참조
 
-- [Reference, LocalStack ](https://docs.localstack.cloud/get-started/)
+- [Reference, LocalStack](https://docs.localstack.cloud/get-started/)
 - [GitHub, LocalStack](https://github.com/localstack/localstack)
 - [GitHub, LocalStack Java Utils](https://github.com/localstack/localstack-java-utils)
 - [LocalStack 을 활용한 Integration Test 환경 만들기](https://techblog.woowahan.com/2638/)
 - [Baeldung, aws-queues-java](https://www.baeldung.com/aws-queues-java)
+- [reference, aws cli command](https://docs.aws.amazon.com/cli/latest/reference/)

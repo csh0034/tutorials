@@ -152,13 +152,13 @@ class LocalStackDockerExtensionTest {
     AWSSecretsManager secretsManager = TestUtils.getClientSecretsManager();
 
     CreateSecretRequest createSecretRequest = new CreateSecretRequest()
-        .withName("/secret/web_local/custom.username")
-        .withSecretString("ASk");
+        .withName("/secret/web_local")
+        .withSecretString("{\"custom.username\":\"ASk\",\"custom.password\":\"1234\"}");
     CreateSecretResult secretResult = secretsManager.createSecret(createSecretRequest);
     log.info("secretResult, {}", secretResult);
 
     GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest()
-        .withSecretId("/secret/web_local/custom.username");
+        .withSecretId("/secret/web_local");
 
     GetSecretValueResult secretValue = secretsManager.getSecretValue(getSecretValueRequest);
     log.info("secretValue, {}", secretValue);
