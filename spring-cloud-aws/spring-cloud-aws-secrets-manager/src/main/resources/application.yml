@@ -1,1 +1,11 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: web
+  config:
+    import: 'optional:aws-secretsmanager:'
 
+aws:
+  secretsmanager:
+    endpoint: http://localhost:4566
