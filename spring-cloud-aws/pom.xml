@@ -19,6 +19,7 @@
   <modules>
     <module>spring-cloud-aws-messaging</module>
     <module>spring-cloud-aws-parameter-store</module>
+    <module>spring-cloud-aws-secrets-manager</module>
   </modules>
 
 </project>
