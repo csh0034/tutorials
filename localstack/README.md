@@ -100,6 +100,16 @@ $ awslocal ssm get-parameters-by-path --path /config/web_local
 $ awslocal ssm delete-parameter --name /config/web_local/custom.username 
 ```
 
+### Secrets Manager
+
+```shell
+$ awslocal secretsmanager list-secrets
+
+$ awslocal secretsmanager create-secret --name /secret/web_local/custom.username --secret-string ASk
+
+$ awslocal secretsmanager get-secret-value --secret-id /secret/web_local/custom.username
+```
+
 ## Localstack Utils
 
 - LocalStack 을 사용하기 위해 JUnit 러너와 JUnit 5 확장 제공.

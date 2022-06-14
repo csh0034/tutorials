@@ -10,6 +10,11 @@ import cloud.localstack.docker.LocalstackDockerExtension;
 import cloud.localstack.docker.annotation.LocalstackDockerProperties;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.secretsmanager.AWSSecretsManager;
+import com.amazonaws.services.secretsmanager.model.CreateSecretRequest;
+import com.amazonaws.services.secretsmanager.model.CreateSecretResult;
+import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
+import com.amazonaws.services.secretsmanager.model.GetSecretValueResult;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
@@ -38,7 +43,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(LocalstackDockerExtension.class)
-@LocalstackDockerProperties(services = {ServiceName.S3, ServiceName.SQS, ServiceName.SSM}, portEdge = "5001")
+@LocalstackDockerProperties(services = {ServiceName.S3, ServiceName.SQS, ServiceName.SSM,
+    ServiceName.SECRETSMANAGER}, portEdge = "5001")
 @Slf4j
 class LocalStackDockerExtensionTest {
 
@@ -139,6 +145,24 @@ class LocalStackDockerExtensionTest {
     GetParameterRequest getParameterRequest = new GetParameterRequest().withName("/config/web_local/custom.username");
     GetParameterResult parameterResult = ssm.getParameter(getParameterRequest);
     log.info("get parameter, {}", parameterResult);
+  }
+
+  @Test
+  void secretsManager() {
+    AWSSecretsManager secretsManager = TestUtils.getClientSecretsManager();
+
+    CreateSecretRequest createSecretRequest = new CreateSecretRequest()
+        .withName("/secret/web_local/custom.username")
+        .withSecretString("ASk");
+    CreateSecretResult secretResult = secretsManager.createSecret(createSecretRequest);
+    log.info("secretResult, {}", secretResult);
+
+    GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest()
+        .withSecretId("/secret/web_local/custom.username");
+
+    GetSecretValueResult secretValue = secretsManager.getSecretValue(getSecretValueRequest);
+    log.info("secretValue, {}", secretValue);
+    log.info("secretValue.secretString, {}", secretValue.getSecretString());
   }
 
 }
