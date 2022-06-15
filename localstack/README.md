@@ -120,6 +120,39 @@ $ awslocal secretsmanager restore-secret --secret-id /secret/web_local
 $ awslocal secretsmanager delete-secret --secret-id /secret/web_local --force-delete-without-recovery
 ```
 
+### S3
+
+접근 경로
+
+- `http://localhost:4566/{bucket}/{file}`
+- `http://{bucket}.s3.{region}.localhost.localstack.cloud:4566/{file}}`
+
+```shell
+$ awslocal s3 ls
+
+$ awslocal s3 mb s3://sample-bucket
+
+$ awslocal s3 sync . s3://sample-bucket # 현재 디렉토리 버킷에 업로드
+
+$ awslocal s3 ls s3://sample-bucket
+
+$ awslocal s3 rb s3://sample-bucket --force
+
+$ awslocal s3 rm s3://sample-bucket --recursive
+
+$ awslocal s3 rm s3://sample-bucket/sample.json
+
+$ awslocal s3api list-buckets
+
+$ awslocal s3api create-bucket --bucket sample-bucket
+
+$ awslocal s3api put-object --bucket sample-bucket --key sample.json --body sample.json
+
+$ awslocal s3api delete-object --bucket sample-bucket --key sample.json
+
+$ awslocal s3api list-objects --bucket sample-bucket
+```
+
 ## Localstack Utils
 
 - LocalStack 을 사용하기 위해 JUnit 러너와 JUnit 5 확장 제공.
