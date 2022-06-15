@@ -1,0 +1,9 @@
+cloud:
+  aws:
+    credentials:
+      access-key: test
+      secret-key: test
+    stack:
+      auto: false # 로컬에서 실행할 경우 자동 스택감지 비활성화
+    s3:
+      endpoint: http://localhost.localstack.cloud:4566
