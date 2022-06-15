@@ -17,7 +17,7 @@ public class DynamoConfig {
     DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
         .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("test", "test")))
         .endpointOverride(URI.create("http://localhost:4566"))
-        .region(Region.AP_NORTHEAST_2)
+        .region(Region.US_EAST_1)
         .build();
 
     return DynamoDbEnhancedClient.builder()
