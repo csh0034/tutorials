@@ -195,11 +195,22 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 public SecurityFilterChain resources(HttpSecurity http) throws Exception {
     return http.requestMatchers((matchers) -> matchers.antMatchers("/static/**"))
         .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+        .csrf().disable()
         .requestCache().disable()
         .securityContext().disable()
         .sessionManagement().disable()
         .build();
 }
+```
+
+## UserDetailsPasswordService
+
+지정된 사용자가 비밀번호를 변경해야할 대상일 경우 호출됨.
+
+- DaoAuthenticationProvider.createSuccessAuthentication
+
+```java
+UserDetails updatePassword(UserDetails user, String newPassword);
 ```
 
 ## 참조
