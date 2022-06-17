@@ -48,6 +48,7 @@
     <module>apache-poi</module>
     <module>localstack</module>
     <module>spring-cloud-aws</module>
+    <module>spring-async</module>
   </modules>
 
   <properties>
