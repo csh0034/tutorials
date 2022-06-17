@@ -3,14 +3,12 @@ package com.ask.springjpacore.service;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
 
-@RequiredArgsConstructor
 public abstract class GenericService<T, ID extends Serializable, R extends JpaRepository<T, ID>> {
 
   private R repository;
