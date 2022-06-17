@@ -1,13 +1,19 @@
 package com.ask.springasync;
 
+import com.ask.springasync.service.AsyncService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class SpringAsyncApplicationTests {
 
+  @Autowired
+  private AsyncService asyncService;
+
   @Test
-  void contextLoads() {
+  void printTimestampLog() {
+    asyncService.printTimestampLog();
   }
 
 }
