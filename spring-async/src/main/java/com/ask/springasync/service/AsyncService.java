@@ -1,22 +1,25 @@
 package com.ask.springasync.service;
 
 import java.util.concurrent.TimeUnit;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class AsyncService {
 
+  private final SyncService syncService;
+
   @Async
-  public void printTimestampLog() {
-    log.info("timestamp: {}", System.currentTimeMillis());
+  public void invokeSyncMethod() {
     try {
-      TimeUnit.SECONDS.sleep(3);
+      TimeUnit.SECONDS.sleep(1);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
+
+    syncService.printTimestamp();
   }
 
 }

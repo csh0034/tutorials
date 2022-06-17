@@ -4,7 +4,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 import com.ask.springasync.service.AsyncService;
-import com.ask.springasync.service.SampleService;
+import com.ask.springasync.service.SyncService;
 import java.util.concurrent.Executor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,16 @@ import org.springframework.core.task.SyncTaskExecutor;
 public class SyncTaskExecutorTest {
 
   @Autowired
-  private SampleService sampleService;
+  private AsyncService asyncService;
 
   @SpyBean
-  private AsyncService asyncService;
+  private SyncService syncService;
 
   @Test
   void printTimestampLog() {
-    sampleService.run();
+    asyncService.invokeSyncMethod();
 
-    then(asyncService).should(times(1)).printTimestampLog();
+    then(syncService).should(times(1)).printTimestamp();
   }
 
   @TestConfiguration

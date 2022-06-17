@@ -1,6 +1,6 @@
 package com.ask.springasync;
 
-import com.ask.springasync.service.AsyncService;
+import com.ask.springasync.service.SyncService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SpringAsyncApplicationTests {
 
   @Autowired
-  private AsyncService asyncService;
+  private SyncService syncService;
 
   @Test
-  void printTimestampLog() {
-    asyncService.printTimestampLog();
+  void printTimestamp() {
+    syncService.printTimestamp();
   }
 
 }
