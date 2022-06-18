@@ -1,6 +1,6 @@
-package com.ask.awsmessaging;
+package com.ask.awsmessagingsqs;
 
-import com.ask.awsmessaging.config.SqsConstants;
+import com.ask.awsmessagingsqs.config.SqsConstants;
 import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
 import io.awspring.cloud.messaging.core.TopicMessageChannel;
 import org.junit.jupiter.api.Test;

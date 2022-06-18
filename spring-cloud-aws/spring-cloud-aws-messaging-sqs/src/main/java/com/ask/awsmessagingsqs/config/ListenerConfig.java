@@ -1,4 +1,4 @@
-package com.ask.awsmessaging.config;
+package com.ask.awsmessagingsqs.config;
 
 import io.awspring.cloud.messaging.listener.annotation.SqsListener;
 import lombok.extern.slf4j.Slf4j;

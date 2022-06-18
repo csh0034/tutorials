@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.ask</groupId>
-  <artifactId>aws-messaging</artifactId>
+  <artifactId>aws-messaging-sqs</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>spring-cloud-aws-messaging</name>
-  <description>spring-cloud-aws-messaging</description>
+  <name>spring-cloud-aws-messaging-sqs</name>
+  <description>spring-cloud-aws-messaging-sqs</description>
   <properties>
     <java.version>1.8</java.version>
     <spring.cloud.aws.version>2.4.1</spring.cloud.aws.version>

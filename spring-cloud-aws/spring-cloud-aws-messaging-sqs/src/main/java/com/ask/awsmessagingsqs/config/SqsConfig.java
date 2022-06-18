@@ -1,4 +1,4 @@
-package com.ask.awsmessaging.config;
+package com.ask.awsmessagingsqs.config;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.sqs.AmazonSQS;

@@ -1,4 +1,4 @@
-# Spring Cloud Aws Messaging
+# Spring Cloud Aws Messaging (SQS)
 
 ## 참조
 

@@ -1,4 +1,4 @@
-package com.ask.awsmessaging.config;
+package com.ask.awsmessagingsqs.config;
 
 public class SqsConstants {
 

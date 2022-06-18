@@ -1,4 +1,4 @@
-package com.ask.awsmessaging;
+package com.ask.awsmessagingsqs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
