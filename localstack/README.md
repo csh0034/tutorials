@@ -153,6 +153,58 @@ $ awslocal s3api delete-object --bucket sample-bucket --key sample.json
 $ awslocal s3api list-objects --bucket sample-bucket
 ```
 
+### SNS
+
+```shell
+$ awslocal sns create-topic --name default-topic
+{
+    "TopicArn": "arn:aws:sns:us-east-1:000000000000:default-topic"
+}
+
+$ awslocal sns list-topics
+{
+    "Topics": [
+        {
+            "TopicArn": "arn:aws:sns:us-east-1:000000000000:default-topic"
+        }
+    ]
+}
+
+$ awslocal sns subscribe \
+  --topic-arn arn:aws:sns:us-east-1:000000000000:default-topic \
+  --protocol http \
+  --notification-endpoint http://host.docker.internal:8080/default-topic
+{
+    "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:default-topic:10e02c28-4285-4b5c-b682-268816dad501"
+}
+
+$ awslocal sns list-subscriptions
+{
+    "Subscriptions": [
+        {
+            "SubscriptionArn": "arn:aws:sns:us-east-1:000000000000:default-topic:10e02c28-4285-4b5c-b682-268816dad501",
+            "Owner": "",
+            "Protocol": "http",
+            "Endpoint": "http://host.docker.internal:8080/default-topic",
+            "TopicArn": "arn:aws:sns:us-east-1:000000000000:default-topic"
+        }
+    ]
+}
+
+$ awslocal sns publish \
+  --topic-arn arn:aws:sns:us-east-1:000000000000:default-topic \
+  --subject 제목... \
+  --message 메세지...
+{
+    "MessageId": "f8a514d9-142c-4d45-a8ca-2bb4dc7ccd97"
+}
+
+$ awslocal sns unsubscribe \ 
+  --subscription-arn arn:aws:sns:us-east-1:000000000000:default-topic:10e02c28-4285-4b5c-b682-268816dad501
+
+$ awslocal sns delete-topic --topic-arn arn:aws:sns:us-east-1:000000000000:default-topic
+```
+
 ## Localstack Utils
 
 - LocalStack 을 사용하기 위해 JUnit 러너와 JUnit 5 확장 제공.
