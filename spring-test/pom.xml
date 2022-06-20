@@ -19,6 +19,7 @@
     <module>spring-test-core</module>
     <module>spring-test-rest-assured</module>
     <module>testcontainers</module>
+    <module>spring-test-mockito</module>
   </modules>
 
 </project>
