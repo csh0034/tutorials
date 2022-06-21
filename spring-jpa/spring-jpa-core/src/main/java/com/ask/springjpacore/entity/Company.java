@@ -27,9 +27,13 @@ public class Company {
 
   private String name;
 
+  @Column(length = 1, nullable = false)
+  private CompanyType type;
+
   public static Company create(String name) {
     Company company = new Company();
     company.name = name;
+    company.type = CompanyType.AAA;
     return company;
   }
 
