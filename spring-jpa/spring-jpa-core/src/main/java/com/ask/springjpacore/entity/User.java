@@ -2,12 +2,11 @@ package com.ask.springjpacore.entity;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -31,25 +30,14 @@ public class User {
   @NotNull
   private String name;
 
-  private String password;
+  @Embedded
+  private Password password;
 
-  private LocalDateTime passwordUpdateDt;
-
-  public static User create(String name, String password) {
+  public static User create(String name, Password password) {
     User user = new User();
     user.name = name;
     user.password = password;
     return user;
-  }
-
-  public void updatePassword(String password) {
-    this.password = password;
-    passwordUpdateDt = LocalDateTime.now();
-  }
-
-  @PrePersist
-  public void prePersist() {
-    passwordUpdateDt = LocalDateTime.now();
   }
 
 }

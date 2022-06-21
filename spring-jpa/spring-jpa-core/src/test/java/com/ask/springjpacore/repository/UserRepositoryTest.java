@@ -2,8 +2,10 @@ package com.ask.springjpacore.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ask.springjpacore.entity.Password;
 import com.ask.springjpacore.entity.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ class UserRepositoryTest {
   @Test
   void create() {
     // given
-    User user = User.create("ask", "1234");
+    User user = User.create("ask", Password.create("1234"));
 
     // when
     User savedUser = userRepository.saveAndFlush(user);
@@ -35,16 +37,19 @@ class UserRepositoryTest {
     assertThat(savedUser).isEqualTo(user);
   }
 
-  @DisplayName("User 생성")
+  @DisplayName("User update password")
   @Test
   void update() {
     // given
-    User user = User.create("ask", "1234");
-    userRepository.save(user);
+    User user = User.create("ask", Password.create("1234"));
+    userRepository.saveAndFlush(user);
 
-    // when then
-    user.updatePassword("5555");
+    // when
+    user.getPassword().changePassword("1234", "5555");
     testEntityManager.flush();
+
+    // then
+    assertThat(user.getPassword().getValue()).isEqualTo(DigestUtils.sha256Hex("5555"));
   }
-  
+
 }

@@ -2,6 +2,7 @@ package com.ask.springjpacore.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ask.springjpacore.entity.Password;
 import com.ask.springjpacore.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ class UserServiceTest {
   @Test
   void create() {
     // given
-    User user = User.create("ask", "1234");
+    User user = User.create("ask", Password.create("1234"));
 
     // when
     User savedUser = userService.saveAndFlush(user);
