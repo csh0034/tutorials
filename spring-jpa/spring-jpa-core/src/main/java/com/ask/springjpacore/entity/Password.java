@@ -55,6 +55,7 @@ public class Password {
     if (matches(oldPassword)) {
       this.value = encodePassword(newPassword);
       this.expirationDate = extendExpirationDate();
+      this.updateDt = LocalDateTime.now();
     }
   }
 
