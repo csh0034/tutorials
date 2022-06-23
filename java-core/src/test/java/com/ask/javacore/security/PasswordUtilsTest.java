@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class PasswordUtilsTest {
 
   @ParameterizedTest
-  @MethodSource("provideIsValid")
+  @MethodSource("isValidArguments")
   void isValid(String password, boolean expected) {
     assertThat(PasswordUtils.isValid(password)).isEqualTo(expected);
   }
@@ -24,18 +24,18 @@ class PasswordUtilsTest {
   }
 
   @ParameterizedTest
-  @MethodSource("provideContainsRepeatedCharacters")
+  @MethodSource("containsRepeatedCharactersArguments")
   void containsRepeatedCharacters(String password, boolean expected) {
     assertThat(PasswordUtils.containsRepeatedCharacters(password)).isEqualTo(expected);
   }
 
   @ParameterizedTest
-  @MethodSource("containsConsecutiveCharacters")
+  @MethodSource("consecutiveCharactersArguments")
   void containsConsecutiveCharacters(String password, boolean expected) {
     assertThat(PasswordUtils.containsConsecutiveCharacters(password)).isEqualTo(expected);
   }
 
-  static Stream<Arguments> provideIsValid() {
+  static Stream<Arguments> isValidArguments() {
     return Stream.of(
         arguments("apple123@", true),
         arguments("1234abc@", false),
@@ -45,7 +45,7 @@ class PasswordUtilsTest {
     );
   }
 
-  static Stream<Arguments> provideContainsRepeatedCharacters() {
+  static Stream<Arguments> containsRepeatedCharactersArguments() {
     return Stream.of(
         arguments("1111", true),
         arguments("2222", true),
@@ -58,7 +58,7 @@ class PasswordUtilsTest {
     );
   }
 
-  static Stream<Arguments> containsConsecutiveCharacters() {
+  static Stream<Arguments> consecutiveCharactersArguments() {
     return Stream.of(
         arguments("1234", true),
         arguments("2345", true),
