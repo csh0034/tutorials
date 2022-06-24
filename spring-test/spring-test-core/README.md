@@ -257,5 +257,7 @@ Spring TestContext 프레임워크의 ApplicationContext 생성 전략(캐싱 �
 ApplicationContext 를 최소한으로 생성하게 할 경우 테스트 시간이 감소 될 수 있다.
 
 ## 참조
+
 - [Spring, TestContext Framework](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#testcontext-framework)
 - [Improve Build Times with Context Caching from Spring Test](https://rieckpil.de/improve-build-times-with-context-caching-from-spring-test)
+- [다이나믹 테스트(Dynamic Test)란?](https://tecoble.techcourse.co.kr/post/2020-07-31-dynamic-test/)
