@@ -240,6 +240,28 @@ Request Body Logging 을 할때 페이로드를 복사하지않고 스트림으�
 5. destroy
 6. destroyMethod
 
+## Subdomain 쿠키 공유
+
+```yaml
+server:
+  servlet:
+    session:
+      cookie:
+        domain: test.com
+```
+
+server.servlet.session.cookie.domain=test.com
+
+- 맨앞에 `. (dot)` 또는 `*.` 를 사용하면안됨
+- spring session 사용할 경우 DefaultCookieSerializer 에 세팅됨
+- spring session 사용하지 않을 경우 ApplicationSessionCookieConfig 에 세팅됨
+
+상단과 같이 세팅할 경우 하단 모두 쿠키를 공유한다
+
+- `test.com`
+- `www.test.com`
+- `sample.test.com`
+
 ### 참조
 
--[spring-http-logging, baeldung](https://www.baeldung.com/spring-http-logging)
+- [spring-http-logging, baeldung](https://www.baeldung.com/spring-http-logging)
