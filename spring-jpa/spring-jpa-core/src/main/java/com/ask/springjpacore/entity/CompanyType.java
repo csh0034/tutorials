@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -33,10 +34,8 @@ public enum CompanyType {
 
     @Override
     public CompanyType convertToEntityAttribute(String code) {
-      if (!CACHE.containsKey(code)) {
-        throw new IllegalArgumentException(String.format("'%s' is not exists", code));
-      }
-      return CACHE.get(code);
+      return Optional.ofNullable(CACHE.get(code))
+          .orElseThrow(() -> new IllegalArgumentException(String.format("'%s' is not exists", code)));
     }
 
   }
