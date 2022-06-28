@@ -1,9 +1,8 @@
 package com.ask.resourceserver;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,18 +22,19 @@ class NimbusJwtEncoderTest {
   void withHmac() {
     // given
     String secret = "0123456789-0123456789-0123456789"; // 32자 이상되어야함
-    SecretKey secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
+    JwtEncoder jwtEncoder = new NimbusJwtEncoder(new ImmutableSecret<>(secret.getBytes(StandardCharsets.UTF_8)));
 
-    JwtEncoder jwtEncoder = new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
+    JwsHeader header = JwsHeader.with(MacAlgorithm.HS256)
+        .type("JWT")
+        .build();
 
-    JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).build();
-    JwtClaimsSet payload = JwtClaimsSet.builder()
+    JwtClaimsSet claims = JwtClaimsSet.builder()
         .subject("Hello Nimbus")
         .issuedAt(Instant.now())
         .expiresAt(Instant.now().plusSeconds(3600))
         .build();
 
-    JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters.from(header, payload);
+    JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters.from(header, claims);
 
     // when
     Jwt jwt = jwtEncoder.encode(jwtEncoderParameters);
