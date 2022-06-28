@@ -70,7 +70,7 @@ Access Token 을 획득하기 위한 절차가 간소화되기에 응답성과 �
 간단하게 username, password 로 Access Token 을 받는 방식이다.
 
 클라이언트가 타사의 외부 프로그램일 경우에는 이 방식을 적용하면 안된다.   
-자신의 서비스에서 제공하는 어플리케이션일 경우에만 사용되는 인증 방식이다. Refresh Token 의 사용도 가능합니다.
+자신의 서비스에서 제공하는 어플리케이션일 경우에만 사용되는 인증 방식이다. Refresh Token 의 사용도 가능하다.
 
 ![03.png](03.png)
 
@@ -92,17 +92,17 @@ OAuth2의 권한 부여 방식 중 가장 간단한 방식으로 클라이언트
 
 4가지 권한 부여 방식에 대한 Request & Response 예제
 
-| Parameter                | 설명                                                                                                                                                                                                                   |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| client_id, client_secret | 클라이언트 자격증명. 클라이언트가 권한 서버에 등록하면 발급받을 수 있으며 권한 서버 연동 시 클라이언트의 검증에 사용                                                                                                                                                   |
-| redirect_url             | 권한 서버가 요청에 대한 응답을 보낼 url 설정                                                                                                                                                                                          |
-| response_type            | 권한 부여 동의 요청 시 포함되는 값으로 권한 부여 방식에 대한 설정 <br/>**code**: Authorization Code Grant  <br/>**token**: Implicit Grant                                                                                                       |
-| state                    | CSRF 공격에 대비하기 위해 클라이언트가 권한서버에 요청 시 포함하는 임의의 문자열. <br/>필수 사항은 아니지만 클라이언트가 요청 시 state를 포함 시켰다면 권한 서버는 동일한 값을 클라이언트에게 보내야 한다.                                                                                           |
-| grant_type               | Access Token 획득 요청 시 포함되는 값으로 권한 부여 방식에 대한 설정 <br/>**authorization_code**: Authorization Code Grant<br/>**password**: Resource Owner Password Credentials Grant<br/>**client_credentials**: Client Credentials Grant |
-| code                     | Authorization Code Grant 방식에서 Access Token 요청 시 사용<br/>권한 서버에서 획득한 Authorization Code 를 입력한다.                                                                                                                        |
-| token_type               | 발행된 Token 의 타입. 대표적으로 Bearer, MAC(Message Authentication Code)이 있다.                                                                                                                                                  |
-| expires_in               | 토큰 만료 시간(단위: 초)                                                                                                                                                                                                      |
-| example_parameter        | Token 타입에 따른 추가 파라미터                                                                                                                                                                                                 |
+| Parameter                | 설명                                                                                                                                                                                                                                                              |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| client_id, client_secret | 클라이언트 자격증명. 클라이언트가 권한 서버에 등록하면 발급받을 수 있으며 권한 서버 연동 시 클라이언트의 검증에 사용                                                                                                                                                                                              |
+| redirect_url             | 권한 서버가 요청에 대한 응답을 보낼 url 설정                                                                                                                                                                                                                                     |
+| response_type            | 권한 부여 동의 요청 시 포함되는 값으로 권한 부여 방식에 대한 설정 <br/>**code**: Authorization Code Grant  <br/>**token**: Implicit Grant                                                                                                                                                  |
+| state                    | CSRF 공격에 대비하기 위해 클라이언트가 권한서버에 요청 시 포함하는 임의의 문자열. <br/>필수 사항은 아니지만 클라이언트가 요청 시 state를 포함 시켰다면 권한 서버는 동일한 값을 클라이언트에게 보내야 한다.                                                                                                                                      |
+| grant_type               | Access Token 획득 요청 시 포함되는 값으로 권한 부여 방식에 대한 설정 <br/>**authorization_code**: Authorization Code Grant<br/>**password**: Resource Owner Password Credentials Grant<br/>**client_credentials**: Client Credentials Grant<br/>**refresh_token**: access token 만료시 사용 |
+| code                     | Authorization Code Grant 방식에서 Access Token 요청 시 사용<br/>권한 서버에서 획득한 Authorization Code 를 입력한다.                                                                                                                                                                   |
+| token_type               | 발행된 Token 의 타입. 대표적으로 Bearer, MAC(Message Authentication Code)이 있다.                                                                                                                                                                                             |
+| expires_in               | 토큰 만료 시간(단위: 초)                                                                                                                                                                                                                                                 |
+| example_parameter        | Token 타입에 따른 추가 파라미터                                                                                                                                                                                                                                            |
 
 
 추가로 API 요청에 포함되는 Authorization Basic 헤더는 Client 자격증명 관련 데이터로 client_id 와  
@@ -116,7 +116,7 @@ client_secret 값을 아래와 같이 Base64 인코딩하여 생성합니다.
 
 ```text
 # Request
-GET /authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fc
+GET /oauth2/authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fc
 
 # Response
 https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz
@@ -126,7 +126,7 @@ https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz
 
 ```text
 # Request
-POST /token
+POST /oauth2/token
 Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
@@ -135,7 +135,7 @@ grant_type=authorization_code&code=SplxlOBeZQQYbYS6WxSbIA&redirect_uri=https%3A%
 # Response
 {
   "access_token": "2YotnFZFEjr1zCsicMWpAA",
-  "token_type": "example",
+  "token_type": "bearer",
   "expires_in": 3600,
   "refresh_token": "tGzv3JOkF0XG5Qx2TlKWIA",
   "example_parameter": "example_value"
@@ -149,7 +149,7 @@ Authorization Code 획득 후 해당 Code 로 Access Token 획득
 
 ```text
 # Request
-GET /authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
+GET /oauth2/authorize?response_type=token&client_id=s6BhdRkqt3&state=xyz&redirect_uri=https%3A%2F%2Fclient%2Eexample%2Ecom%2Fcb
 
 # Response
 https://example.com/cb#access_token=2YotnFZFEjr1zCsicMWpAA&state=xyz&token_type=example&expires_in=3600
@@ -162,7 +162,7 @@ Authorize 요청 시 url 로 Access Token 이 바로 전달됨
 
 ```text
 # Request
-POST /token
+POST /oauth2/token
 Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
@@ -171,7 +171,7 @@ grant_type=password&username=johndoe&password=A3ddj3w
 # Response
 {
   "access_token": "2YotnFZFEjr1zCsicMWpAA",
-  "token_type": "example",
+  "token_type": "bearer",
   "expires_in": 3600,
   "refresh_token": "tGzv3JOkF0XG5Qx2TlKWIA",
   "example_parameter": "example_value"
@@ -185,7 +185,7 @@ Username, Password 로 Access Token 획득
 
 ```text
 # Request
-POST /token
+POST /oauth2/token
 Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
@@ -194,13 +194,37 @@ grant_type=client_credentials
 # Response
 {
   "access_token": "2YotnFZFEjr1zCsicMWpAA",
-  "token_type": "example",
+  "token_type": "bearer",
   "expires_in": 3600,
   "example_parameter": "example_value"
 }
 
 # 특이사항
 클라이언트 자격증명만으로 Access Token 획득
+```
+
+### 추가. Refresh Token
+
+```text
+# Request
+POST /oauth2/token
+Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&scope=read_profile&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
+
+# Response
+{
+  "access_token": "2YotnFZFEjr1zCsicMWpAA",
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "refresh_token": "tGzv3JOkF0XG5Qx2TlKWIA",
+  "example_parameter": "example_value",
+  "scope": "read_profile"
+}
+
+# 특이사항
+Authorization Code Grant, Resource Owner Password Credentials Grant 에서만 사용 가능
 ```
 
 ## 참조
