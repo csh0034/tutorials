@@ -1,6 +1,7 @@
 package com.ask.authorizationserver;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +39,7 @@ class AuthorizationServerApplicationTests {
             .param("grant_type", "client_credentials")
             .param("scope", "message:read")
             .with(basicAuth(CLIENT_ID, CLIENT_SECRET)))
+        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.access_token").isString())
         .andExpect(jsonPath("$.expires_in").isNumber())
