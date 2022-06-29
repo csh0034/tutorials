@@ -227,6 +227,13 @@ grant_type=refresh_token&scope=read_profile&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA
 Authorization Code Grant, Resource Owner Password Credentials Grant 에서만 사용 가능
 ```
 
+## 추가 OAuth 2.1
+
+Implicit grant 와 Resource Owner Password Credentials grant 는 OAuth 2.1 에서 제외된다.
+
+- [Differences between OAuth 2 and OAuth 2.1](https://fusionauth.io/learn/expert-advice/oauth/differences-between-oauth-2-oauth-2-1)
+- [Differences between OAuth 2 and OAuth 2.1 번역](https://velog.io/@worn29/Differences-between-OAuth-2-and-OAuth-2.1%EB%B2%88%EC%97%AD)
+
 ## 참조
 
 - [OAuth 2.0 동작 방식의 이해](https://blog.naver.com/mds_datasecurity/222182943542)
