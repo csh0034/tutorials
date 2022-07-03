@@ -43,4 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return source;
   }
 
+// HS256 사용시 등록
+//  @Bean
+//  public JwtDecoder jwtDecoder() {
+//    SecretKey secretKey = new SecretKeySpec("0123456789-0123456789-0123456789".getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+//    return NimbusJwtDecoder.withSecretKey(secretKey)
+//        .build();
+//  }
+
 }
