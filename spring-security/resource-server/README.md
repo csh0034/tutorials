@@ -1,12 +1,5 @@
 # Spring Security Resource Server
 
-## Settings
-개발환경
-- spring boot 2.6.4
-- Java 8
-- Maven
-
-pom.xml
 ```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
