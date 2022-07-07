@@ -49,6 +49,7 @@
     <module>localstack</module>
     <module>spring-cloud-aws</module>
     <module>spring-async</module>
+    <module>spring-prometheus</module>
   </modules>
 
   <properties>
