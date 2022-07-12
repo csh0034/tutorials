@@ -18,7 +18,7 @@ class PasswordUtilsTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"vzcRpsPQ4@", "NL3uu9!Ak7bTI", "ELGUuh&^N2Wx", "c6@#Z4jep"})
+  @ValueSource(strings = {"vzcRpsPQ4@", "NL3uu9!Ak7bTI", "ELGUuh&^N2Wx", "c6@#Z4jep", "a1!\"#$%&'()*+,-./:;<=>?@[＼]^_`{|}~"})
   void matchesPasswordPattern(String password) {
     assertThat(PasswordUtils.matchesPasswordPattern(password)).isTrue();
   }

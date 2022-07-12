@@ -8,7 +8,7 @@ public final class PasswordUtils {
   private static final int REPETITION_LIMIT = 4;
   private static final int CONSECUTIVE_CHARACTER_LIMIT = 4;
 
-  private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*\\d).{8,24}$");
+  private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[!\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~])(?=.*\\d).{8,35}$");
   private static final Pattern REPETITION_PATTERN = Pattern.compile(String.format("([a-zA-Z\\d])\\1{%d}", REPETITION_LIMIT - 1));
 
   private PasswordUtils() {
