@@ -50,6 +50,7 @@
     <module>spring-cloud-aws</module>
     <module>spring-async</module>
     <module>spring-prometheus</module>
+    <module>google-guava</module>
   </modules>
 
   <properties>
