@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class PreconditionsTests {
+class PreconditionsTest {
 
   private static final String NON_NULL_STRING = "foo";
 
