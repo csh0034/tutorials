@@ -83,12 +83,22 @@ Reactor 의 Context 는 Reactive Sequence 상에서 공유되는 데이터이다
 위의 경우에는 JPA 가 PrePost 시점에 AuditorAware 를 호출하는데 동일한 Reactive Sequence 에서 실행되는게 아니므로  
 인증유저의 데이터를 가져올 수 없다.
 
-> Jpa Audit 는 @CreatedDate 만 사용하고, @CreatedBy 는 사용 못하는것 같다..
+> Jpa Audit 는 @CreatedDate 만 사용하고, @CreatedBy 는 사용 못하는것 같다..  
+> 따로 Service Layer 에서 처리시에 Entity 에 세팅해주어야 할 것 같다.
 
 ### Webflux 에서 Cache 사용하기
 
 Webflux 사용시엔 @Cacheable 을 사용할 수 없다.  
 따라서 reactor-extra 라이브러리를 추가하여 CacheMono, CacheFlux 를 사용해야한다.
+
+### Transaction 처리
+
+우선 JpaTransactionManager 의 경우 Transaction 상태가 ThreadLocal 에 적용되므로 서비스 메서드에 트랜잭션을   
+적용한다고해도 실제 리액티브 시퀀스상에서 호출되는 시점은 다른 스레드일수있어 정상 동작을 안한다.
+
+따라서 변경감지로 저장이 안되며 명시적으로 `repository.save()` 를 호출해야한다.
+
+> r2dbc 의 경우 ReactiveTransactionManager 가 따로 존재한다.
 
 ## 참조
 
