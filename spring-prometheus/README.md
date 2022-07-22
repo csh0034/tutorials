@@ -63,6 +63,9 @@ scrape_configs:
     static_configs:
       - targets:
           - "host.docker.internal:8080"
+    basic_auth:
+      username: 'actuator'  # spring security basic auth 설정해야함
+      password: 'actuator'  # spring security basic auth 설정해야함
   - job_name: "rabbitmq"
     metrics_path: "/metrics"
     static_configs:

@@ -14,6 +14,12 @@ spring:
         format_sql: true
     open-in-view: false
 
+  security:
+    user:
+      name: actuator
+      password: actuator
+      roles: "ACTUATOR"
+
 management:
   endpoints:
     web:
