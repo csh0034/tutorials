@@ -11,6 +11,7 @@ import com.ask.springjpaquerydsl.vo.UserVO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -68,13 +69,42 @@ class UserRepositoryTest {
 
     // when
     List<User> users = queryFactory.selectFrom(user)
-        .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
+        .offset(pageable.getOffset())
         .fetch();
 
     Long total = queryFactory.select(Wildcard.count) // or user.count()
         .from(user)
         .fetchOne();
+
+    // then
+    Page<User> page = new PageImpl<>(users, pageable, total);
+
+    log.info("content: {}", page.getContent());
+    log.info("size: {}", page.getSize());
+    log.info("totalElements: {}", page.getTotalElements());
+    log.info("totalPages: {}", page.getTotalPages());
+    log.info("number: {}", page.getNumber());
+  }
+
+  @DisplayName("paging 처리 clone 이용하여 처리")
+  @Test
+  void paging2() {
+    // given
+    Pageable pageable = PageRequest.of(0, 2);
+
+    // when
+    JPAQuery<User> query = queryFactory.select(user)
+        .from(user)
+        .where(user.name.contains("name"));
+
+    Long total = query.clone()
+        .select(Wildcard.count)
+        .fetchOne();
+
+    List<User> users = query.limit(pageable.getPageSize())
+        .offset(pageable.getOffset())
+        .fetch();
 
     // then
     Page<User> page = new PageImpl<>(users, pageable, total);
