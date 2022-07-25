@@ -74,6 +74,21 @@ Entity 에 javax.validation annotation (ex. @NotNull) 이 있을 경우 스키�
 트랜잭션 안에서 validation 에 실패하여 ConstraintViolationException 이 발생한 경우  
 RuntimeException 의 하위 클래스이므로 TransactionSystemException 으로 처리되며 롤백된다.
 
+## spring.jpa.hibernate.use-new-id-generator-mappings
+
+- AUTO, TABLE 및 SEQUENCE 에 대해 Hibernate 의 새로운 IdentifierGenerator 를 사용할지 여부
+- `hibernate.id.new_generator_mappings` 프로퍼티
+- spring boot 2.0 버전 기준 기본값은 `true` 
+
+### MySql(MariaDB) 에서  `GenerationType.AUTO` 를 사용시
+
+- 해당값이 true 일 경우 `GenerationType.TABLE`  
+- 해당값이 false 일 경우  `GenerationType.IDENTITY`
+
+### MySql(MariaDB) 에서  `GenerationType.TABLE` 를 사용시
+
+- 해당값이 true 일 경우 `TableGenerator` 를 사용
+- 해당값이 false 일 경우 deprecated 된 `MultipleHiLoPerTableGenerator` 를 사용
 
 ### 참조
 - [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)

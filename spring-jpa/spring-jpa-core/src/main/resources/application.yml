@@ -7,6 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+#      use-new-id-generator-mappings: false
     properties:
       hibernate:
         show_sql: false
