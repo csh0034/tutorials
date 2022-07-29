@@ -7,7 +7,9 @@
     <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
       <layout class="com.ask.logback.layout.MaskingPatternLayout">
         <maskPattern>\"password\"\s*:\s*\"(.*?)\"</maskPattern>
-        <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        <pattern>
+          %d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5p [%X{traceId}]) %clr(${PID:- }){magenta} --- [%15.15t] %clr(%-40.40logger{39}){cyan} : %m%n%wEx
+        </pattern>
       </layout>
       <charset>${CONSOLE_LOG_CHARSET}</charset>
     </encoder>
