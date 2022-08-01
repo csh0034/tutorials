@@ -16,6 +16,10 @@ import org.springframework.util.StopWatch;
 @Slf4j
 public class LoggerAspect {
 
+  @Pointcut("within(com.ask.springaop.common.GenericService+)")
+  public void within() {
+  }
+
   @Pointcut("execution(* com.ask..service.*Service.*(..))")
   public void all() {
   }
