@@ -18,6 +18,7 @@
   <modules>
     <module>google-sheets</module>
     <module>google-drive</module>
+    <module>google-api-client</module>
   </modules>
 
 </project>
