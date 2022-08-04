@@ -66,6 +66,17 @@ spring:
   - ex) /WEB-INF/jsp/error/500.jsp, /WEB-INF/jsp/error/404.jsp
 - 상단 프로퍼티 설정이 되지 않았을 경우 /WEB-INF/jsp/error.jsp
 
+## JSP EL(Expression Language)
+
+- servletContext, request ,session
+  - el 사용시 바로 접근 가능, `${key}`
+- 내장객체를 통한 접근도 가능
+  - `${sessionScope.key} `
+  - pageScope: pageContext
+  - requestScope: HttpServletRequest
+  - sessionScope: HttpSession
+  - applicationScope: ServletContext
+
 ## 참고사항
 
 > 만약 멀티 모듈 구성일 경우 인텔리제이 Edit Configuration 선택후  

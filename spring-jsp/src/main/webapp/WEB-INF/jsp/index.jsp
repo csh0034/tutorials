@@ -4,5 +4,16 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Spring Boot Application with JSP</title></head>
-<body> Hello, Spring Boot App</body>
+<body>
+  Hello, Spring Boot App <br>
+  <ul>
+    <li>\${servletContextNow}: ${servletContextNow}</li>
+    <li>\${requestNow}: ${requestNow}</li>
+    <li>\${sessionNow}: ${sessionNow}</li>
+    <li>\${modelNow}: ${modelNow}</li>
+    <li>\${applicationScope.servletContextNow}: ${applicationScope.servletContextNow}</li>
+    <li>\${requestScope.requestNow}: ${requestScope.requestNow}</li>
+    <li>\${sessionScope.sessionNow}: ${sessionScope.sessionNow}</li>
+  </ul>
+</body>
 </html>
