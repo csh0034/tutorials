@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-signin-client_id" th:content="${@environment.getProperty('spring.security.oauth2.client.registration.google.client-id')}">
+  <title>Index</title>
+</head>
+<body>
+<div id="my-signin2"></div>
+<script>
+  function onSuccess(googleUser) {
+    let token = JSON.stringify(googleUser);
+    console.log(JSON.parse(token));
+  }
+  function onFailure(error) {
+    console.log(error);
+  }
+  function renderButton() {
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 50,
+      'longtitle': true,
+      'theme': 'dark',
+      'onsuccess': onSuccess,
+      'onfailure': onFailure
+    });
+  }
+</script>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>
