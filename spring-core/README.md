@@ -265,3 +265,4 @@ server.servlet.session.cookie.domain=test.com
 ### 참조
 
 - [spring-http-logging, baeldung](https://www.baeldung.com/spring-http-logging)
+- [Docs, Spring SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions)
