@@ -31,3 +31,6 @@
 - GenericService 의 하위 클래스까지 적용
 - `+` 의 경우 해당 클래스/인터페이스와 모든 서브클래스/구현체에 해당된다
 
+## 참조
+
+- [Docs, Spring AOP](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#aop)
