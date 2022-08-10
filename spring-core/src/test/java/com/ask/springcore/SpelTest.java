@@ -9,6 +9,7 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 @Slf4j
@@ -39,7 +40,9 @@ class SpELTest {
     ExpressionParser expressionParser = new SpelExpressionParser();
     Expression expression = expressionParser.parseExpression("#user.address.zipCode");
 
-    EvaluationContext context = new StandardEvaluationContext();
+    EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding()
+        .build();
+//    EvaluationContext context = new StandardEvaluationContext();
     context.setVariable("user", user);
 
     String result = expression.getValue(context, String.class);
