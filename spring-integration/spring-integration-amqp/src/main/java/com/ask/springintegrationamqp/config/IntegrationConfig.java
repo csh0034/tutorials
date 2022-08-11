@@ -1,5 +1,6 @@
 package com.ask.springintegrationamqp.config;
 
+import com.ask.springintegrationamqp.handler.SampleHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
@@ -12,11 +13,12 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Transformers;
 
 @Configuration
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class IntegrationConfig {
 
   private final SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory;
+  private final SampleHandler sampleHandler;
 
   @Bean
   public IntegrationFlow sampleFlow() {
@@ -25,7 +27,7 @@ public class IntegrationConfig {
 
     return IntegrationFlows.from(Amqp.inboundAdapter(listenerContainer))
         .transform(Transformers.objectToString())
-        .handle(message -> log.info("message: {}", message))
+        .handle(sampleHandler, "handle")
         .get();
   }
 
