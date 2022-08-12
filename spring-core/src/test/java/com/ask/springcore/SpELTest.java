@@ -47,6 +47,21 @@ class SpELTest {
       log.info("result: {}", result);
     }
 
+    @Test
+    void instanceMethod() {
+      // given
+      User user = User.of("ASk", 10, Address.from("1234"));
+
+      // when
+      ExpressionParser expressionParser = new SpelExpressionParser();
+      Expression expression = expressionParser.parseExpression("isAdult()");
+
+      Boolean result = expression.getValue(user, Boolean.class);
+
+      // then
+      assertThat(result).isFalse();
+    }
+
   }
 
   @Nested
@@ -141,6 +156,10 @@ class SpELTest {
     private final String name;
     private final int age;
     private final Address address;
+
+    public boolean isAdult() {
+      return age >= 20;
+    }
 
   }
 
