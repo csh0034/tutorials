@@ -6,12 +6,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
 
@@ -25,11 +27,14 @@ public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMu
 
   @Override
   protected DataSource selectAnyDataSource() {
+    log.info("selectAnyDataSource: masterDataSource selected.");
     return dataSource;
   }
 
   @Override
   protected DataSource selectDataSource(String tenantId) {
+    log.info("selectDataSource: tenantDataSource selected. {}", tenantId);
+
     DataSource dataSource = dataSourceMap.get(tenantId);
     if (dataSource == null) {
       dataSource = createDataSource(tenantId);

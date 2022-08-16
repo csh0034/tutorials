@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @Configuration
 @EnableScheduling
@@ -20,7 +19,7 @@ public class ScheduleConfig {
   private final TenantRepository tenantRepository;
   private final CompanyRepository companyRepository;
 
-  @Scheduled(fixedRateString = "PT1M")
+//  @Scheduled(fixedRateString = "PT1M")
   public void schedule() {
     List<Tenant> tenants = tenantRepository.findAll();
 
