@@ -525,4 +525,23 @@ class ReactorTest {
         .verifyComplete();
   }
 
+  @Test
+  void flatMapMany() {
+    SampleListVO sampleListVO = new SampleListVO();
+    sampleListVO.names = Arrays.asList("a", "b", "c", "d", "e", "f");
+
+    Mono.just(sampleListVO)
+        .flatMap(vo -> Mono.just(vo.names))
+        .flatMapMany(Flux::fromIterable)
+        .as(StepVerifier::create)
+        .expectNextCount(sampleListVO.names.size())
+        .verifyComplete();
+  }
+
+  private static class SampleListVO {
+
+    private List<String> names;
+
+  }
+
 }
