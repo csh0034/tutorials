@@ -544,4 +544,12 @@ class ReactorTest {
 
   }
 
+  @Test
+  void parallel() {
+    Flux.just("a", "b", "c" ,"d", "f")
+        .parallel()
+        .runOn(Schedulers.parallel())
+        .subscribe( word -> log.info("word: {}", word));
+  }
+
 }
