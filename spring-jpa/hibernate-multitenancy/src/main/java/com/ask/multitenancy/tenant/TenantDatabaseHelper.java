@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,7 +14,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 import org.reflections.Reflections;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +22,8 @@ import org.springframework.stereotype.Component;
 public class TenantDatabaseHelper {
 
   private static final String PACKAGE_OF_ENTITY_FOR_TENANT = "com.ask.multitenancy.entity.tenant";
-  private final DataSourceProperties dataSourceProperties;
+
+  private final JpaProperties jpaProperties;
 
   public void executeSchemaExport(Tenant tenant) {
     ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
@@ -37,20 +37,15 @@ public class TenantDatabaseHelper {
     entities.forEach(metadata::addAnnotatedClass);
 
     SchemaExport schemaExport = new SchemaExport();
-    schemaExport.create(EnumSet.of(TargetType.DATABASE), metadata.buildMetadata());
+    schemaExport.createOnly(EnumSet.of(TargetType.DATABASE), metadata.buildMetadata());
   }
 
   private Map<String, Object> createSettingsMap(Tenant tenant) {
-    DataSource dataSource = dataSourceProperties.initializeDataSourceBuilder()
-        .url(tenant.getJdbcUrl())
-        .username(tenant.getDbUsername())
-        .password(tenant.getDbPassword())
-        .build();
-
-    Map<String, Object> settings = new HashMap<>();
-    settings.put(AvailableSettings.DATASOURCE, dataSource);
-    settings.put(AvailableSettings.SHOW_SQL, false);
-    settings.put(AvailableSettings.FORMAT_SQL, true);
+    Map<String, Object> settings = new HashMap<>(jpaProperties.getProperties());
+    settings.put(AvailableSettings.URL, tenant.getJdbcUrl());
+    settings.put(AvailableSettings.USER, tenant.getDbUsername());
+    settings.put(AvailableSettings.PASS, tenant.getDbPassword());
     return settings;
   }
+
 }
