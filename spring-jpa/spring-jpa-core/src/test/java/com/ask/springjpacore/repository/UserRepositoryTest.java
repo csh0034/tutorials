@@ -2,6 +2,7 @@ package com.ask.springjpacore.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ask.springjpacore.entity.Address;
 import com.ask.springjpacore.entity.Password;
 import com.ask.springjpacore.entity.User;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ class UserRepositoryTest {
   void create() {
     // given
     User user = User.create("ask", Password.create("1234"));
+    user.addAddress(new Address("city..", "street..", "zipcode.."));
 
     // when
     User savedUser = userRepository.saveAndFlush(user);
