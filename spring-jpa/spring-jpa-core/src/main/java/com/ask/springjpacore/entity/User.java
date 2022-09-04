@@ -40,9 +40,10 @@ public class User {
 
   @ElementCollection
   @CollectionTable(
-      name = "address",
-      joinColumns = @JoinColumn(name = "user_id")
-  )
+      name = "tb_address",
+      joinColumns = @JoinColumn(name = "user_id"))
+//  @OrderColumn(name = "idx")
+//  @OrderBy("zipcode desc")
   private List<Address> addresses = new ArrayList<>();
 
   public static User create(String name, Password password) {

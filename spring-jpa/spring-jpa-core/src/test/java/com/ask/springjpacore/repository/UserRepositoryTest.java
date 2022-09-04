@@ -31,12 +31,16 @@ class UserRepositoryTest {
     user.addAddress(new Address("city..", "street..", "zipcode.."));
 
     // when
-    User savedUser = userRepository.saveAndFlush(user);
+    userRepository.saveAndFlush(user);
+    testEntityManager.clear();
 
     // then
+    User savedUser = userRepository.findById(user.getId())
+        .orElseThrow(RuntimeException::new);
+
     log.info("user : {}", user);
     assertThat(savedUser.getId()).isNotEmpty();
-    assertThat(savedUser).isEqualTo(user);
+    assertThat(savedUser.getAddresses()).hasSize(1);
   }
 
   @DisplayName("User update password")
