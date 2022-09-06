@@ -16,11 +16,14 @@ public class User {
   private String countryCode;
 
   @Builder
-  private User(String name, int age, String team, String countryCode) {
+  private User(String name, int age, String countryCode) {
     this.name = name;
     this.age = age;
-    this.team = team;
     this.countryCode = countryCode;
+  }
+
+  public void assignTeam(String team) {
+    this.team = team;
   }
 
 }

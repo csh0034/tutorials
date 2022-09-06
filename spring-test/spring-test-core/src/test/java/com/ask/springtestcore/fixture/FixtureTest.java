@@ -13,7 +13,6 @@ class FixtureTest {
   @BeforeEach
   void setUp() {
     userBuilder = User.builder()
-        .team("Team A")
         .countryCode("kr");
   }
 
@@ -23,6 +22,8 @@ class FixtureTest {
         .age(10)
         .build();
 
+    user.assignTeam("Team A");
+
     log.info("user: {}", user);
   }
 
@@ -31,6 +32,8 @@ class FixtureTest {
     User user = userBuilder.name("nameB")
         .age(20)
         .build();
+
+    user.assignTeam("Team B");
 
     log.info("user: {}", user);
   }
