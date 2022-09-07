@@ -3,8 +3,10 @@ package com.ask.springjpaquerydsl.repository;
 import static com.ask.springjpaquerydsl.entity.QCompany.company;
 import static com.ask.springjpaquerydsl.entity.QUser.user;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.ask.springjpaquerydsl.config.JpaConfig;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -40,7 +42,7 @@ class CompanyRepositoryTest {
     users.forEach(userDto -> log.info("userDto : {}", userDto));
   }
 
-  @DisplayName("join alias 미지정시에 에외 발생 검증")
+  @DisplayName("join alias 미지정시에 예외 발생 검증")
   @Test
   void withoutJoinAlias() {
     // 하단과 같이 alias 사용하지 않을 경우 user.id, user.name 부분에서 Invalid path: 'user.id' 예외 발생
@@ -55,6 +57,15 @@ class CompanyRepositoryTest {
             .fetch())
         .withCauseInstanceOf(QuerySyntaxException.class)
         .withMessageContaining("Invalid path");
+  }
+
+  @DisplayName("where 절에 null 이 전달되어도 예외 발생 안함")
+  @Test
+  void whereClause() {
+    assertThatNoException().isThrownBy(() -> queryFactory
+        .selectFrom(company)
+        .where((Predicate) null)
+        .fetch());
   }
 
   @AllArgsConstructor
