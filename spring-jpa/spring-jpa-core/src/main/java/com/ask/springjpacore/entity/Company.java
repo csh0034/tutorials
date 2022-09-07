@@ -37,4 +37,8 @@ public class Company {
     return company;
   }
 
+  public void updateName(String name) {
+    this.name = name;
+  }
+
 }
