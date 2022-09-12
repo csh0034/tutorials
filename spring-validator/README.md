@@ -80,7 +80,7 @@ Bean Validation은 Java Bean 검증을하기 위해 다양한 제약(Contraint)�
 - [message](https://beanvalidation.org/2.0-jsr380/spec/#validationapi-message-defaultmessageinterpolation) : 에러메세지를 생성하는데 사용됨
   - 기본 텍스트 사용
   - {} 를 사용하여 [MessageSource 적용](https://beanvalidation.org/2.0-jsr380/spec/#validationapi-message-examples), ex. {name.empty}
-  - ${} 를 사용하여 [EL 적용](https://beanvalidation.org/2.0-jsr380/spec/#validationapi-message-defaultmessageinterpolation), ex. ${formatter.format('%1$.2f', validatedValue)}
+  - ${} 를 사용하여 [EL 적용](https://beanvalidation.org/2.0-jsr380/spec/#validationapi-message-defaultmessageinterpolation), `ex. ${formatter.format('%1$.2f', validatedValue)}`
 - [groups](https://beanvalidation.org/2.0-jsr380/spec/#validationapi-validatorapi-groups) : 일반적으로 제약 조건이 평가되는 순서를 제어하거나 JavaBean의 부분 상태에 대한 유효성 검사를 수행하는 데 사용
   - 기본값은 빈 배열이어야 함
   - 그룹을 지정하지 않을 경우 Default 그룹으로 처리
