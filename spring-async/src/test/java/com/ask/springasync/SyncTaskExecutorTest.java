@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.SyncTaskExecutor;
 
 @SpringBootTest("spring.main.allow-bean-definition-overriding=true")
-public class SyncTaskExecutorTest {
+class SyncTaskExecutorTest {
 
   @Autowired
   private AsyncService asyncService;
@@ -31,7 +31,7 @@ public class SyncTaskExecutorTest {
   }
 
   @TestConfiguration
-  public static class TestConfig {
+  static class TestConfig {
 
     @Bean
     public Executor asyncExecutor() {
