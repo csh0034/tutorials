@@ -16,5 +16,6 @@
 
   <modules>
     <module>kitchenpos</module>
+    <module>domain-events</module>
   </modules>
 </project>
