@@ -1,5 +1,14 @@
 # Spring Async
 
+`AsyncExecutionInterceptor` 에서 aop 비동기 처리
+
+## TaskExecutor 찾는 순서 
+
+1. AsyncConfigurer 가 있을 경우 `getAsyncExecutor()` 호출
+2. AsyncExecutionAspectSupport.getDefaultExecutor() 호출
+
+스프링 부트의 경우 TaskExecutionAutoConfiguration 에서 Bean 등록
+
 ## Awaitility
 
 ### Awaitility 란?
