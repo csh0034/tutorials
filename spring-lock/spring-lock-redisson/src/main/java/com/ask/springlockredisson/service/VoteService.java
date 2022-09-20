@@ -33,6 +33,9 @@ public class VoteService {
     RLock lock = redissonClient.getLock("voter-" + voter);
     try {
       if (lock.tryLock(15, 10, TimeUnit.SECONDS)) {
+
+        Thread.sleep(500);
+
         try {
           if (voteRepository.existsByVoter(voter)) {
             log.error("{} already voted", voter);

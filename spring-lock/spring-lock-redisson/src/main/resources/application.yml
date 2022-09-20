@@ -14,7 +14,7 @@ spring:
     properties:
       hibernate:
         show_sql: false
-        format_sql: false
+        format_sql: true
     open-in-view: false
 
 logging:
