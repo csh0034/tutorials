@@ -169,6 +169,10 @@ class UserRepositoryTest {
     assertThat(exists).isEqualTo(expected);
   }
 
+  /**
+   * 조인 X(묵시적 조인만 가능함)
+   * Select 절을 지정할수 없음
+   */
   @Nested
   class QuerydslPredicateExecutorTest {
 
