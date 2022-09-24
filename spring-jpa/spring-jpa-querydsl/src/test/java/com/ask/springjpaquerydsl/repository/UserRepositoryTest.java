@@ -9,6 +9,7 @@ import com.ask.springjpaquerydsl.entity.Company;
 import com.ask.springjpaquerydsl.entity.User;
 import com.ask.springjpaquerydsl.vo.UserVO;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -16,6 +17,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -26,6 +28,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 @DataJpaTest
 @Import(JpaConfig.class)
@@ -163,6 +167,27 @@ class UserRepositoryTest {
         .fetchFirst() != null;  // limit(1).fetchOne() != null;
 
     assertThat(exists).isEqualTo(expected);
+  }
+
+  @Nested
+  class QuerydslPredicateExecutorTest {
+
+    @Test
+    void findAll() {
+      // given
+      Pageable pageable = PageRequest.of(0, 2, Sort.by(Order.desc("name")));
+      BooleanExpression predicate = user.name.contains("name");
+
+      // when
+      Page<User> page = userRepository.findAll(predicate, pageable);
+
+      log.info("content: {}", page.getContent());
+      log.info("size: {}", page.getSize());
+      log.info("totalElements: {}", page.getTotalElements());
+      log.info("totalPages: {}", page.getTotalPages());
+      log.info("number: {}", page.getNumber());
+    }
+
   }
 
 }
