@@ -43,4 +43,16 @@ class ConstantsTest {
     assertThat(values).contains(1, 2, 3);
   }
 
+  @Test
+  void extractNames() {
+    Set<String> names = ConstantUtils.extractNames(CloseType.class);
+    assertThat(names).contains("ABNORMAL", "NORMAL", "BATCH");
+  }
+
+  @Test
+  void extractValues() {
+    Set<Integer> values = ConstantUtils.extractValues(CloseType.class);
+    assertThat(values).contains(1, 2, 3);
+  }
+
 }
