@@ -2,8 +2,7 @@ package com.ask.springjpacore.config;
 
 import java.util.Properties;
 import org.springframework.aop.Advisor;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.TransactionManager;
@@ -26,10 +25,10 @@ public class JpaConfig {
     NameMatchTransactionAttributeSource txSource = new NameMatchTransactionAttributeSource();
     txSource.setProperties(properties);
 
-    AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-    pointcut.setExpression("execution(* com..*.*Service.*(..))");
-
-    return new DefaultPointcutAdvisor(pointcut, new TransactionInterceptor(transactionManager, txSource));
+    AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+    advisor.setAdvice(new TransactionInterceptor(transactionManager, txSource));
+    advisor.setExpression("execution(* com..*.*Service.*(..))");
+    return advisor;
   }
 
 }
