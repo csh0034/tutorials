@@ -15,7 +15,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
 @SuppressWarnings("rawtypes")
 public class LenientStringToEnumConverterFactory implements ConverterFactory<String, Enum<?>> {
 
-  private final Map<Class<?>, LenientToEnumConverter> converterCache = new ConcurrentReferenceHashMap<>();
+  private final Map<Class<?>, Converter> converterCache = new ConcurrentReferenceHashMap<>();
 
   @SuppressWarnings("unchecked")
   @Override
@@ -26,7 +26,7 @@ public class LenientStringToEnumConverterFactory implements ConverterFactory<Str
     }
     Assert.notNull(enumType, () -> "The target type " + targetType.getName() + " does not refer to an enum");
 
-    LenientToEnumConverter converter = converterCache.get(enumType);
+    Converter converter = converterCache.get(enumType);
     if (converter == null) {
       converter = new LenientToEnumConverter<>((Class<E>) enumType);
       converterCache.put(enumType, converter);
