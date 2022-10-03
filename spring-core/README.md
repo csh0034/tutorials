@@ -262,8 +262,45 @@ server.servlet.session.cookie.domain=test.com
 - `www.test.com`
 - `sample.test.com`
 
+## WebConversionService
+
+- spring boot 에서 제공
+- 웹에서 값을 포맷하고 변환하기 위한 기능을 제공.  
+- @EnableWebMvc 및 @EnableWebFlux 에서 제공하는 기본 구현을 대체함.
+
+주요 동작은 `FormattingConversionService` 에서 처리
+
+하단 설정을 통해 추가 가능
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+  @Override
+  public void addFormatters(FormatterRegistry registry) {
+    registry.addConverterFactory(...);
+    registry.addConverter(...);
+    registry.addFormatter(...);
+  }
+
+}
+```
+
+### ApplicationConversionService
+
+- Spring Boot 애플리케이션에 적합한 converter, formatter 가 기본적으로 구성된 `FormattingConversionService`
+- Spring Boot 실행시 `ConfigurableEnvironment` 에 `conversionService` 로 등록되어
+  환경변수의 변환처리에 쓰인다.
+- 문자열을 Duration, Period, 대소문자구분안하도록 처리된 Enum 으로 변환등 다양한 기능 제공   
+  `ApplicationConversionService.configure` 참고
+
+### StringToEnumConverterFactory
+
+기본적으로 등록된 String Enum 으로 변환하는 ConverterFactory 
+
 ### 참조
 
 - [spring-http-logging, baeldung](https://www.baeldung.com/spring-http-logging)
 - [Docs, Spring SpEL](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions)
 - [Blog, Spring SpEL 번역](https://blog.outsider.ne.kr/837)
+- [baeldung, Using Enums as Request Parameters in Spring](https://www.baeldung.com/spring-enum-request-param)
