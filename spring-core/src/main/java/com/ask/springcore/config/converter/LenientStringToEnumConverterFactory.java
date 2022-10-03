@@ -7,15 +7,15 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 @SuppressWarnings("rawtypes")
 public class LenientStringToEnumConverterFactory implements ConverterFactory<String, Enum<?>> {
 
-  private final Map<Class<?>, LenientToEnumConverter> converterCache = new ConcurrentHashMap<>();
+  private final Map<Class<?>, LenientToEnumConverter> converterCache = new ConcurrentReferenceHashMap<>();
 
   @SuppressWarnings("unchecked")
   @Override
