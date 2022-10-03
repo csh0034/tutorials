@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.util.Assert;
@@ -14,10 +15,23 @@ import org.springframework.util.Assert;
 @SuppressWarnings("rawtypes")
 public class LenientStringToEnumConverterFactory implements ConverterFactory<String, Enum<?>> {
 
+  private final Map<Class<?>, LenientToEnumConverter> converterCache = new ConcurrentHashMap<>();
+
+  @SuppressWarnings("unchecked")
   @Override
   public <E extends Enum<?>> Converter<String, E> getConverter(Class<E> targetType) {
-    Assert.notNull(targetType, () -> "The target type " + targetType.getName() + " does not refer to an enum");
-    return new LenientToEnumConverter<>(targetType);
+    Class<?> enumType = targetType;
+    while (enumType != null && !enumType.isEnum()) {
+      enumType = enumType.getSuperclass();
+    }
+    Assert.notNull(enumType, () -> "The target type " + targetType.getName() + " does not refer to an enum");
+
+    LenientToEnumConverter converter = converterCache.get(enumType);
+    if (converter == null) {
+      converter = new LenientToEnumConverter<>((Class<E>) enumType);
+      converterCache.put(enumType, converter);
+    }
+    return converter;
   }
 
   @SuppressWarnings("unchecked")
@@ -48,7 +62,7 @@ public class LenientStringToEnumConverterFactory implements ConverterFactory<Str
       try {
         return (E) Enum.valueOf(this.enumType, value);
       } catch (Exception ex) {
-        if (!codeMap.isEmpty() && Code.class.isAssignableFrom(enumType)) {
+        if (!codeMap.isEmpty()) {
           Enum<? extends Code> result = codeMap.get(value);
           if (result != null) {
             return (E) result;
@@ -59,9 +73,9 @@ public class LenientStringToEnumConverterFactory implements ConverterFactory<Str
     }
 
     private E findEnum(String value) {
-      String name = convertLenientName(value);
+      String name = convertToLenientName(value);
       for (E candidate : (Set<E>) EnumSet.allOf(this.enumType)) {
-        String candidateName = convertLenientName(candidate.name());
+        String candidateName = convertToLenientName(candidate.name());
         if (name.equals(candidateName)) {
           return candidate;
         }
@@ -69,7 +83,7 @@ public class LenientStringToEnumConverterFactory implements ConverterFactory<Str
       throw new IllegalArgumentException("No enum constant " + this.enumType.getCanonicalName() + "." + value);
     }
 
-    private String convertLenientName(String name) {
+    private String convertToLenientName(String name) {
       StringBuilder canonicalName = new StringBuilder(name.length());
       name.chars()
           .filter(Character::isLetterOrDigit)
