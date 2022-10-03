@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.core.convert.converter.Converter;
 
@@ -46,6 +47,23 @@ public class LenientStringToEnumConverterFactoryTest {
 
     // then
     assertThat(company).isEqualTo(Company.A_GOOGLE);
+  }
+
+  /**
+   * null 일 경우엔 여기 까지 들어오지 않음
+   */
+  @DisplayName("문자열이 비어있을 경우 null 반환")
+  @ParameterizedTest
+  @EmptySource
+  void convertEmpty(String source) {
+    // given
+    Converter<String, Company> converter = factory.getConverter(Company.class);
+
+    // when
+    Company company = converter.convert(source);
+
+    // then
+    assertThat(company).isNull();
   }
 
   @DisplayName("Enum 으로 변환할수 없을 경우 예외 발생")
