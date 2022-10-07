@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ask.kitchenpos.product.domain.DisplayedName;
 import com.ask.kitchenpos.product.domain.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -33,15 +34,12 @@ class ProductControllerTest {
   @Test
   void create() throws Exception {
     // given
-    Product request = Product.builder()
-        .name("noodle")
-        .price(BigDecimal.valueOf(1000))
-        .build();
+    Product request = new Product(new DisplayedName("noodle", value -> false), BigDecimal.valueOf(1000));
 
     // when
     ResultActions result = mockMvc.perform(post("/api/products")
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsBytes(request)));
+        .content(objectMapper.writeValueAsString(request)));
 
     // then
     result.andExpectAll(
