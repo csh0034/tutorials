@@ -1,5 +1,7 @@
 package com.ask.springlockredisson.utils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,9 +9,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RLock;
@@ -75,9 +77,9 @@ class LockUtilsTest {
 
   @DisplayName("ExecutorService - redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
   @RepeatedTest(5)
-  void redissonRAtomicLong() throws Exception {
+  void redissonRAtomicLong(RepetitionInfo info) throws Exception {
     // given
-    String lockKey = "lock-2";
+    String lockKey = "lock-" + info.getCurrentRepetition();
     AtomicInteger count = new AtomicInteger(0);
 
     // when
@@ -88,6 +90,13 @@ class LockUtilsTest {
         if (atomicLong.compareAndSet(0, 1)) {
           atomicLong.expire(2, TimeUnit.SECONDS);
           count.getAndIncrement();
+
+          try {
+            TimeUnit.SECONDS.sleep(1);
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+
           log.info("executed!!!");
         } else {
           log.info("already executed");
@@ -100,8 +109,7 @@ class LockUtilsTest {
 
     // then
     log.info("end");
-    Assertions.assertThat(count.get()).isEqualTo(1);
-    TimeUnit.SECONDS.sleep(3);
+    assertThat(count.get()).isEqualTo(1);
   }
 
   @DisplayName("ParallelStream - redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
@@ -131,7 +139,7 @@ class LockUtilsTest {
 
     // then
     log.info("end");
-    Assertions.assertThat(count.get()).isEqualTo(1);
+    assertThat(count.get()).isEqualTo(1);
     TimeUnit.SECONDS.sleep(3);
   }
 }

@@ -57,7 +57,7 @@ logging:
 ```
 ***
 ## 동시성과 Distributed Lock 
-API 서버들은 대규모 트래픽을 처리하기 위해 여러대의 서버로 구축되어 있는데 평상시엔 걍 분산처리 하면 되지만  
+API 서버들은 대규모 트래픽을 처리하기 위해 여러대의 서버로 구축되어 있는데 평상시엔 그냥 분산처리 하면 되지만  
 선착순 이벤트등과 같은 공유자원이 있다면 atomic 을 보장 하면서 분산 처리를 해주어야 한다.
 
 트랜잭션이 많이 일어나는 서비스의 경우 동기화된 처리가 필요함(동시성이슈)에 따라서 여러 서버에 공통된 락을 적용시에  
@@ -262,11 +262,11 @@ class LockUtilsTest {
     }
   }
 
-  @DisplayName("redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
+  @DisplayName("ExecutorService - redisson RAtomicLong 을 사용하여 동시 접근시에 한번만 실행")
   @RepeatedTest(5)
-  void redissonRAtomicLong() throws Exception {
+  void redissonRAtomicLong(RepetitionInfo info) throws Exception {
     // given
-    String lockKey = "lock-2";
+    String lockKey = "lock-" + info.getCurrentRepetition();
     AtomicInteger count = new AtomicInteger(0);
 
     // when
@@ -274,10 +274,16 @@ class LockUtilsTest {
       service.execute(() -> {
         RAtomicLong atomicLong = redissonClient.getAtomicLong(lockKey);
 
-        // 무조건 한번만 실행됨을 보장함
         if (atomicLong.compareAndSet(0, 1)) {
           atomicLong.expire(2, TimeUnit.SECONDS);
           count.getAndIncrement();
+
+          try {
+            TimeUnit.SECONDS.sleep(1);
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+
           log.info("executed!!!");
         } else {
           log.info("already executed");
@@ -290,8 +296,7 @@ class LockUtilsTest {
 
     // then
     log.info("end");
-    Assertions.assertThat(count.get()).isEqualTo(1);
-    TimeUnit.SECONDS.sleep(3);
+    assertThat(count.get()).isEqualTo(1);
   }
 }
 ```
