@@ -2,7 +2,7 @@ package com.ask.springcore;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ask.springcore.converter.Company;
+import com.ask.springcore.converter.TestType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -24,13 +24,13 @@ public class FormattingConversionServiceTest {
 
   @DisplayName("대소문자 구분안함, 특수문자 제거 처리후 비교")
   @ParameterizedTest
-  @ValueSource(strings = {"A_GOOGLE", "agoogle", "a_google", "a$google", "a^google"})
+  @ValueSource(strings = {"A_TYPE", "a_type", "atype", "a$type", "a^type"})
   void convertStringToEnum(String source) {
     // when
-    Company company = mvcConversionService.convert(source, Company.class);
+    TestType result = mvcConversionService.convert(source, TestType.class);
 
     // then
-    assertThat(company).isEqualTo(Company.A_GOOGLE);
+    assertThat(result).isSameAs(TestType.A_TYPE);
   }
 
 }

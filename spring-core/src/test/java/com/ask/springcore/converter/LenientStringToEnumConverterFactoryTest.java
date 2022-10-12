@@ -3,10 +3,7 @@ package com.ask.springcore.converter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-import com.ask.springcore.config.converter.Code;
 import com.ask.springcore.config.converter.LenientStringToEnumConverterFactory;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,15 +64,6 @@ class LenientStringToEnumConverterFactoryTest {
   void convertFail() {
     // when then
     assertThatIllegalArgumentException().isThrownBy(() -> converter.convert("invalid-source"));
-  }
-
-  @RequiredArgsConstructor
-  @Getter
-  enum TestType implements Code {
-    A_TYPE("1"),
-    B_TYPE("2");
-
-    private final String code;
   }
 
 }
