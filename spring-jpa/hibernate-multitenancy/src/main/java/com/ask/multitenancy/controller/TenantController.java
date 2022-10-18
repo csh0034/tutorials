@@ -4,6 +4,7 @@ import com.ask.multitenancy.entity.master.Tenant;
 import com.ask.multitenancy.entity.tenant.Company;
 import com.ask.multitenancy.repository.master.TenantRepository;
 import com.ask.multitenancy.repository.tenant.CompanyRepository;
+import com.ask.multitenancy.service.CompanyService;
 import com.ask.multitenancy.tenant.TenantDatabaseHelper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TenantController {
 
   private final TenantRepository tenantRepository;
+  private final CompanyService companyService;
   private final CompanyRepository companyRepository;
 
   private final TenantDatabaseHelper tenantDatabaseHelper;
@@ -42,6 +44,7 @@ public class TenantController {
   @GetMapping("/companies")
   public ResponseEntity<List<Company>> findAllCompanies() {
     List<Company> companies = companyRepository.findAll();
+    companyService.printAllAsync();
     return ResponseEntity.ok(companies);
   }
 

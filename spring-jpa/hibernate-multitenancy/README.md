@@ -96,3 +96,4 @@ public class MultiTenantCreateRunner implements ApplicationRunner {
 ## 참조
 - [hibernate, multitenancy](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#multitenacy)
 - [baeldung, A Guide to Multitenancy in Hibernate 5](https://www.baeldung.com/hibernate-5-multitenancy)
+- [Multi Tenancy with Spring Boot, Hibernate & Liquibase](https://github.com/callistaenterprise/blog-multitenancy)
