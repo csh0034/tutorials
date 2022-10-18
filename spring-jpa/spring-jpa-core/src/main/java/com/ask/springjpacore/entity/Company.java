@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -26,6 +27,11 @@ public class Company {
   private String id;
 
   private String name;
+
+  private transient String sample1;
+
+  @Transient
+  private String sample2;
 
   @Column(length = 1, nullable = false)
   private CompanyType type;
