@@ -214,6 +214,11 @@ public class TransactionEventAnnotationDrivenListener {
 }
 ```
 
+## @RecordApplicationEvents
+
+- 테스트가 실행되는 동안 `ApplicationContext` 에 publish 되는 모든 application event 를 기록한다.
+- `ApplicationEvents` 를 injection 받아 체크 할수있다.
+
 ## 참조
 - [Spring, Standard and Custom Events](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#context-functionality-events)
 - [Spring Boot, Application Events and Listeners](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.spring-application.application-events-and-listeners)
