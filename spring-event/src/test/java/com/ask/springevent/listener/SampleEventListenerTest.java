@@ -38,7 +38,7 @@ class SampleEventListenerTest {
     publisher.publishEvent(event);
 
     // then
-    assertThat(applicationEvents.stream(SampleEvent.class)).hasSize(1);
+    assertThat(applicationEvents.stream(SampleEvent.class)).containsExactly(event);
     then(sampleEventListener).should(times(1)).onApplicationEvent(any());
   }
 
