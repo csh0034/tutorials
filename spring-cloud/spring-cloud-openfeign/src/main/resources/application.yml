@@ -1,6 +1,12 @@
 server:
   port: 8080
 
+resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+
 feign:
   custom:
     google-url: https://google.com

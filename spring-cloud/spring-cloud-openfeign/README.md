@@ -101,6 +101,19 @@ public Request.Options requestOptions() {
 }
 ```
 
+#### yaml 프로퍼티로 세팅 가능함
+
+- `Resilience4JAutoConfiguration`
+- `Resilience4JCircuitBreakerFactory`
+
+```yaml
+resilience4j:
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+```
+
 ### jsr-310(Java8 Date-Time) 파라미터 타입 사용시 포맷 오류
 
 feign client 에서 java8 Date-Time 관련 파라미터타입을 사용할 경우 전송시에 포맷이 하단과 같이 처리됨
