@@ -90,6 +90,11 @@ RuntimeException 의 하위 클래스이므로 TransactionSystemException 으로
 - 해당값이 true 일 경우 `TableGenerator` 를 사용
 - 해당값이 false 일 경우 deprecated 된 `MultipleHiLoPerTableGenerator` 를 사용
 
+## Hibernate Primary Key (ID) Generator
+
+- `DefaultIdentifierGeneratorFactory`
+- [참고 링크](https://kwonnam.pe.kr/wiki/java/hibernate/id_generator)
+
 ### 참조
 - [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
 - [validate entities with hibernate validator](https://thorben-janssen.com/automatically-validate-entities-with-hibernate-validator/)
