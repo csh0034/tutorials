@@ -1,1 +1,7 @@
-
+spring:
+  artemis:
+     embedded:
+       queues:
+         - testQueue # point to point
+#       topics:
+#         - testTopic # pub/sub
