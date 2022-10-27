@@ -53,6 +53,7 @@
     <module>google-guava</module>
     <module>ddd</module>
     <module>object-mapper</module>
+    <module>spring-artemis</module>
   </modules>
 
   <properties>
