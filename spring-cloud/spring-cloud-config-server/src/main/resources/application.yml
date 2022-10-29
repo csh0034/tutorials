@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 9999
 
 management:
   endpoint:
@@ -16,18 +16,18 @@ management:
 spring:
   application:
     name: config-server
-#  profiles:
-#    active:
-#      native
-  cloud:
-    config:
-      server:
-        git:
-          uri: file:${user.home}/DEV/config-server-git
-#          delete-untracked-branches: true
-#          force-pull: true
-        encrypt:
-          enabled: false
+  profiles:
+    active:
+      native
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: file:${user.home}/DEV/config-server-git
+##          delete-untracked-branches: true
+##          force-pull: true
+#        encrypt:
+#          enabled: false
 
 encrypt:
   key-store:
