@@ -54,6 +54,7 @@
     <module>ddd</module>
     <module>object-mapper</module>
     <module>spring-artemis</module>
+    <module>spring-monogdb</module>
   </modules>
 
   <properties>
