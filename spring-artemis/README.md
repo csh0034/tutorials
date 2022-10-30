@@ -21,6 +21,7 @@
 <dependency>
   <groupId>org.apache.activemq</groupId>
   <artifactId>artemis-jms-server</artifactId>
+  <scope>test</scope>
 </dependency>
 ```
 

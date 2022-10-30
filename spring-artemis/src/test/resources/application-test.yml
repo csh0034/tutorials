@@ -1,0 +1,8 @@
+spring:
+  artemis:
+    mode: EMBEDDED # EMBEDDED_JMS lib 가 추가되었으면 자동 설정 되지만 명시적으로 추가하였음
+    embedded:
+      queues:
+        - testQueue # point to point
+#      topics:
+#       - testTopic # pub/sub
