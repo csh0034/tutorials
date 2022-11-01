@@ -55,6 +55,7 @@
     <module>object-mapper</module>
     <module>spring-artemis</module>
     <module>spring-monogdb</module>
+    <module>spring-rest</module>
   </modules>
 
   <properties>
