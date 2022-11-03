@@ -6,6 +6,9 @@ spring:
           google:
             client-id: @tutorials.oauth2.clientId@
             client-secret: @tutorials.oauth2.clientSecret@
+          facebook:
+            client-id: test
+            client-secret: test
 
 logging:
   level:
