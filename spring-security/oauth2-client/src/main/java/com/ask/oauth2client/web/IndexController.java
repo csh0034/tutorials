@@ -11,4 +11,9 @@ public class IndexController {
     return "index";
   }
 
+  @GetMapping("/*")
+  public String all() {
+    return "all";
+  }
+
 }

@@ -9,6 +9,15 @@ spring:
           facebook:
             client-id: test
             client-secret: test
+          keycloak:
+            client-name: keycloak
+            client-id: login-app
+            authorization-grant-type: authorization_code
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8090/realms/app
+            user-name-attribute: preferred_username
 
 logging:
   level:

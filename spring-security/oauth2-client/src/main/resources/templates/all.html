@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>All</title>
+</head>
+<body>
+path : [[${#httpServletRequest.requestURI}]]
+<br>
+<br>
+session.SPRING_SECURITY_CONTEXT : [[${session.get('SPRING_SECURITY_CONTEXT')}]]
+</body>
+</html>
