@@ -56,6 +56,7 @@
     <module>spring-artemis</module>
     <module>spring-monogdb</module>
     <module>spring-rest</module>
+    <module>keycloak</module>
   </modules>
 
   <properties>
