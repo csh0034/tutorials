@@ -1,5 +1,10 @@
 # Spring Security OAuth2 Client
 
+## OIDC(OpenID Connect) 란?
+
+- OAuth 2.0 프로토콜의 최상위 레이어와 동일한 레이어다.
+- OAuth 2.0을 확장하여 인증 방식을 표준화한다.
+
 ## Spring Security OIDC 인증 처리
 
 - OAuth2AuthorizationRequestRedirectFilter
@@ -31,10 +36,24 @@ ClientRegistration 이 1개 일 경우 자동으로 OIDC 로그인 처리를 한
 5. OidcAuthorizationCodeAuthenticationProvider, `jwtDecoder.decode`  
    jwkSetUri (`https://www.googleapis.com/oauth2/v3/certs`) 를 통해 가져온 jwk 로 id 토큰을 검증한다.
 
-## OIDC(OpenID Connect) 란?
+## [OpenID Connect Discovery](https://swagger.io/docs/specification/authentication/openid-connect-discovery/)
 
-- OAuth 2.0 프로토콜의 최상위 레이어와 동일한 레이어다.   
-- OAuth 2.0을 확장하여 인증 방식을 표준화한다.
+내용은 JSON 형식이며, OpenID Provider Metedata 정보를 담고 있음
+
+- Google, https://accounts.google.com/.well-known/openid-configuration
+- Kakao, https://kauth.kakao.com/.well-known/openid-configuration
+
+> SpringBoot 서버가 올라갈때 metadata 를 먼저 가져와 세팅후에 프로퍼티에 설정한 값으로 세팅한다.
+
+### token_endpoint_auth_methods_supported
+
+Token_endpoint 에서 지원하는 클라이언트 인증 목록을 나타낸다.  
+`com.nimbusds.oauth2.sdk.auth.ClientAuthenticationMethod`
+
+- client_secret_post (post body 에 전송)
+- client_secret_basic (Authorization 헤더에 전송)
+- client_secret_jwt
+- ...
 
 ## 참고 사항
 
