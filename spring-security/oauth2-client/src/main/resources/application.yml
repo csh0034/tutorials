@@ -14,6 +14,7 @@ spring:
             client-id: login-app
             authorization-grant-type: authorization_code
             scope: openid
+#            client-authentication-method: client_secret_post # client_secret_basic 을 지원하므로 지정안함
         provider:
           keycloak:
             issuer-uri: http://localhost:8090/realms/app
