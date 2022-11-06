@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="google-signin-client_id" th:content="${@environment.getProperty('spring.security.oauth2.client.registration.google.client-id')}">
   <title>Index</title>
 </head>
 <body>
+
+<h2><a href="/login">Login</a></h2>
+<h2><a href="/logout">Logout</a></h2>
+
+session.SPRING_SECURITY_CONTEXT : [[${session.get('SPRING_SECURITY_CONTEXT')}]]
+
+<br><br>
+
 <div id="my-signin2"></div>
 <script>
   function onSuccess(googleUser) {
