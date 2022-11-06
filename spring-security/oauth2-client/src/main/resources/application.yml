@@ -12,7 +12,8 @@ spring:
           keycloak:
             client-name: keycloak
             client-id: login-app
-            authorization-grant-type: authorization_code
+            client-secret: fsXKurRGDEWxdp8MYBpDh6felWJTu1v1
+#            authorization-grant-type: authorization_code # default
             scope: openid
 #            client-authentication-method: client_secret_post # client_secret_basic 을 지원하므로 지정안함
         provider:
