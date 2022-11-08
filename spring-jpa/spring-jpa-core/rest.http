@@ -1,0 +1,14 @@
+### Repository 이용하여 저장
+POST http://localhost:8080/add
+
+### EntityManagerFactory 에서 EntityManager 생성하여 저장, close 호출안함, 커넥션 릭 발생
+POST http://localhost:8080/add-emf
+
+### EntityManagerFactory 에서 EntityManager 생성하여 저장, close 호출함, 커넥션 릭 발생 안함
+POST http://localhost:8080/add-emf?shouldClose=true
+
+### EntityManager 로 저장, close 명시적으로 호출안함 프레임워크에서 처리, 커넥션 릭 발생 안함, SharedEntityManagerCreator
+POST http://localhost:8080/add-em
+
+### EntityManager 로 저장 type EXTENDED, 주입된 bean 제거시 프레임워크에서도 close 호출함, 커넥션 릭 발생, ExtendedEntityManagerCreator
+POST http://localhost:8080/add-em?useExtended=true
