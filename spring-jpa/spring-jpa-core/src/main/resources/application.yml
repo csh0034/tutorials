@@ -3,6 +3,8 @@ spring:
     url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
+    hikari:
+      leak-detection-threshold: 5000 # 커넥션이 누수 가능성이 있다는 로그 메시지를 출력하기 전에 커넥션이 풀에서 벗어날 수 있는 시간을 밀리초로 설정
 
   jpa:
     hibernate:
@@ -21,3 +23,5 @@ logging:
     "[org.hibernate.SQL]": debug
     "[org.hibernate.SQL_SLOW]": debug
     "[org.hibernate.type.descriptor.sql]": trace
+    "[com.zaxxer.hikari.HikariConfig]": debug
+    "[com.zaxxer.hikari]": trace
