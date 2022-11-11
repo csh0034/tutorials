@@ -1,1 +1,37 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/db_dbcp2?createDatabaseIfNotExist=true
+    username: root
+    password: 111111
+    dbcp2:
+      max-wait-millis: 1000
+      max-total: 50
+      initial-size: 20
+      min-idle: 10
+      max-idle: 20
+      time-between-eviction-runs-millis: 50000
+      remove-abandoned-on-borrow: true
+      remove-abandoned-on-maintenance: true
+      remove-abandoned-timeout: 60
+      log-abandoned: true
 
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data.sql
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+    open-in-view: false
+    defer-datasource-initialization: true
+
+logging:
+  level:
+    "[com.ask]": debug
+    "[org.hibernate.SQL]": debug
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": trace
