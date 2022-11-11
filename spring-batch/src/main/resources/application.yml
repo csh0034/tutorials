@@ -20,7 +20,7 @@ spring:
       names: ${job.name:NONE}
       enabled: false
     jdbc:
-      initialize-schema: never
+      initialize-schema: ALWAYS
 
 logging:
   level:
