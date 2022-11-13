@@ -4,16 +4,17 @@ spring:
     username: root
     password: 111111
     dbcp2:
-      max-wait-millis: 1000
-      max-total: 50
       initial-size: 20
+      max-total: 20
       min-idle: 10
       max-idle: 20
-      time-between-eviction-runs-millis: 50000
+      max-wait-millis: 5000
+      time-between-eviction-runs-millis: 60000
       remove-abandoned-on-borrow: true
       remove-abandoned-on-maintenance: true
       remove-abandoned-timeout: 60
       log-abandoned: true
+      validation-query: select 1
 
   sql:
     init:
