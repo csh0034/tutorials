@@ -4,5 +4,9 @@ spring:
     username: root
     password: 111111
 
+  cache:
+    redis:
+      key-prefix: '1.1.0:cache:'
+
 #  main:
 #    allow-circular-references: true
