@@ -5,8 +5,15 @@ spring:
     password: 111111
 
   cache:
+    type: REDIS # 구현체 하나일 경우 생략 가능
     redis:
-      key-prefix: '1.1.0:cache:'
+      time-to-live: 10m # default ttl
+      key-prefix: '1.1.0:cache:' # default key prefix
 
 #  main:
 #    allow-circular-references: true
+
+logging:
+  level:
+    "[com.ask]": debug
+#    "[org.springframework.cache]": trace # CacheInterceptor 로그 확인 필요시 설정

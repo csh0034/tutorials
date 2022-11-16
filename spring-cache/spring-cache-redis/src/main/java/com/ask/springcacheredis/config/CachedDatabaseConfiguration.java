@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Lazy;
 
 public class CachedDatabaseConfiguration extends DatabaseConfiguration {
 
-  private static final String CACHE_DB = "cache_DB";
-
   @Autowired
   @Lazy
   private CachedDatabaseConfiguration self;
@@ -19,7 +17,7 @@ public class CachedDatabaseConfiguration extends DatabaseConfiguration {
     super(datasource, table, keyColumn, valueColumn);
   }
 
-  @Cacheable(value = CACHE_DB)
+  @Cacheable(value = CacheConstants.DB_PROPERTY)
   public Object getCacheProperty(String key) {
     return super.getProperty(key);
   }
@@ -30,7 +28,7 @@ public class CachedDatabaseConfiguration extends DatabaseConfiguration {
   }
 
   @Override
-  @CacheEvict(value = CACHE_DB, key = "#key")
+  @CacheEvict(value = CacheConstants.DB_PROPERTY, key = "#key")
   public void setProperty(String key, Object value) {
     super.setProperty(key, value);
   }
