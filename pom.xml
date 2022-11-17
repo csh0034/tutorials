@@ -58,6 +58,7 @@
     <module>spring-rest</module>
     <module>keycloak</module>
     <module>spring-dbcp2</module>
+    <module>spring-redis</module>
   </modules>
 
   <properties>
