@@ -1,5 +1,6 @@
 package com.ask.multitenancy.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -19,12 +19,20 @@ class TenantControllerTest {
 
   @Test
   void findAllCompanies() throws Exception {
-    // given
-
     // when
-    ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/companies"));
+    ResultActions result = mockMvc.perform(get("/companies"));
 
     // then
     result.andDo(print());
   }
+
+  @Test
+  void tenantMaterNested() throws Exception {
+    // when
+    ResultActions result = mockMvc.perform(get("/tenant-master-nested"));
+
+    // then
+    result.andDo(print());
+  }
+
 }

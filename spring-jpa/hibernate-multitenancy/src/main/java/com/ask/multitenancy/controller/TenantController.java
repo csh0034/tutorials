@@ -53,4 +53,10 @@ public class TenantController {
     Company company = Company.create("sample-" + System.currentTimeMillis());
     return companyRepository.save(company).getId();
   }
+
+  @GetMapping("/tenant-master-nested")
+  public String tenantMaterNested() {
+    companyService.nested();
+    return "Ok";
+  }
 }
