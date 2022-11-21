@@ -102,10 +102,19 @@ config set notify-keyspace-events Egx
 따라서 콘솔에서 파라미터 세팅을 해주어야 한다.
 
 - [AWS ElastiCache 키스페이스 알림을 구현](https://aws.amazon.com/ko/premiumsupport/knowledge-center/elasticache-redis-keyspace-notifications/)
+- ElastiCache 에 Config set 을 호출하지 않도록 하단과 같이 세팅해야 한다.
 
+```java
+// keyspaceNotificationsConfigParameter 빈값일 경우 호출 안함 
+@EnableRedisRepositories(enableKeyspaceEvents = EnableKeyspaceEvents.ON_STARTUP, keyspaceNotificationsConfigParameter = "")
+```
+
+```properties
+# config set notify-keyspace-events 호출 안하도록 설정 
+spring.session.redis.configure-action=none
+```
 
 ## 참조
 
 - [Reference, Spring Data Redis](https://docs.spring.io/spring-data/redis/docs/current/reference/html)
-- [Reference, Redis keyspace notifications
-  ](https://redis.io/docs/manual/keyspace-notifications/)
+- [Reference, Redis keyspace notifications](https://redis.io/docs/manual/keyspace-notifications/)
