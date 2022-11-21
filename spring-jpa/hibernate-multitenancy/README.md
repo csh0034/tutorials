@@ -93,6 +93,46 @@ public class MultiTenantCreateRunner implements ApplicationRunner {
 }
 ```
 
+## Master, Tenant 트랜잭션 중첩
+
+### 트랜잭션 처리 순서
+
+1. TransactionInterceptor.invoke
+2. TransactionAspectSupport.invokeWithinTransaction
+3. TransactionAspectSupport.createTransactionIfNecessary
+4. AbstractPlatformTransactionManager.getTransaction
+   - 4.1 doGetTransaction
+5. AbstractPlatformTransactionManager.startTransaction
+6. JpaTransactionManager.doBegin
+7. getJpaDialect.beginTransaction (HibernateJpaDialect)
+8. entityManager.getTransaction().begin()
+
+4.1 과정에서 JpaTransactionManager 에 DataSource 가 세팅되어 있을 경우  
+TransactionSynchronizationManager.resources(ThreadLocal) 에 해당 DataSource 가 있으면  
+ConnectionHolder 를 JpaTransactionObject 에 세팅한다.
+
+6 과정에서 ConnectionHolder 가 있으면서 synchronizedWithTransaction 값이 false(default) 이면 예외를 발생한다.  
+
+- Pre-bound JDBC Connection found!  
+  단일 DataSource 의 모든 트랜잭션에 대해 단일 JpaTransactionManager 를 사용하는 것이 권장된다.
+
+따라서 서로 다른 Transaction 이 중첩되었을때 JpaTransactionManager 에 DataSource 가 세팅되어 있다면  
+예외가 발생하지만 Tenant 의 JpaTransactionManager 에는 동적으로 생성되기 때문에 DataSource 가 세팅되어있지 않으므로  
+**중첩 트랜잭션이 정상 동작한다.**
+
+추가) JpaTransactionManager 의 DataSource 는 entityManagerFactory 에 있는것을 세팅하는데 Tenant   
+entityManagerFactory 에는 DataSource 를 세팅하지 않는다.
+
+3 과정 처리이후 반환시 TransactionInfo 를 생성하며 `TransactionInfo.bindToThread` 를 호출하는데  
+하단과 같이 ThreadLocal 에 담겨있는 이전 트랜잭션 정보를 oldTransactionInfo 로 저장해놓는다.
+
+![01.png](images/01.png)
+
+이는 추후 해당 트랜잭션 종료시 `TransactionInfo.restoreThreadLocalStatus` 이전 트랜잭션 정보를  
+다시 ThreadLocal 에 복구한다.
+
+> 결론적으로 Master, Tenant 트랜잭션 중첩시 REQUIRES_NEW 와 동일하게 동작한다.
+
 ## 참조
 - [hibernate, multitenancy](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#multitenacy)
 - [baeldung, A Guide to Multitenancy in Hibernate 5](https://www.baeldung.com/hibernate-5-multitenancy)
