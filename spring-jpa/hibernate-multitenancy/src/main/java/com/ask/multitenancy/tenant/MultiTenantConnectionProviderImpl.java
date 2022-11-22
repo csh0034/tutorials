@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,7 @@ public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMu
 
   private final DataSource dataSource;
   private final DataSourceProperties dataSourceProperties;
-  private final ObjectProvider<TenantRepository> tenantRepositoryProvider;
+  private final TenantRepository tenantRepository;
 
   private final Map<String, DataSource> dataSourceMap = new ConcurrentHashMap<>();
 
@@ -44,8 +43,6 @@ public class MultiTenantConnectionProviderImpl extends AbstractDataSourceBasedMu
   }
 
   private DataSource createDataSource(String tenantId) {
-    TenantRepository tenantRepository = tenantRepositoryProvider.getIfAvailable();
-
     if (tenantRepository == null) {
       throw new RuntimeException("tenantRepository must not be null");
     }
