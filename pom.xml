@@ -59,6 +59,7 @@
     <module>keycloak</module>
     <module>spring-dbcp2</module>
     <module>spring-redis</module>
+    <module>apache-camel</module>
   </modules>
 
   <properties>
