@@ -1,1 +1,5 @@
-
+camel:
+  dataformat:
+    beanio:
+      mapping: classpath:mapping.xml
+      stream-name: employeeFile
