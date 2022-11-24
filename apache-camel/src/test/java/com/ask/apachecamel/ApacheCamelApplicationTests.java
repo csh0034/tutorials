@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.spi.DataFormat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,9 +32,6 @@ class ApacheCamelApplicationTests {
 
   @TestConfiguration
   static class TestConfig {
-
-    @Autowired
-    private DataFormat dataFormat;
 
     @Bean
     public RouteBuilder marshalRoute() {
