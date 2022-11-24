@@ -43,8 +43,20 @@ from `org.apache.camel` to `org.apache.camel.springbooot`
 
 ## BeanIO
 
+Flat File, Stream 또는 단순 String 에서 Java Bean 객체로 마샬링 및 언마샬링을 지원한다.  
+XML, CSV, Fixed Length 등의 형식 지원
+
 - [Camel BeanIO](https://camel.apache.org/components/3.14.x/dataformats/beanio-dataformat.html#_using_java_dsl)
 - [BeanIO V3](https://beanio.github.io/docs/reference-guide/)
+
+### 전문 통신
+
+서로 주고 받을 데이터의 포맷을 정한 후 약속된 데이터 패킷을 전송하고 수신하는 것을 말한다.  
+`Fixed Length Format` 을 사용하며 전문을 구성하는 필드들의 길이를 고정시키는 방식이다.  
+전문은 하단과 같이 크게 두 가지로 나눠진다.
+
+- 일정한 크기의 공통된 데이터를 가진 header 
+- 실제 해당 통신에 필요한 데이터를 가진 body 부분, 
 
 ## 참조
 

@@ -9,4 +9,22 @@
       <field name="hireDate" format="MMddyyyy"/>
     </record>
   </stream>
+
+  <stream name="request" format="fixedlength">
+    <parser>
+      <property name="recordTerminator" value=""/>
+    </parser>
+    <record name="sms" class="com.ask.apachecamel.beanio.FixedLengthDto" maxOccurs="1">
+      <segment name="header" class="map" maxOccurs="1">
+        <field name="HR"    length="15" justify="left" padding=" "/>
+        <field name="SEQNO" length="10" justify="right" padding="0" default="0000000000" type="int"/>
+      </segment>
+      <segment name="data" class="map" maxOccurs="1">
+        <field name="A" length="5" justify="left" padding=" " default="SMS"/>
+        <field name="B" length="10" justify="right" padding="0" default="120"/>
+        <field name="C" length="15" justify="left" padding=" " default="s"/>
+      </segment>
+      <field name="end" length="2" justify="left" padding=" " default="@@"/>
+    </record>
+  </stream>
 </beanio>

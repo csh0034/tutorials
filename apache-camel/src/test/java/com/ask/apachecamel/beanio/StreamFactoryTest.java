@@ -12,6 +12,7 @@ import org.beanio.Marshaller;
 import org.beanio.StreamFactory;
 import org.beanio.Unmarshaller;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
@@ -25,6 +26,7 @@ class StreamFactoryTest {
     streamFactory.loadResource("mapping.xml");
   }
 
+  @DisplayName("csv marshal")
   @Test
   void marshal() {
     Marshaller marshaller = streamFactory.createMarshaller("employeeFile");
@@ -32,6 +34,15 @@ class StreamFactoryTest {
     log.info("result: {}", result);
   }
 
+  @DisplayName("fixed length marshal")
+  @Test
+  void marshal2() {
+    Marshaller marshaller = streamFactory.createMarshaller("request");
+    String result = marshaller.marshal("sms", Fixtures.fixedLengthDto()).toString();
+    log.info("result: {}", result);
+  }
+
+  @DisplayName("csv unmarshal")
   @Test
   void unmarshal() {
     Unmarshaller unmarshaller = streamFactory.createUnmarshaller("employeeFile");
@@ -42,6 +53,15 @@ class StreamFactoryTest {
       Employee employee = (Employee) unmarshaller.unmarshal(stringEmployee);
       log.info("result: {}", employee);
     });
+  }
+
+  @DisplayName("fixed length unmarshal")
+  @Test
+  void unmarshal2() {
+    Unmarshaller unmarshaller = streamFactory.createUnmarshaller("request");
+
+    FixedLengthDto dto = (FixedLengthDto) unmarshaller.unmarshal(Fixtures.stringFixedLengthDto());
+    log.info("result: {}", dto);
   }
 
   @Test

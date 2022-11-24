@@ -1,10 +1,12 @@
 package com.ask.apachecamel;
 
 import com.ask.apachecamel.beanio.Employee;
+import com.ask.apachecamel.beanio.FixedLengthDto;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.CamelContext;
+import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,19 +18,35 @@ import org.springframework.context.annotation.Bean;
 class ApacheCamelApplicationTests {
 
   @Autowired
-  private CamelContext camelContext;
+  private ProducerTemplate producerTemplate;
 
+  @Autowired
+  private ConsumerTemplate consumerTemplate;
+
+  @DisplayName("csv marshal")
   @Test
   void marshal() {
-    ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
     producerTemplate.sendBody("direct:marshal", Fixtures.employees());
   }
 
+  @DisplayName("fixed length marshal")
+  @Test
+  void marshal2() {
+    producerTemplate.sendBody("direct:marshal2", Fixtures.fixedLengthDto());
+  }
+
+  @DisplayName("csv unmarshal")
   @Test
   void unmarshal() {
-    ProducerTemplate producerTemplate = camelContext.createProducerTemplate();
     producerTemplate.sendBody("direct:unmarshal", Fixtures.stringEmployees());
   }
+
+  @DisplayName("fixed length unmarshal")
+  @Test
+  void unmarshal2() {
+    producerTemplate.sendBody("direct:unmarshal2", Fixtures.stringFixedLengthDto());
+  }
+
 
   @TestConfiguration
   static class TestConfig {
@@ -53,6 +71,21 @@ class ApacheCamelApplicationTests {
     }
 
     @Bean
+    public RouteBuilder fixedLengthMarshalRoute() {
+      return new RouteBuilder() {
+        @Override
+        public void configure() {
+          from("direct:marshal2")
+              .to("dataformat:beanio:marshal?mapping=mapping.xml&streamName=request")
+              .process(exchange -> {
+                String body = exchange.getIn().getBody(String.class);
+                log.info("body: {}", body);
+              });
+        }
+      };
+    }
+
+    @Bean
     public RouteBuilder unmarshalRoute() {
       return new RouteBuilder() {
         @Override
@@ -65,6 +98,21 @@ class ApacheCamelApplicationTests {
               .process(exchange -> {
                 Employee employee = exchange.getIn().getBody(Employee.class);
                 log.info("employee: {}", employee);
+              });
+        }
+      };
+    }
+
+    @Bean
+    public RouteBuilder fixedLengthUnmarshalRoute() {
+      return new RouteBuilder() {
+        @Override
+        public void configure() {
+          from("direct:unmarshal2")
+              .to("dataformat:beanio:unmarshal?mapping=mapping.xml&streamName=request")
+              .process(exchange -> {
+                FixedLengthDto dto = exchange.getIn().getBody(FixedLengthDto.class);
+                log.info("dto: {}", dto);
               });
         }
       };
