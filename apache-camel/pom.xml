@@ -53,6 +53,10 @@
       <artifactId>camel-timer-starter</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-base64-starter</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
