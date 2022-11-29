@@ -1,9 +1,11 @@
 package com.ask.apachecamel.beanio;
 
 import com.ask.apachecamel.Fixtures;
+import com.ask.apachecamel.beanio.User.Address;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.beanio.BeanReader;
@@ -11,8 +13,10 @@ import org.beanio.BeanWriter;
 import org.beanio.Marshaller;
 import org.beanio.StreamFactory;
 import org.beanio.Unmarshaller;
+import org.beanio.builder.StreamBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
@@ -83,6 +87,55 @@ class StreamFactoryTest {
     while ((employee = (Employee) beanReader.read()) != null) {
       log.info("result: {}", employee);
     }
+  }
+
+  @Nested
+  class AnnotationTest {
+
+    private static final String STREAM_NAME = "user";
+
+    @BeforeEach
+    void setUp() {
+      StreamBuilder builder = new StreamBuilder(STREAM_NAME)
+          .format("fixedlength")
+          .strict()
+          .addRecord(User.class);
+
+      streamFactory.define(builder);
+    }
+
+    @Test
+    void marshal() {
+      // given
+      User user = new User();
+      user.setName("ASk");
+      user.setAge(99);
+      user.setJoinedDt(new Date());
+
+      Address address = new Address();
+      address.setStreet("street...");
+      address.setZipcode("zipCode...");
+      user.setAddress(address);
+
+      // when then
+      Marshaller marshaller = streamFactory.createMarshaller(STREAM_NAME);
+      String result = marshaller.marshal(user).toString();
+      log.info("result: {}", result);
+    }
+
+    @Test
+    void unmarshal() {
+      // given
+      String record = "ASk-------99-2022-11-29 16:09:15@@@@@seoulstreet... zipCode...@@@@@@@@@@";
+
+      // when
+      Unmarshaller unmarshaller = streamFactory.createUnmarshaller(STREAM_NAME);
+
+      // then
+      User user = (User) unmarshaller.unmarshal(record);
+      log.info("result: {}", user);
+    }
+
   }
 
 }

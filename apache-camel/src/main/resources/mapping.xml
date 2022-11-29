@@ -10,7 +10,7 @@
     </record>
   </stream>
 
-  <stream name="request" format="fixedlength">
+  <stream name="request" format="fixedlength" strict="true">
     <parser>
       <property name="recordTerminator" value=""/>
     </parser>
