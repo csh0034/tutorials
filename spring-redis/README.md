@@ -10,6 +10,22 @@
   - message broker
   - streaming engine.
 
+### [Redis Data Type](https://redis.io/docs/data-types/)
+
+- Strings
+- Sets
+- Sorted Sets
+- Hashes
+- Lists
+- ...
+
+### [Redis Persistence](https://redis.io/docs/management/persistence/)
+
+- RDB(Redis Database)
+- AOF(Append Only File)
+- No persistence
+- RDB + AOF
+
 ## Redis keyspace notifications
 
 - 새로운 키 입력/변경 등의 이벤트가 발생할 때 알려주는 기능(Pub/Sub)
@@ -118,3 +134,4 @@ spring.session.redis.configure-action=none
 
 - [Reference, Spring Data Redis](https://docs.spring.io/spring-data/redis/docs/current/reference/html)
 - [Reference, Redis keyspace notifications](https://redis.io/docs/manual/keyspace-notifications/)
+- [Docker Image, Redis](https://hub.docker.com/_/redis)
