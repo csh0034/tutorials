@@ -60,6 +60,7 @@
     <module>spring-dbcp2</module>
     <module>spring-redis</module>
     <module>apache-camel</module>
+    <module>spring-grpc</module>
   </modules>
 
   <properties>
