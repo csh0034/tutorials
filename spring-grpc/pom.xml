@@ -15,5 +15,7 @@
   </properties>
 
   <modules>
+    <module>spring-grpc-server</module>
+    <module>spring-grpc-client</module>
   </modules>
 </project>
