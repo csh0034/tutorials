@@ -46,6 +46,13 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Grpc-Test-Support -->
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-testing</artifactId>
+      <scope>test</scope>
+      <version>1.51.0</version>
+    </dependency>
   </dependencies>
 
   <build>
