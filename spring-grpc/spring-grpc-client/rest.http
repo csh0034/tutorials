@@ -1,2 +1,9 @@
 ### GET send gRPC
 GET http://localhost:8081/send?name=test....
+
+### GRPC send
+GRPC localhost:9090/Simple/SayHello
+
+{
+  "name": "ASk..."
+}
