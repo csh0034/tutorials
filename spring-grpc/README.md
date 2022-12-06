@@ -46,11 +46,21 @@ HTTP/2 는 하단과 같은 장점이 있다.
 
 ### protobuf(protocol buffers)
 
+google 에서 개발한 구조화된 데이터 직렬화 기법을 말한다.
+
 IDL(Identity Definition Language)로 **protocol buffers(protobuf)** 사용한다.  
 IDL 만 정의하면 높은 성능을 보장하는 서비스와 메세지에 대한 소스코드가 각 언어에 맞게 자동 생성된다.  
 
 따라서 개발자들은 생성된 코드를 클라이언트, 서버 간의 사용 언어에 상관없이 사용하기만 하면 되며   
 정해진 규약을 공통으로 사용하기 때문에 의사소통 비용이 감소하게 된다.
+
+Protocol Buffer 로 직렬화 할 경우 필드 번호, 필드 유형 등을 1byte 로 받아서 식별하고  
+주어진 length 만큼 읽도록 하여 용량을 최소화 한다.
+
+![02.png](_images/02.png)
+
+- json: 82 bytes
+- protobuf: 32 bytes
 
 ## [gRPCurl](https://github.com/fullstorydev/grpcurl)
 
