@@ -62,6 +62,22 @@ Protocol Buffer 로 직렬화 할 경우 필드 번호, 필드 유형 등을 1by
 - json: 82 bytes
 - protobuf: 32 bytes
 
+## REST vs gRPC
+
+![03.png](_images/03.png)
+
+- 덜 엄격한 구조와 자주 데이터 포맷이 변경된다면 REST 가 적절함.
+- 자주 변경되지 않으며 속도가 중요할 경우엔 gRPC 가 적절함.
+- [baeldung, REST vs gRPC](https://www.baeldung.com/rest-vs-grpc)
+
+## gRPC-web
+
+![04.png](_images/04.png)
+
+- [github, gRPC-web](https://github.com/grpc/grpc-web)
+- [docs, Basics tutorial gRPC-web](https://grpc.io/docs/platforms/web/basics/)
+- [브라우저 앱에서 gRPC 사용](https://learn.microsoft.com/ko-kr/aspnet/core/grpc/browser?view=aspnetcore-7.0)
+
 ## [gRPCurl](https://github.com/fullstorydev/grpcurl)
 
 ```shell
@@ -73,6 +89,16 @@ $ grpcurl --plaintext -d '{"name": "test"}' localhost:9090 Simple/SayHello
 {
   "message": "Hello: test"
 }
+```
+
+## [Protocol Buffer Compiler Installation](https://grpc.io/docs/protoc-installation/)
+
+```shell
+$ brew install protobuf
+$ protoc --version
+
+# protobuf 위치로 이동
+protoc -I . --java_out=. ./helloworld.proto
 ```
 
 ## 참조
