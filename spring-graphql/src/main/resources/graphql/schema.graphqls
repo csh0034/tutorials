@@ -1,0 +1,13 @@
+type Food {
+    id: ID!
+    name: String!
+}
+
+type Query {
+    findFood(name: String!): Food
+    findFoods: [Food]
+}
+
+type Mutation {
+    save(name: String!): Food
+}

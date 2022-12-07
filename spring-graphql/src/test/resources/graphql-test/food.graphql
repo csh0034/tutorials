@@ -1,0 +1,19 @@
+mutation save($name: String!) {
+    save(name: $name) {
+        name
+    }
+}
+
+query findFood($name: String!) {
+    findFood(name: $name) {
+        id
+        name
+    }
+}
+
+query findFoods{
+    findFoods {
+        id
+        name
+    }
+}
