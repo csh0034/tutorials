@@ -28,6 +28,46 @@ google 에서 개발한 오픈소스 RPC(Remote Procedure Call) 프레임워크�
 
 ![01.png](_images/01.png)
 
+### gRPC Service Method
+
+[gRPC, Core concepts](https://grpc.io/docs/what-is-grpc/core-concepts/)
+
+- unary (1개 request , 1개 response)
+- server stream (1개 request, n개 response)
+- client stream (n개 request, 1개 response)
+- bi stream (n개 request, n개 response)
+
+```protobuf
+// unary
+rpc SayHello(HelloRequest) returns (HelloResponse);
+
+// server stream
+rpc LotsOfReplies(HelloRequest) returns (stream HelloResponse);
+
+// client stream
+rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
+
+// bi stream
+rpc BidiHello(stream HelloRequest) returns (stream HelloResponse);
+```
+
+![05.png](_images/05.png)
+
+### gRPC Client Stub
+
+- BlockingStub
+  - 동기 통신
+  - unary RPC 와 server streaming RPC 에서만 사용 가능
+- AsyncStub(Stub)
+  - 비동기 통신
+  - 서버에서 오는 응답을 StreamObserver 객체가 대신 처리함
+  - 모든 RPC 에서 사용 가능
+- FutureStub
+  - 비동기 통신
+  - 서버로부터 오는 응답 도달에 상관없이 ListenableFuture 로 wrapping 된 객체를 반환함
+  - 추후 응답이 오면 ListenableFuture 객체를 통해 전달 받은 메세지를 unwrapping
+  - unary RPC 에서만 사용 가능
+
 ### HTTP/2
 
 HTTP/2는 HTTP/1 의 확장으로 기존의 HTTP/1과의 호환성을 유지하며 성능에 초점을 맞춘 프로토콜이다.
