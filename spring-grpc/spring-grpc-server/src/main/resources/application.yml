@@ -1,3 +1,5 @@
+server:
+  port: 9999
 grpc:
   server:
     port: 9090 # default
