@@ -2,7 +2,7 @@
 GET http://localhost:8081/send?name=test....
 
 ### GRPC send
-GRPC localhost:9090/Simple/SayHello
+GRPC localhost:9090/helloworld.Greeter/SayHello
 
 {
   "name": "ASk..."

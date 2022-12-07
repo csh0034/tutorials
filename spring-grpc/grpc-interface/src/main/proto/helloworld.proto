@@ -1,16 +1,25 @@
 syntax = "proto3";
 
+package helloworld;
+
 option java_multiple_files = true;
 option java_package = "com.ask.grpc";
 option java_outer_classname = "HelloWorldProto";
 
-service Simple {
-  rpc SayHello (HelloRequest) returns (HelloReply) {
-  }
+service Greeter {
+  // unary call
+  rpc SayHello(HelloRequest) returns (HelloReply);
+  // server streaming call
+  rpc SayRepeatHello(RepeatHelloRequest) returns (stream HelloReply);
 }
 
 message HelloRequest {
   string name = 1;
+}
+
+message RepeatHelloRequest {
+  string name = 1;
+  int32 count = 2;
 }
 
 message HelloReply {
