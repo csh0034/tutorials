@@ -15,9 +15,12 @@ class ZonedDateTimeTest {
   }
 
   @Test
-  void zone() {
-    ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneOffset.UTC);
-    System.out.println(zonedDateTime);
+  void withZoneSameInstant() {
+    ZonedDateTime utc = ZonedDateTime.now(ZoneOffset.UTC);
+    System.out.println(utc);
+
+    ZonedDateTime kst = utc.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+    System.out.println(kst);
   }
 
 }
