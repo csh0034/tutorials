@@ -1,4 +1,4 @@
-package com.ask.javacore;
+package com.ask.javacore.date;
 
 import java.text.SimpleDateFormat;
 import java.time.ZoneOffset;
@@ -7,7 +7,7 @@ import java.util.TimeZone;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class DateTest {
+class TimeZoneTest {
 
   /**
    * 서버가 utc 라면 그대로 utc 로 내려가고 <br>
