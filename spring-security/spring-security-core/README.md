@@ -213,5 +213,19 @@ public SecurityFilterChain resources(HttpSecurity http) throws Exception {
 UserDetails updatePassword(UserDetails user, String newPassword);
 ```
 
+## [Security HTTP Response Headers](https://docs.spring.io/spring-security/reference/features/exploits/headers.html)
+
+- Cache Control
+- Content Type Options
+- HTTP Strict Transport Security (HSTS)
+- HTTP Public Key Pinning (HPKP)
+- X-Frame-Options
+- X-XSS-Protection
+- Content Security Policy (CSP)
+- Referrer Policy
+- Feature Policy
+- Permissions Policy
+- Clear Site Data
+
 ## 참조
 - [Spring, Security](https://docs.spring.io/spring-security/reference/index.html)
