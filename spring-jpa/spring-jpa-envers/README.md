@@ -309,6 +309,22 @@ EnversIntegrator 에서 처리됨
 
 ***
 
+## Hibernate Listener 사용시 주의사항
+
+엔티티 변경에 대한 후처리를 위한 리스너 처리 도중 같은 유형의 이벤트를 발생시킬 경우  
+ConcurrentModificationException 예외가 발생한다.
+
+예를 들어 엔티티가 삭제되어 EntityDeleteAction 가 발생하여 onPreDelete or onPostDelete 에서  
+이벤트 처리를 할때 내부에서 다른 엔티티를 삭제하여 추가적으로 EntityDeleteAction 이 발생하면  
+EntityDeleteAction 에 대한 List 순회 도중 동일한 요소가 추가되므로   
+ConcurrentModificationException 가 발생한다.
+
+따라서 즉시 처리하는것이 아닌 트랜잭션의 후처리에서 처리하도록 등록해야한다.
+
+```java
+event.getSession().getActionQueue().registerProcess(AfterTransactionCompletionProcess)
+```
+
 ## 참조
 - [spring data envers](https://docs.spring.io/spring-data/envers/docs/current/reference/html/#reference)
 - [hibernate document](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#envers-configuration)
