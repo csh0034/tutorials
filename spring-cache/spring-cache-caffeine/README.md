@@ -1,19 +1,12 @@
-# Getting Started
+# Spring Cache Caffeine
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## Caffeine Cache
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.6/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.6/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.6/reference/htmlsingle/#web)
-* [Spring cache abstraction](https://docs.spring.io/spring-boot/docs/2.7.6/reference/htmlsingle/#io.caching)
+- java 기반 고성능의 최적의 캐싱 라이브러리
+- 메모리 기반 로컬 캐시
+- Google Guava 영감을 받아 제작된만큼 기능 및 사용 방법이 유사하다.
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## 참조
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Caching Data with Spring](https://spring.io/guides/gs/caching/)
-
+- [GitHub, ben-manes/caffeine](https://github.com/ben-manes/caffeine)
+- [Baeldung, Introduction to Caffeine](https://www.baeldung.com/java-caching-caffeine)
