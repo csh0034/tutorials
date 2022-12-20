@@ -18,6 +18,7 @@
   <modules>
     <module>spring-cache-redis</module>
     <module>spring-cache-jcache</module>
+    <module>spring-cache-caffeine</module>
   </modules>
 
 </project>
