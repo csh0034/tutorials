@@ -62,6 +62,7 @@
     <module>apache-camel</module>
     <module>spring-grpc</module>
     <module>spring-graphql</module>
+    <module>moquette</module>
   </modules>
 
   <properties>
