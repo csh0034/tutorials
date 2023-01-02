@@ -13,25 +13,25 @@ pom.xml
   <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
 <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-tomcat</artifactId>
-  <scope>provided</scope>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-tomcat</artifactId>
+<scope>provided</scope>
 </dependency>
 <dependency>
-  <groupId>org.apache.tomcat.embed</groupId>
-  <artifactId>tomcat-embed-jasper</artifactId>
-  <scope>provided</scope>
+<groupId>org.apache.tomcat.embed</groupId>
+<artifactId>tomcat-embed-jasper</artifactId>
+<scope>provided</scope>
 </dependency>
 <dependency>
-  <groupId>javax.servlet</groupId>
- <artifactId>jstl</artifactId>
- <version>1.2</version>
+<groupId>javax.servlet</groupId>
+<artifactId>jstl</artifactId>
+<version>1.2</version>
 </dependency>
 <dependency>
 <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-devtools</artifactId>
-  <scope>runtime</scope>
-  <optional>true</optional>
+<artifactId>spring-boot-devtools</artifactId>
+<scope>runtime</scope>
+<optional>true</optional>
 </dependency>
 ```
 Java Config
@@ -63,19 +63,20 @@ spring:
 ## JSP Error 처리
 - BasicErrorController 에서 처리됨
 - spring.mvc.view.prefix,suffix 에 error/{status} 에 있으면 처리됨 (JspTemplateAvailabilityProvider 참고)
-  - ex) /WEB-INF/jsp/error/500.jsp, /WEB-INF/jsp/error/404.jsp
+    - ex) /WEB-INF/jsp/error/500.jsp, /WEB-INF/jsp/error/404.jsp
 - 상단 프로퍼티 설정이 되지 않았을 경우 /WEB-INF/jsp/error.jsp
 
 ## JSP EL(Expression Language)
 
-- servletContext, request ,session
-  - el 사용시 바로 접근 가능, `${key}`
+- JspContext(pageScope) → ServletRequest → HttpSession → ServletContext 순서로 조회
+    - PageContext.findAttribute
+    - el 사용시 바로 접근 가능, `${key}`
 - 내장객체를 통한 접근도 가능
-  - `${sessionScope.key} `
-  - pageScope: pageContext
-  - requestScope: HttpServletRequest
-  - sessionScope: HttpSession
-  - applicationScope: ServletContext
+    - `${sessionScope.key} `
+    - pageScope: pageContext
+    - requestScope: HttpServletRequest
+    - sessionScope: HttpSession
+    - applicationScope: ServletContext
 
 ## 참고사항
 
