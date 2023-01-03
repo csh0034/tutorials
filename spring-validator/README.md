@@ -167,5 +167,7 @@ public @interface Between {
 ```
 
 ## 참조
+
 - [Hibernate, validator](https://hibernate.org/validator/)
 - [Validation 관련 블로그](https://meetup.toast.com/posts/223)
+- [Using @JsonComponent in Spring Boot](https://www.baeldung.com/spring-boot-jsoncomponent)
