@@ -1,0 +1,13 @@
+service: aws-nodejs-sns-sample
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  bounce:
+    handler: handler.dispatch
+    events:
+      - sns: dispatch
+
