@@ -1,13 +1,13 @@
-package com.ask.monogdb;
+package com.ask.mongodb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringMonogdbApplication {
+public class SpringMongodbApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(SpringMonogdbApplication.class, args);
+    SpringApplication.run(SpringMongodbApplication.class, args);
   }
 
 }
