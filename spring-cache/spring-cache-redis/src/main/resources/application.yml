@@ -7,7 +7,7 @@ spring:
   cache:
     type: REDIS # 구현체 하나일 경우 생략 가능
     redis:
-      time-to-live: 10m # default ttl
+      time-to-live: 1m # default ttl
       key-prefix: '1.1.0:cache:' # default key prefix
 
 #  main:
