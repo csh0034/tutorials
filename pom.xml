@@ -63,6 +63,7 @@
     <module>spring-grpc</module>
     <module>spring-graphql</module>
     <module>moquette</module>
+    <module>spring-thymeleaf</module>
   </modules>
 
   <properties>
