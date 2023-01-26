@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Spring Template Example</title>
+</head>
+<body>
+<p th:text="#{greeting(${name})}">
+  Hello, Peter Static!
+</p>
+<p th:if="${title.length() > 10}">
+  long title... (more than 10 chars)!
+</p>
+<div th:text="${title}"></div>
+<table>
+  <tr>
+    <th style="width: 50px;">id</th>
+    <th style="width: 150px;">email</th>
+    <th style="width: 150px;">name</th>
+  </tr>
+  <tr>
+    <td th:text="${id}"></td>
+    <td th:text="${email}"></td>
+    <td th:text="${name}"></td>
+  </tr>
+</table>
+</body>
+</html>

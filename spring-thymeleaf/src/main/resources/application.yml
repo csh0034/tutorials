@@ -1,1 +1,7 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration
 
+  messages:
+    basename: message/messages
