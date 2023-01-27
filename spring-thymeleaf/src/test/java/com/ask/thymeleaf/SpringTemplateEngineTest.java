@@ -23,10 +23,12 @@ class SpringTemplateEngineTest {
   void render() {
     // given
     Map<String, Object> variables = new HashMap<>();
+    variables.put("link", "https://www.naver.com");
     variables.put("title", "10 글자보다 긴 이름");
     variables.put("id", "d0993b3f-d0f9-4971-8e16-1547fe55e285");
     variables.put("email", "test@test.com");
     variables.put("name", "sample name");
+    variables.put("bool", "true");
 
     // when
     String htmlContent = templateEngine.process("/sample", new Context(Locale.getDefault(), variables));

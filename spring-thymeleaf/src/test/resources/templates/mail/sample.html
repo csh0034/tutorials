@@ -5,6 +5,7 @@
   <title>Spring Template Example</title>
 </head>
 <body>
+<a th:href="@{${link}}">링크..</a>
 <p th:text="#{greeting(${name})}">
   Hello, Peter Static!
 </p>
@@ -24,5 +25,14 @@
     <td th:text="${name}"></td>
   </tr>
 </table>
+<p th:text="|${email} ${name}|"></p>
+[[${email} + ' ' + ${name}]]
+
+<p th:if="${bool == 'true'}">bool true!!</p>
+
+<th:block th:if="${bool == 'true'}">
+  bool true!!
+</th:block>
+
 </body>
 </html>
