@@ -6,9 +6,12 @@
 </head>
 <body>
 <a th:href="@{${link}}">링크..</a>
-<p th:text="#{greeting(${name})}">
-  Hello, Peter Static!
-</p>
+
+<p th:text="#{greeting(${name})}"></p>
+
+<!--/* util method messages */-->
+<p th:text="${#messages.msg('greeting', name)}"></p>
+
 <p th:if="${title.length() > 10}">
   long title... (more than 10 chars)!
 </p>
@@ -28,7 +31,10 @@
 <p th:text="|${email} ${name}|"></p>
 [[${email} + ' ' + ${name}]]
 
-<p th:if="${bool == 'true'}">bool true!!</p>
+<p th:if="${bool == 'true'}">bool true!</p>
+
+<!--/* util method bools */-->
+<p th:if="${#bools.isTrue(bool)}">bool true!!!</p>
 
 <th:block th:if="${bool == 'true'}">
   bool true!!
