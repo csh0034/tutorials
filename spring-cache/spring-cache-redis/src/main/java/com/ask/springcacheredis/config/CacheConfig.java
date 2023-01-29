@@ -11,8 +11,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 @Configuration
 @EnableCaching
@@ -52,7 +52,7 @@ public class CacheConfig {
   private RedisCacheConfiguration redisExpiresConfiguration(Duration ttl) {
     return RedisCacheConfiguration.defaultCacheConfig(Thread.currentThread().getContextClassLoader())
         .prefixCacheNameWith(cacheProperties.getRedis().getKeyPrefix())
-        .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
+        .serializeValuesWith(SerializationPair.fromSerializer(RedisSerializer.json()))
         .entryTtl(ttl);
   }
 
