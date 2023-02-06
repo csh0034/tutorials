@@ -77,7 +77,7 @@ public class ReplicationDataSourceConfig {
 
     @Override
     protected Object determineCurrentLookupKey() {
-      return TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? DataSourceType.MASTER : DataSourceType.SLAVE;
+      return TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? DataSourceType.SLAVE : DataSourceType.MASTER;
     }
   }
 
