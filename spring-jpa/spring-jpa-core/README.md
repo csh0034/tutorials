@@ -95,6 +95,17 @@ RuntimeException 의 하위 클래스이므로 TransactionSystemException 으로
 - `DefaultIdentifierGeneratorFactory`
 - [참고 링크](https://kwonnam.pe.kr/wiki/java/hibernate/id_generator)
 
+## Replication Datasource
+
+데이터베이스 부하분산을 위해 Write 작업은 Master DB 에서, Read 작업은 Slave DB 에서 처리하도록 하는 방법  
+`AbstractRoutingDataSource` 를 상속받아 구현하며 ReadOnly 트랜잭션인 경우 Slave DB 에서 처리하도록 한다.
+
+### Replication 주의점
+
+Replication 을 적용하면 Master/Slave 서버 간 데이터 동기화까지의 시간이 소요되기 때문에 데이터 정합성 문제가 발생할 수 있다.
+
+[정합성 관련 정리 블로그](https://da-nyee.github.io/posts/db-replication-data-consistency-issue/)
+
 ### 참조
 - [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
 - [validate entities with hibernate validator](https://thorben-janssen.com/automatically-validate-entities-with-hibernate-validator/)
