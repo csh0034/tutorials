@@ -106,6 +106,15 @@ Replication 을 적용하면 Master/Slave 서버 간 데이터 동기화까지�
 
 [정합성 관련 정리 블로그](https://da-nyee.github.io/posts/db-replication-data-consistency-issue/)
 
+## OSIV(Open Session In View)
+
+OSIV 사용시 트랜잭션 범위 밖에서도 세션을 유지하므로 하단의 경우 변경감지가 동작할 수 있다.
+
+1. 트랜잭션 외부에서 엔티티 조회
+2. 엔티티 변경
+3. 별도 트랜잭션 처리 > flush 호출
+4. 조회된 엔티티 변경감지 동작
+
 ### 참조
 - [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
 - [validate entities with hibernate validator](https://thorben-janssen.com/automatically-validate-entities-with-hibernate-validator/)
