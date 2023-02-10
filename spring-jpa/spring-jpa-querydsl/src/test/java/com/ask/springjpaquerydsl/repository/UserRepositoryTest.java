@@ -8,6 +8,8 @@ import com.ask.springjpaquerydsl.config.JpaConfig;
 import com.ask.springjpaquerydsl.entity.Company;
 import com.ask.springjpaquerydsl.entity.User;
 import com.ask.springjpaquerydsl.vo.UserVO;
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -109,6 +111,39 @@ class UserRepositoryTest {
     List<User> users = query.limit(pageable.getPageSize())
         .offset(pageable.getOffset())
         .fetch();
+
+    // then
+    Page<User> page = new PageImpl<>(users, pageable, total);
+
+    log.info("content: {}", page.getContent());
+    log.info("size: {}", page.getSize());
+    log.info("totalElements: {}", page.getTotalElements());
+    log.info("totalPages: {}", page.getTotalPages());
+    log.info("number: {}", page.getNumber());
+  }
+
+  @DisplayName("paging 처리 clone 이용하여 처리, offset, limit 제거")
+  @Test
+  void paging3() {
+    // given
+    Pageable pageable = PageRequest.of(3, 2);
+
+    // when
+    JPAQuery<User> query = queryFactory.selectFrom(user)
+        .where(user.name.contains("name"))
+        .limit(pageable.getPageSize())
+        .offset(pageable.getOffset())
+        .orderBy(user.name.desc());
+
+    JPAQuery<User> cloned = query.clone();
+    QueryMetadata metadata = cloned.getMetadata();
+    metadata.setModifiers(QueryModifiers.EMPTY);
+    metadata.clearOrderBy();
+
+    Long total = cloned.select(Wildcard.count)
+        .fetchOne();
+
+    List<User> users = query.fetch();
 
     // then
     Page<User> page = new PageImpl<>(users, pageable, total);
