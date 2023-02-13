@@ -32,6 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.support.PageableExecutionUtils;
 
 @DataJpaTest
 @Import(JpaConfig.class)
@@ -85,6 +86,38 @@ class UserRepositoryTest {
 
     // then
     Page<User> page = new PageImpl<>(users, pageable, total);
+
+    log.info("content: {}", page.getContent());
+    log.info("size: {}", page.getSize());
+    log.info("totalElements: {}", page.getTotalElements());
+    log.info("totalPages: {}", page.getTotalPages());
+    log.info("number: {}", page.getNumber());
+  }
+
+  /**
+   * PageableExecutionUtils.getPage() 를 사용하면 count 쿼리 실행을 최적화 할 수 있다. <br>
+   * 1. 페이지 시작이면서 컨텐츠 사이즈가 페이지 사이즈보다 작을 때 <br>
+   * 2. 마지막 페이지 일 때 (offset + 컨텐츠 사이즈를 더해서 전체 사이즈 구함)
+   */
+  @DisplayName("PageableExecutionUtils 사용하여 처리")
+  @Test
+  void pagingWithUtils() {
+    // given
+    Pageable pageable = PageRequest.of(3, 2);
+
+    // when
+    List<User> users = queryFactory.selectFrom(user)
+        .where(user.name.contains("name"))
+        .limit(pageable.getPageSize())
+        .offset(pageable.getOffset())
+        .fetch();
+
+    JPAQuery<Long> countQuery = queryFactory.select(Wildcard.count)
+        .from(user)
+        .where(user.name.contains("name"));
+
+    // then
+    Page<User> page = PageableExecutionUtils.getPage(users, pageable, countQuery::fetchOne);
 
     log.info("content: {}", page.getContent());
     log.info("size: {}", page.getSize());
