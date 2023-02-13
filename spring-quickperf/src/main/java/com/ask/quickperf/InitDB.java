@@ -5,6 +5,8 @@ import com.ask.quickperf.entity.Locker;
 import com.ask.quickperf.entity.Player;
 import com.ask.quickperf.entity.Room;
 import com.ask.quickperf.entity.Team;
+import com.ask.quickperf.entity.company.Company;
+import com.ask.quickperf.entity.company.CompanyOption;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +52,18 @@ public class InitDB {
       em.persist(room);
       em.persist(coach);
       em.persist(locker);
+
+      Company company = new Company();
+      company.setName("company");
+      em.persist(company);
+
+      CompanyOption companyOption = new CompanyOption();
+      companyOption.setId(company.getId());
+      companyOption.setOption1("option1");
+      companyOption.setCompany(company);
+      em.persist(companyOption);
+
+      company.setCompanyOption(companyOption);
     }
   }
 }
