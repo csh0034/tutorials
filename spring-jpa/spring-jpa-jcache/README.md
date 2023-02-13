@@ -244,3 +244,4 @@ HHH90001003: Read-only caching was requested for mutable entity [NavigableRole[c
 - [인프런, 김영한님 답변](https://www.inflearn.com/questions/33629)
 - [권남님 블로그, Hibernate Cache](https://kwonnam.pe.kr/wiki/java/hibernate/cache)
 - [JPA 캐시 정리 블로그](https://gunju-ko.github.io/jpa/2019/01/14/JPA-2%EC%B0%A8%EC%BA%90%EC%8B%9C.html)
+- [Hazlecast, jcache](https://docs.hazelcast.com/tutorials/hibernate-jcache)

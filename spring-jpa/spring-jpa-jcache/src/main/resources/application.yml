@@ -3,6 +3,9 @@ spring:
     url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
     username: sa
 
+  cache:
+    type: NONE
+
   jpa:
     hibernate:
       ddl-auto: create-drop
