@@ -23,39 +23,7 @@ pom.xml
   <artifactId>ehcache</artifactId>
 </dependency>
 ```
-Cache Java Config
-```java
-@EnableCaching
-@Configuration
-@RequiredArgsConstructor
-public class CacheConfig {
 
-  private final CacheEventLoggerListener cacheEventLoggerListener;
-
-  @Bean
-  public JCacheManagerCustomizer jCacheManagerCustomizer() {
-    return cacheManager -> {
-      cacheManager.createCache("com.ask.springjpajcache.entity.User", getConfiguration(new Duration(SECONDS, 5)));
-      cacheManager.createCache("com.ask.springjpajcache.entity.Company", getConfiguration(new Duration(SECONDS, 5)));
-    };
-  }
-
-  private MutableConfiguration<String, Object> getConfiguration(Duration duration) {
-    MutableConfiguration<String, Object> configuration = new MutableConfiguration<>();
-    configuration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(duration));
-
-    MutableCacheEntryListenerConfiguration<String, Object> listenerConfiguration =
-        new MutableCacheEntryListenerConfiguration<>(FactoryBuilder.factoryOf(cacheEventLoggerListener),
-            null,
-            true,
-            true
-        );
-    configuration.addCacheEntryListenerConfiguration(listenerConfiguration);
-
-    return configuration;
-  }
-}
-```
 JPA Config
 ```java
 @Configuration
