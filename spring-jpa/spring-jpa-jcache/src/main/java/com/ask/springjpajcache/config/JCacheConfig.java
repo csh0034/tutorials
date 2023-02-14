@@ -6,6 +6,7 @@ import com.ask.springjpajcache.entity.Company;
 import com.ask.springjpajcache.entity.Role;
 import com.ask.springjpajcache.entity.User;
 import com.hazelcast.cache.impl.HazelcastServerCachingProvider;
+import java.util.function.Supplier;
 import javax.cache.CacheManager;
 import javax.cache.configuration.FactoryBuilder;
 import javax.cache.configuration.MutableCacheEntryListenerConfiguration;
@@ -14,11 +15,12 @@ import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 import javax.cache.spi.CachingProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.EnableCaching;
+import lombok.experimental.Delegate;
+import org.ehcache.jsr107.EhcacheCachingProvider;
+import org.redisson.jcache.JCachingProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@EnableCaching
 @Configuration
 @RequiredArgsConstructor
 public class JCacheConfig {
@@ -27,8 +29,7 @@ public class JCacheConfig {
 
   @Bean
   public CacheManager jCacheCacheManager() {
-//    CachingProvider cachingProvider = new EhcacheCachingProvider();
-    CachingProvider cachingProvider = new HazelcastServerCachingProvider();
+    CachingProvider cachingProvider = L2CacheType.EHCACHE.get();
     CacheManager cacheManager = cachingProvider.getCacheManager();
 
     cacheManager.createCache(User.class.getName(), getConfiguration(new Duration(SECONDS, 5)));
@@ -52,4 +53,15 @@ public class JCacheConfig {
 
     return configuration;
   }
+
+  @RequiredArgsConstructor
+  public enum L2CacheType {
+    EHCACHE(EhcacheCachingProvider::new),
+    HAZELCAST(HazelcastServerCachingProvider::new),
+    REDIS(JCachingProvider::new);
+
+    @Delegate
+    private final Supplier<CachingProvider> supplier;
+  }
+
 }
