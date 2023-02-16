@@ -1,1 +1,3 @@
-
+spring:
+  redis:
+    database: 2
