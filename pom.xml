@@ -64,6 +64,7 @@
     <module>spring-graphql</module>
     <module>moquette</module>
     <module>spring-thymeleaf</module>
+    <module>spring-tiles</module>
   </modules>
 
   <properties>
