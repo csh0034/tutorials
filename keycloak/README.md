@@ -54,6 +54,54 @@ docker run --name mykeycloak -p 8090:8080 \
         --https-key-store-file=<file> --https-key-store-password=<password>
 ```
 
+### With Docker Compose
+
+- [keycloak, all config](https://www.keycloak.org/server/all-config)
+- [keycloak, Using a reverse proxy](https://www.keycloak.org/server/reverseproxy)
+- production mode 의 경우 https 가 기본설정이다. 프록시 서버를 사용하도록 설정하여 http 로 접근 가능하다.
+
+```yaml
+version: "3.8"
+
+services:
+  keycloak-mariadb:
+    container_name: keycloak-mariadb
+    image: mariadb:10
+    environment:
+      MYSQL_DATABASE: keycloak
+      MYSQL_ROOT_PASSWORD: 111111
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: 111111
+    ports:
+      - "3336:3306"
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_general_ci"
+      - "--skip-character-set-client-handshake"
+      - "--lower_case_table_names=0"
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:21.0.0
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_PROXY: edge # Enables communication through HTTP between the proxy and Keycloak
+      KC_HOSTNAME_STRICT: false # Trust the proxy to set hostname
+      KC_DB: mariadb
+      KC_DB_URL_HOST: keycloak-mariadb
+      KC_DB_URL_PORT: 3306
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: 111111
+    ports:
+      - "7070:8080"
+    command:
+      - "start"
+    depends_on:
+      - keycloak-mariadb
+
+```
+
 ## 참조
 
 - [keycloak](https://www.keycloak.org/)
