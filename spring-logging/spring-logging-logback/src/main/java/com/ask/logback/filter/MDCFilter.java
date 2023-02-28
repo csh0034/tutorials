@@ -19,9 +19,12 @@ public class MDCFilter implements OrderedFilter {
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
       throws IOException, ServletException {
-    MDC.put(TRANCE_ID, RandomStringUtils.randomAlphanumeric(16).toLowerCase());
-    filterChain.doFilter(servletRequest, servletResponse);
-    MDC.clear();
+    try {
+      MDC.put(TRANCE_ID, RandomStringUtils.randomAlphanumeric(16).toLowerCase());
+      filterChain.doFilter(servletRequest, servletResponse);
+    } finally {
+      MDC.clear();
+    }
   }
 
   @Override
