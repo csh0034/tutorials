@@ -8,8 +8,10 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.amqp.dsl.Amqp;
+import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Transformers;
 
 @Configuration
@@ -21,12 +23,17 @@ public class IntegrationConfig {
   private final SampleHandler sampleHandler;
 
   @Bean
+  public DirectChannel bridgeChannel() {
+    return MessageChannels.direct().get();
+  }
+
+  @Bean
   public IntegrationFlow sampleFlow() {
     SimpleMessageListenerContainer listenerContainer = rabbitListenerContainerFactory.createListenerContainer();
     listenerContainer.setQueueNames(QueueConstants.TEST_QUEUE_NAME);
 
-    return IntegrationFlows.from(Amqp.inboundAdapter(listenerContainer))
-        .transform(Transformers.objectToString())
+    return IntegrationFlows.from(Amqp.inboundAdapter(listenerContainer).outputChannel(bridgeChannel()).id("sampleFlowAdaptor"))
+        .transform(Transformers.objectToString(), endpointSpec -> endpointSpec.id("sampleFlowTransformerConsumer"))
         .handle(sampleHandler, "handle")
         .get();
   }
