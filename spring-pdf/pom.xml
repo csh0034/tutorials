@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.ask</groupId>
-  <artifactId>apache-pdf</artifactId>
+  <artifactId>spring-pdf</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>apache-pdf</name>
-  <description>apache-pdf</description>
+  <name>spring-pdf</name>
+  <description>spring-pdf</description>
   <properties>
     <java.version>11</java.version>
   </properties>

@@ -65,7 +65,7 @@
     <module>moquette</module>
     <module>spring-thymeleaf</module>
     <module>spring-tiles</module>
-    <module>apache-pdf</module>
+    <module>spring-pdf</module>
   </modules>
 
   <properties>
