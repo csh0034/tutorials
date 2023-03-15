@@ -37,4 +37,11 @@ class RedirectControllerTest {
         .andExpect(status().isNotFound());
   }
 
+  @Test
+  void redirectWithAttribute() throws Exception {
+    mockMvc.perform(get("/redirect/attribute"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl("/redirected?name=ask"));
+  }
+
 }

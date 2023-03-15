@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class RedirectController {
@@ -28,6 +29,12 @@ public class RedirectController {
   public String notFound(HttpServletResponse response) throws IOException {
     response.sendError(HttpServletResponse.SC_NOT_FOUND);
     return null;
+  }
+
+  @GetMapping("/redirect/attribute")
+  public String attribute(RedirectAttributes redirectAttributes) {
+    redirectAttributes.addAttribute("name", "ask");
+    return "redirect:/redirected";
   }
 
 }
