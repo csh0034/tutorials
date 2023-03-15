@@ -1,4 +1,4 @@
-package com.ask.pdf;
+package com.ask.pdf.pdfbox;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -19,7 +19,7 @@ class PDDocumentTest {
     contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
 
     contentStream.beginText();
-    contentStream.newLineAtOffset(10, 10);
+    contentStream.newLineAtOffset(30, 750);
     contentStream.showText("Hello PDFBox");
     contentStream.endText();
     contentStream.close();
