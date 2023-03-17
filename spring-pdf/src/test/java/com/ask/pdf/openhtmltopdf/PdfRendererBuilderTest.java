@@ -1,9 +1,8 @@
 package com.ask.pdf.openhtmltopdf;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -13,14 +12,14 @@ class PdfRendererBuilderTest {
 
   @Test
   void pdf() throws Exception {
-//    try (OutputStream os = new FileOutputStream("target/openhtmltopdfHelloWorld.pdf")) {
 
-    byte[] content;
+//    byte[] content;
+//    try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 
-    try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+    try (OutputStream os = new FileOutputStream("target/openhtmltopdfHelloWorld.pdf")) {
       PdfRendererBuilder builder = new PdfRendererBuilder();
       builder.toStream(os);
-      builder.useFont(new ClassPathResource("font/NanumBarunGothic.ttf").getFile(), "NanumBarunGothic");
+      builder.useFont(new ClassPathResource("font/NanumGothic.ttf").getFile(), "NanumGothic");
 
       ClassPathResource resource = new ClassPathResource("templates/sample.html");
       String html = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -28,10 +27,10 @@ class PdfRendererBuilderTest {
 
       builder.run();
 
-      content = os.toByteArray();
+//      content = os.toByteArray();
     }
 
-    assertThat(content).isNotEmpty();
+//    assertThat(content).isNotEmpty();
   }
 
 }

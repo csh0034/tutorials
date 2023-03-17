@@ -17,7 +17,7 @@ class ITextRendererTest {
       ITextRenderer renderer = new ITextRenderer();
 
       renderer.getFontResolver().addFont(
-          new ClassPathResource("font/NanumBarunGothic.ttf").getURL().toString(),
+          new ClassPathResource("font/NanumGothic.ttf").getURL().toString(),
           BaseFont.IDENTITY_H,
           BaseFont.EMBEDDED
       );

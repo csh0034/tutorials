@@ -58,7 +58,7 @@ public class PdfController {
     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
       PdfRendererBuilder builder = new PdfRendererBuilder();
       builder.toStream(os);
-      builder.useFont(new ClassPathResource("font/NanumBarunGothic.ttf").getFile(), "NanumBarunGothic");
+      builder.useFont(new ClassPathResource("font/NanumGothic.ttf").getFile(), "NanumGothic");
 
       Map<String, Object> variables = new HashMap<>();
       variables.put("numbers", IntStream.rangeClosed(1, size).boxed().collect(Collectors.toList()));
