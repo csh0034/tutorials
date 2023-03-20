@@ -1,8 +1,10 @@
 package com.ask.javacore.date;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 
 class ZonedDateTimeTest {
@@ -21,6 +23,15 @@ class ZonedDateTimeTest {
 
     ZonedDateTime kst = utc.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
     System.out.println(kst);
+  }
+
+  @Test
+  void withFormat() {
+    ZonedDateTime zonedDateTime = Instant.ofEpochSecond(1679287861).atZone(ZoneId.of("Asia/Seoul"));
+    System.out.println(zonedDateTime);
+
+    String formatted = zonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    System.out.println(formatted);
   }
 
 }
