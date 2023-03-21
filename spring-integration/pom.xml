@@ -20,6 +20,7 @@
     <module>producer</module>
     <module>consumer</module>
     <module>spring-integration-amqp</module>
+    <module>spring-integration-mqtt</module>
   </modules>
 
 </project>
