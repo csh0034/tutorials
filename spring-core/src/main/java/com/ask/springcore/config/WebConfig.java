@@ -1,12 +1,19 @@
 package com.ask.springcore.config;
 
 import com.ask.springcore.config.converter.LenientStringToEnumConverterFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+  @Bean
+  public WebClient webClient(WebClient.Builder builder) {
+    return builder.baseUrl("http://localhost:8080").build();
+  }
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
