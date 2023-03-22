@@ -65,7 +65,14 @@ public class PdfController {
 
       String html = templateEngine.process("/hello", new Context(Locale.getDefault(), variables));
 
-      builder.withHtmlContent(html, "/");
+      // classpath 기준으로 image 파일을 읽어오기 위해 baseUrl 설정
+      String baseUrl = getClass()
+          .getProtectionDomain()
+          .getCodeSource()
+          .getLocation()
+          .toString();
+
+      builder.withHtmlContent(html, baseUrl);
       builder.run();
       return new ByteArrayResource(os.toByteArray());
     } catch (IOException e) {
