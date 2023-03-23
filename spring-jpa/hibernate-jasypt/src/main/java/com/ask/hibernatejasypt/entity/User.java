@@ -2,6 +2,7 @@ package com.ask.hibernatejasypt.entity;
 
 import com.ask.hibernatejasypt.config.JasyptConfig;
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -72,7 +73,7 @@ public class User {
     User user = new User();
     user.name = name;
     user.data = data;
-    user.count = 1000000;
+    user.count = ThreadLocalRandom.current().nextInt(50000);
     user.createdDt = new Date();
     return user;
   }

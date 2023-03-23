@@ -25,6 +25,13 @@ class UserRepositoryTest {
         .forEach(user -> log.info("user: {}", user));
   }
 
+  @DisplayName("정렬조건에 암호화된 컬럼을 사용할 경우 String 값으로 저장되어있으므로 비교할수 없다.")
+  @Test
+  void findAllByOrderByCountDesc() {
+    userRepository.findAllByOrderByCountDesc()
+        .forEach(user -> log.info("user: {}", user));
+  }
+
   @DisplayName("검색조건에 사용할 경우 원래 문자열 및 암호화된 문자열 모두 조회 안됨")
   @Test
   void findByPassword() {
