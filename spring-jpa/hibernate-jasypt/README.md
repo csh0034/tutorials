@@ -71,14 +71,30 @@ public class JasyptConfig {
 ```java
 @Entity
 @Table(name = "tb_user")
-@TypeDef(
-    name = JasyptConfig.ENCRYPTOR_NAME,
-    typeClass = EncryptedStringType.class,
-    parameters = {
-        @Parameter(name = ParameterNaming.ENCRYPTOR_NAME, value = JasyptConfig.ENCRYPTOR_REGISTERED_NAME)
-    }
-)
-@NoArgsConstructor(access = PROTECTED)
+@TypeDefs({
+    @TypeDef(
+        name = "encryptedString",
+        typeClass = EncryptedStringType.class,
+        parameters = {
+            @Parameter(name = ParameterNaming.ENCRYPTOR_NAME, value = JasyptConfig.ENCRYPTOR_REGISTERED_NAME)
+        }
+    ),
+    @TypeDef(
+        name = "encryptedIntegerAsString",
+        typeClass = EncryptedIntegerAsStringType.class,
+        parameters = {
+            @Parameter(name = ParameterNaming.ENCRYPTOR_NAME, value = JasyptConfig.ENCRYPTOR_REGISTERED_NAME)
+        }
+    ),
+    @TypeDef(
+        name = "encryptedDateAsString",
+        typeClass = EncryptedDateAsStringType.class,
+        parameters = {
+            @Parameter(name = ParameterNaming.ENCRYPTOR_NAME, value = JasyptConfig.ENCRYPTOR_REGISTERED_NAME)
+        }
+    )
+})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 public class User {
@@ -91,17 +107,41 @@ public class User {
 
   private String name;
 
-  @Type(type = JasyptConfig.ENCRYPTOR_NAME)
+  @Type(type = "encryptedString")
   private String data;
+
+  @Type(type = "encryptedIntegerAsString")
+  private Integer count;
+
+  @Type(type = "encryptedDateAsString")
+  private Date createdDt;
 
   public static User create(String name, String data) {
     User user = new User();
     user.name = name;
     user.data = data;
+    user.count = 1000000;
+    user.createdDt = new Date();
     return user;
   }
 
 }
+```
+
+### 생성된 테이블 
+
+- java Integer 타입의 count 컬럼이 varchar(255) 로 생성된다.
+- java Date 타입의 created_dt 컬럼이 varchar(255) 로 생성된다.
+
+```text
+create table tb_user (
+   user_id varchar(255) not null,
+    count varchar(255),
+    created_dt varchar(255),
+    data varchar(255),
+    name varchar(255),
+    primary key (user_id)
+)
 ```
 
 ## Troubleshooting

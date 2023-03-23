@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class JasyptConfig {
 
-  public static final String ENCRYPTOR_NAME = "encryptedString";
   public static final String ENCRYPTOR_REGISTERED_NAME = "hibernateStringEncryptor";
 
   private final JasyptProperties jasyptProperties;
