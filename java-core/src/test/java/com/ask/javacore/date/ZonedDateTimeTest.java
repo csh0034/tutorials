@@ -1,6 +1,7 @@
 package com.ask.javacore.date;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -8,6 +9,17 @@ import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 
 class ZonedDateTimeTest {
+
+  @Test
+  void convert() {
+    ZonedDateTime zonedDateTime = LocalDateTime.now().atZone(ZoneId.systemDefault());
+    System.out.println(zonedDateTime);
+  }
+
+  @Test
+  void getAvailableZoneIds() {
+    ZoneId.getAvailableZoneIds().forEach(System.out::println);
+  }
 
   @Test
   void zoneId() {
