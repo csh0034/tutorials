@@ -17,43 +17,63 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "샘플 컨트롤러", description = "샘플 컨트롤러 설명")
 @RestController
 @Slf4j
 public class SampleController {
 
-  @Operation(description = "샘플 GET 메서드 설명", summary = "샘플 GET 메서드 서머리")
+  @Operation(description = "샘플 GET 메서드 설명", summary = "Get, Url Query String")
   @ApiResponses({
       @ApiResponse(responseCode = "200", description = "샘플 GET 메서드 Response",
           content = @Content(examples = @ExampleObject(name = "ex name", description = "ex desc", summary = "ex summary", value = "ex value")))
   })
   @Parameter(name = "Authorization", required = true, in = ParameterIn.HEADER, schema = @Schema(type = "string"))
-  @GetMapping("/sample")
+  @GetMapping("/get")
   public String sample(@Parameter(description = "파라미터 설명", example = "샘플 id") @RequestParam(required = false) String id) {
     log.info("id : {}", id);
     return "GET sample";
   }
 
-  @Operation(description = "샘플 Post 메서드 설명", summary = "샘플 Post 메서드 서머리")
+  @Operation(description = "샘플 Post 메서드 설명, application/json", summary = "Post, Body Json")
   @ApiResponse(responseCode = "200", description = "샘플 Post 메서드 Response")
-  @PostMapping("/sample")
-  public String sample(@Parameter(description = "파라미터 설명") @Valid @RequestBody SampleRequestVO requestVO) {
+  @PostMapping("/json")
+  public String json(@Parameter(description = "파라미터 설명") @Valid @RequestBody SampleRequestVO requestVO) {
     log.info("requestVO : {}", requestVO);
     return "Post sample";
   }
 
-  @Operation(description = "샘플 Post 메서드 설명2", summary = "샘플 Post 메서드 서머리2")
+  @Operation(description = "샘플 Post, application/x-www-form-urlencoded", summary = "Post, Url Query String")
   @ApiResponse(responseCode = "200", description = "샘플 Post 메서드 Response2")
-  @PostMapping("/sample2")
-  public String sample2(@Valid SampleRequestVO2 requestVO) {
+  @PostMapping(value = "/urlQueryString", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+  public String urlQueryString(@Valid UrlQueryStringVO requestVO) {
     log.info("requestVO : {}", requestVO);
-    return "Post sample2";
+    return "Post sample";
+  }
+
+  @Operation(description = "샘플 Post, application/x-www-form-urlencoded", summary = "Post, Body Query String")
+  @ApiResponse(responseCode = "200", description = "샘플 Post 메서드 Response2")
+  @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE))
+  @PostMapping(value = "/bodyQueryString")
+  public String bodyQueryString(@Valid BodyQueryStringVO requestVO) {
+    log.info("requestVO : {}", requestVO);
+    return "Post sample";
+  }
+
+  @Operation(description = "샘플 Post, multipart/form-data", summary = "Post, Multipart")
+  @ApiResponse(responseCode = "200", description = "샘플 Post 메서드 Response3")
+//  @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = MultipartVO.class), mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
+  @PostMapping(value = "/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public String multipart(@Valid MultipartVO requestVO) {
+    log.info("requestVO : {}", requestVO);
+    return "Post sample";
   }
 
   @Getter
@@ -95,7 +115,7 @@ public class SampleController {
   @Setter
   @ToString
   @ParameterObject
-  public static class SampleRequestVO2 {
+  public static class UrlQueryStringVO {
 
     @Parameter(description = "제목", example = "샘플 제목")
     @Size(min = 1, max = 20)
@@ -105,6 +125,40 @@ public class SampleController {
     @NotBlank
     @Size(min = 1, max = 1000)
     private String content;
+
+  }
+
+  @Getter
+  @Setter
+  @ToString
+  public static class BodyQueryStringVO {
+
+    @Schema(description = "제목", example = "샘플 제목")
+    @Size(min = 1, max = 20)
+    private String title;
+
+    @Schema(description = "내용", example = "샘플 내용")
+    @NotBlank
+    @Size(min = 1, max = 1000)
+    private String content;
+
+  }
+
+  @Getter
+  @Setter
+  @ToString
+  public static class MultipartVO {
+
+    @Schema(description = "제목", example = "샘플 제목")
+    @Size(min = 1, max = 20)
+    private String title;
+
+    @Schema(description = "내용", example = "샘플 내용")
+    @NotBlank
+    @Size(min = 1, max = 1000)
+    private String content;
+
+    private MultipartFile multipartFile;
 
   }
 
