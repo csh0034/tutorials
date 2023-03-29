@@ -1,5 +1,6 @@
 package com.ask.springdoc.web;
 
+import com.ask.springdoc.config.SpringDocConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "샘플 컨트롤러", description = "샘플 컨트롤러 설명")
+@SecurityRequirement(name = SpringDocConfig.SECURITY_SCHEME_KEY)
 @RestController
 @Slf4j
 public class SampleController {
@@ -35,7 +38,7 @@ public class SampleController {
       @ApiResponse(responseCode = "200", description = "샘플 GET 메서드 Response",
           content = @Content(examples = @ExampleObject(name = "ex name", description = "ex desc", summary = "ex summary", value = "ex value")))
   })
-  @Parameter(name = "Authorization", required = true, in = ParameterIn.HEADER, schema = @Schema(type = "string"))
+  @Parameter(name = "X-Sample", in = ParameterIn.HEADER, schema = @Schema(type = "string"))
   @GetMapping("/get")
   public String sample(@Parameter(description = "파라미터 설명", example = "샘플 id") @RequestParam(required = false) String id) {
     log.info("id : {}", id);
