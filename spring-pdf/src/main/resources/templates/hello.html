@@ -13,9 +13,55 @@
       padding: 8px;
       font-family: "NanumGothic";
     }
+
+    @page {
+
+      /* headers*/
+      @top-left {
+        content: "Pdf Report, 피디에프 리포트";
+        font-family: "NanumGothic";
+        font-weight: bold;
+        border-bottom: 1px solid #bdbdbd;
+      }
+
+      @top-center {
+        font-family: "NanumGothic";
+        border-bottom: 1px solid #bdbdbd;
+      }
+
+      @top-right {
+        content: "오른쪽 위";
+        font-family: "NanumGothic";
+        border-bottom: 1px solid #bdbdbd;
+      }
+
+      /* footers */
+      @bottom-left {
+        content: element(bottom-left);
+        border-top: 1px solid #bdbdbd;
+      }
+
+      @bottom-center {
+        font-family: "NanumGothic";
+        border-top: 1px solid #bdbdbd;
+      }
+
+      @bottom-right {
+        content: counter(page) " of " counter(pages);
+        font-family: "NanumGothic";
+        border-top: 1px solid #bdbdbd;
+      }
+    }
+
+    #bottom-left {
+      position: running(bottom-left);
+      height: 20px;
+    }
   </style>
 </head>
 <body>
+<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" id="bottom-left">@bottom-left</img>
+
 <div class="center_div">
   <h1>Hello World!</h1>
   <div class="myclass">
