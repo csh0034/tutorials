@@ -106,6 +106,24 @@ consumes 를 parsing 하는 부분 하단 메서드 확인
 
 `@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = MultipartVO.class), mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))`
 
+## Authorization 헤더 추가
+
+[oas3.0 에서는 헤더에 Accept, Content-Type, Authorization 헤더를 지정할 수 없다.](https://swagger.io/docs/specification/describing-parameters/#header-parameters)  
+[따라서 인증, 인가 처리시 security scheme 을 통해 지정해야 한다.](https://swagger.io/docs/specification/authentication/)
+
+- http
+  - HTTP Authentications schema를 이용하는 방식
+  - Authorization 헤더를 이용하는 방식
+  - ex) Basic, Bearer 등...
+- apiKey
+  - API key 헤더를 이용한 인증
+- oauth2
+  - OAuth 2.0
+- openIdConnect
+  - OpenID Connect Discovery 이용
+
+[How do I add authorization header in requests?](https://springdoc.org/#how-do-i-add-authorization-header-in-requests)
+
 ## 참조
 - [swagger-ui, Configuration](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
 - [springdoc](https://springdoc.org/)
