@@ -48,7 +48,7 @@ public class SampleController {
   @Operation(description = "샘플 Post 메서드 설명, application/json", summary = "Post, Body Json")
   @ApiResponse(responseCode = "200", description = "샘플 Post 메서드 Response")
   @PostMapping("/json")
-  public String json(@Parameter(description = "파라미터 설명") @Valid @RequestBody SampleRequestVO requestVO) {
+  public String json(@Valid @RequestBody SampleRequestVO requestVO) {
     log.info("requestVO : {}", requestVO);
     return "Post sample";
   }
