@@ -73,6 +73,39 @@ swagger-ui 스크립트 의 SwaggerUIBundle 객체 생성 부분에
 #### SwaggerIndexPageTransformer 의 실제 replace 하는 method
 ![03.png](images/03.png)
 
+## Troubleshooting
+
+### swagger-ui multipart upload ui 잘못 나오는 이슈
+
+/api-docs 에서 [requestBody 스펙](https://swagger.io/docs/specification/describing-request-body/) 을 잘못 내려주기 때문에 그렇다.  
+springdoc 은 spring wec annotation 을 기반으로 swagger 스펙을 만들기 때문에 따로 지정을 해주어야 한다.
+
+#### before
+
+![img.png](images/04.png)
+
+#### after
+
+![img.png](images/05.png)
+
+1. 하단과 같이 consumes 를 지정해야 한다.
+
+`@PostMapping(value = "/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)`
+
+consumes 를 parsing 하는 부분 하단 메서드 확인
+
+- MethodAttributes.calculateConsumesProduces
+
+2. 컨트롤러 파라미터 앞에 어노테이션을 하나라도 붙혀야 한다.
+
+`public String multipart(@Valid MultipartVO requestVO) { }`
+
+> `AbstractRequestService.isRequestBodyParam()` 조건 확인
+
+하단과 같이 swagger v3 annotation 을 사용해도 된다.
+
+`@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = MultipartVO.class), mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))`
+
 ## 참조
 - [swagger-ui, Configuration](https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/)
 - [springdoc](https://springdoc.org/)
