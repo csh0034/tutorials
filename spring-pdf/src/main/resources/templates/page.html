@@ -59,7 +59,7 @@
         padding: 1mm; border: 1px solid white; background: #eeeeee;
       }
       @bottom-left {
-        content: element(bottom-left);
+        content: counter(page) " of " counter(pages);
         padding: 1mm; border: 1px solid white; background: #eeeeee;
       }
       @bottom-left-corner {
@@ -91,7 +91,6 @@
     #bottom-right-corner { position: running(bottom-right-corner); }
     #bottom-right        { position: running(bottom-right);        }
     #bottom-center       { position: running(bottom-center);       }
-    #bottom-left         { position: running(bottom-left);         }
     #bottom-left-corner  { position: running(bottom-left-corner);  }
     #left-bottom         { position: running(left-bottom);         }
     #left-middle         { position: running(left-middle);         }
@@ -116,7 +115,6 @@
 <p id="bottom-right-corner" style="color: red;">@bottom-right-corner</p>
 <p id="bottom-right" style="text-decoration: underline;">@bottom-right</p>
 <p id="bottom-center" style="color: green;">@bottom-center</p>
-<p id="bottom-left" style="text-decoration: underline;">@bottom-left</p>
 <p id="bottom-left-corner" style="color: red;">@bottom-left-corner</p>
 <p id="left-bottom" style="text-decoration: underline;">@left-bottom</p>
 <p id="left-middle" style="color: green;">@left-middle</p>

@@ -1,16 +1,12 @@
 package com.ask.pdf.web;
 
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
+import com.ask.pdf.config.PdfGenerator;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -19,18 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 @RestController
 @RequiredArgsConstructor
 public class PdfController {
 
-  private final TemplateEngine templateEngine;
+  private final PdfGenerator pdfGenerator;
 
   @GetMapping("/pdf-inline")
   public ResponseEntity<Resource> pdfInline(@RequestParam(defaultValue = "10") int size) {
-    Resource pdf = generatePdf(size);
+    Map<String, Object> variables = Map.of("numbers", IntStream.rangeClosed(1, size).boxed().collect(Collectors.toList()));
+    Resource pdf = pdfGenerator.generate("/hello", variables, Locale.getDefault());
 
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_PDF)
@@ -43,7 +38,8 @@ public class PdfController {
 
   @GetMapping("/pdf-attachment")
   public ResponseEntity<Resource> pdfAttachment(@RequestParam(defaultValue = "10") int size) {
-    Resource pdf = generatePdf(size);
+    Map<String, Object> variables = Map.of("numbers", IntStream.rangeClosed(1, size).boxed().collect(Collectors.toList()));
+    Resource pdf = pdfGenerator.generate("/hello", variables, Locale.getDefault());
 
     return ResponseEntity.ok()
         .contentType(MediaType.APPLICATION_OCTET_STREAM)
@@ -54,30 +50,17 @@ public class PdfController {
         .body(pdf);
   }
 
-  private Resource generatePdf(int size) {
-    try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-      PdfRendererBuilder builder = new PdfRendererBuilder();
-      builder.toStream(os);
-      builder.useFont(new ClassPathResource("font/NanumGothic.ttf").getFile(), "NanumGothic");
+  @GetMapping("/page")
+  public ResponseEntity<Resource> pdfPage() {
+    Resource pdf = pdfGenerator.generate("/page", Collections.emptyMap(), Locale.getDefault());
 
-      Map<String, Object> variables = new HashMap<>();
-      variables.put("numbers", IntStream.rangeClosed(1, size).boxed().collect(Collectors.toList()));
-
-      String html = templateEngine.process("/hello", new Context(Locale.getDefault(), variables));
-
-      // classpath 기준으로 image 파일을 읽어오기 위해 baseUrl 설정
-      String baseUrl = getClass()
-          .getProtectionDomain()
-          .getCodeSource()
-          .getLocation()
-          .toString();
-
-      builder.withHtmlContent(html, baseUrl);
-      builder.run();
-      return new ByteArrayResource(os.toByteArray());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.inline()
+            .filename("page.pdf")
+            .build()
+            .toString())
+        .body(pdf);
   }
 
 }
