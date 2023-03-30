@@ -3,6 +3,7 @@ package com.ask.pdf.config;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class PdfGenerator {
     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
       PdfRendererBuilder builder = new PdfRendererBuilder();
       builder.toStream(os);
-      builder.useFont(new ClassPathResource("font/NanumGothic.ttf").getFile (), "NanumGothic");
+      builder.useFont(this::getFont, "NanumGothic");
 
       // classpath 기준으로 image 파일을 읽어오기 위해 baseUrl 설정
       String baseUrl = getClass()
@@ -35,6 +36,14 @@ public class PdfGenerator {
       builder.withHtmlContent(templateEngine.process(template, new Context(locale, variables)), baseUrl);
       builder.run();
       return new ByteArrayResource(os.toByteArray());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private InputStream getFont() {
+    try {
+      return new ClassPathResource("font/NanumGothic.ttf").getInputStream();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
