@@ -30,6 +30,11 @@
 - html to pdf 지원
 - PDFBOX 기반으로 작성됨
 
+### html > pdf 변환시 이슈
+
+- 기본적으로 A4 사이즈(210mm X 297mm) 이며 96dpi 로 설정되어있다.
+- 96dpi 기준 A4 사이즈를 px 로 변환하면 794px X 1123px 이다.
+
 ## 참조
 
 - [baeldung, Creating PDF Files in Java](https://www.baeldung.com/java-pdf-creation)
