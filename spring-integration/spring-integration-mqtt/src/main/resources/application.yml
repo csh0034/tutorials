@@ -1,1 +1,3 @@
-
+server:
+  error:
+    include-stacktrace: ALWAYS
