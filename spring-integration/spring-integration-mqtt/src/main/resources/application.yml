@@ -1,3 +1,9 @@
 server:
   error:
     include-stacktrace: ALWAYS
+
+spring:
+  task:
+    scheduling:
+      pool:
+        size: 10
