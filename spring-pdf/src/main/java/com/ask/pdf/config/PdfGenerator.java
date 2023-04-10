@@ -24,7 +24,7 @@ public class PdfGenerator {
     try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
       PdfRendererBuilder builder = new PdfRendererBuilder();
       builder.toStream(os);
-      builder.useFont(this::getFont, "NanumGothic");
+      builder.useFont(this::getFont, "cjk");
 
       // classpath 기준으로 image 파일을 읽어오기 위해 baseUrl 설정
       String baseUrl = getClass()
@@ -43,7 +43,7 @@ public class PdfGenerator {
 
   private InputStream getFont() {
     try {
-      return new ClassPathResource("font/NanumGothic.ttf").getInputStream();
+      return new ClassPathResource("font/NotoSansCJKtc-Regular.ttf").getInputStream();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
