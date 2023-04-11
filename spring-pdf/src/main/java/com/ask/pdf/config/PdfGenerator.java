@@ -33,7 +33,7 @@ public class PdfGenerator {
           .getLocation()
           .toString();
 
-      builder.withHtmlContent(templateEngine.process(template, new Context(locale, variables)), baseUrl);
+      builder.withHtmlContent(replaceHtmlTag(templateEngine.process(template, new Context(locale, variables))), baseUrl);
       builder.run();
       return new ByteArrayResource(os.toByteArray());
     } catch (IOException e) {
@@ -47,6 +47,10 @@ public class PdfGenerator {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private String replaceHtmlTag(String html) {
+    return html.replace("<br>", "<br/>");
   }
 
 }

@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" [<!ENTITY nbsp "&#160;">]>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <style>
@@ -69,7 +70,10 @@
     <p>html 을 pdf로 변환하는 튜토리얼</p>
     <p>일본어 테스트 会議のタイトル, 参加者, もう他のWeb会議には戻れない</p>
     <p>중국어 테스트 专业视频会议服务</p>
+    <p>nbsp 테스트 &#160;&#160;&#160;&#160;&#160;&#160;&#160; a &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a</p>
+    <p>br/ br 지원 테스트, <br/>aa<br>bb<br/>cc</p>
   </div>
+
   <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"/>
   <img src="images/kotlin.png"/>
   <th:block th:each="num : ${numbers}">
