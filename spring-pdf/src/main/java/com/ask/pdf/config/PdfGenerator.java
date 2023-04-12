@@ -43,7 +43,7 @@ public class PdfGenerator {
 
   private InputStream getFont() {
     try {
-      return new ClassPathResource("font/NotoSansCJKtc-Regular.ttf").getInputStream();
+      return new ClassPathResource("font/NotoSansCJKkr-Regular.ttf").getInputStream();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

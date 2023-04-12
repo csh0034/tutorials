@@ -20,7 +20,7 @@ class PdfRendererBuilderTest {
       PdfRendererBuilder builder = new PdfRendererBuilder();
       builder.toStream(os);
 //      builder.useFont(new ClassPathResource("font/NanumGothic.ttf").getFile(), "NanumGothic");
-      builder.useFont(new ClassPathResource("font/NotoSansCJKtc-Regular.ttf").getFile(), "cjk");
+      builder.useFont(new ClassPathResource("font/NotoSansCJKkr-Regular.ttf").getFile(), "cjk");
 
       ClassPathResource resource = new ClassPathResource("templates/sample.html");
       String html = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
