@@ -1,12 +1,15 @@
 package com.ask.hibernatejasypt.entity;
 
 import com.ask.hibernatejasypt.config.JasyptConfig;
+import com.ask.hibernatejasypt.config.crypto.StringEncryptConverter;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -69,12 +72,17 @@ public class User {
   @Type(type = "encryptedDateAsString")
   private Date createdDt;
 
+  @Lob
+  @Convert(converter = StringEncryptConverter.class)
+  private String memo;
+
   public static User create(String name, String data) {
     User user = new User();
     user.name = name;
     user.data = data;
     user.count = ThreadLocalRandom.current().nextInt(50000);
     user.createdDt = new Date();
+    user.memo = data + "-memo";
     return user;
   }
 

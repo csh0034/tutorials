@@ -186,6 +186,13 @@ public class LenientPBStringEncryptor implements PBEStringCleanablePasswordEncry
 }
 ```
 
+### @Lob 의 경우에도 varchar(255) 로 생성됨
+
+`@Type` 으로 처리시  `@Lob` 을 인식하지 않아 varchar(255) 로 생성됨  
+columnDefinition 을 사용하는 방법도 있지만 db vendor 에 종속적이게됨
+
+해결방법: @Converter 사용
+
 ## 참조
 
 - [Reference, jasypt hibernate](http://www.jasypt.org/hibernate.html)
