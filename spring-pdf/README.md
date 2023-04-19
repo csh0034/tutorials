@@ -29,6 +29,8 @@
 - LGPL License
 - html to pdf 지원
 - PDFBOX 기반으로 작성됨
+- 기본적으로 XML/XHTML 을 사용해야하지만 JSoup 을 사용하여 HTML5 문법으로 작성 가능하다.
+  - [HTML5 PARSER SUPPORT](https://github.com/danfickle/openhtmltopdf/wiki/Integration-Guide#html5-parser-support)
 
 ### html > pdf 변환시 이슈
 
