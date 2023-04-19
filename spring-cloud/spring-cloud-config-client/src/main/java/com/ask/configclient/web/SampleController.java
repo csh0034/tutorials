@@ -1,11 +1,11 @@
 package com.ask.configclient.web;
 
 import com.ask.configclient.config.ProfileProperties;
+import com.ask.configclient.config.ValueComponent;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,14 +22,12 @@ public class SampleController {
 
   private final ProfileProperties profileProperties;
   private final Environment env;
-
-  @Value("${profile.name}")
-  private String profileName;
+  private final ValueComponent valueComponent;
 
   @GetMapping("/check")
   public Map<String, Object> config() {
     Map<String, Object> map = new LinkedHashMap<>();
-    map.put("profileName", profileName);
+    map.put("valueComponent", valueComponent.getProfileName());
     map.put("ProfileProperties profile.name", profileProperties.getName());
     map.put("Environment profile.name", env.getProperty("profile.name"));
     map.put("profileProperties", profileProperties.toString());

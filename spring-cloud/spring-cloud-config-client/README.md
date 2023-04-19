@@ -142,8 +142,14 @@ public class RefreshController {
 ```
 
 ## [@RefreshScope](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#refresh-scope)
-- refresh 할때 해당 어노테이션이 있는 대상 갱신해줌
-> Environment 객체 안의 propertySources 내부 값이 직접 바뀌므로 env.getProperty() 호출시 갱신된 값이 나옴
+
+- refresh 할때 해당 어노테이션이 있는 대상 갱신해준다.
+- Environment 객체 안의 propertySources 내부 값이 직접 바뀌므로 env.getProperty() 호출시 갱신된 값이 나옴
+- ContextRefresher 가 동작할때 EnvironmentChangeEvent 를 발송한다.
+- `@Value` 를 사용하는 Component 에 대해서 갱신해줄때 사용한다.
+
+> @ConfigurationProperties 의 경우 EnvironmentChangeEvent 자동갱신되므로 `@RefreshScope` 가 필요없다.  
+> 참고: [Environment Changes](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#environment-changes)
 
 ## [POST 를 통해 env 변수 변경하기](https://docs.spring.io/spring-cloud-commons/docs/current/reference/html/#endpoints)
 - management.endpoint.env.post.enabled=true
@@ -156,6 +162,16 @@ public class RefreshController {
   - spring-cloud-starter-bus-kafka
 - Actuator 의 [/actuator/busrefresh](https://github.com/spring-cloud/spring-cloud-bus/blob/main/spring-cloud-bus/src/main/java/org/springframework/cloud/bus/endpoint/RefreshBusEndpoint.java) 호출 시에 연결된 모든 client 에 /actuator/refresh 엔드포인트에  
   모두 ping을 받은 것처럼 각 애플리케이션의 구성을 다시 로드
+
+### cloud bus 동작 순서
+
+a. busrefesh > RefreshRemoteApplicationEvent 발송  
+b.1 RemoteApplicationEventListener > bus 를 통해 queue 에 메세지 전송  
+b.2 RefreshListener > 현재 서버가 해당될경우 refresh 처리 동작  
+c. BusConsumer > 2.1 에서 발송한 메세지 queue 로 부터 수신하여 처리  
+c.1 AckEvent 일 경우 return  
+c.2 현재 서버가 해당되면서 현재 서버에서 보낸 메세지가 아닐 경우 RefreshRemoteApplicationEvent 발송하여 2.2 동작  
+c.3 Ack Enable 일 경우 AckEvent 발송
 
 ## 로컬에서 스프링 클라우드를 실행할수 없는 경우
 ```java
