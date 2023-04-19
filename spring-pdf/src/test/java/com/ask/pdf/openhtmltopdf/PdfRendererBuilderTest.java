@@ -4,6 +4,8 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
@@ -25,8 +27,7 @@ class PdfRendererBuilderTest {
 
       ClassPathResource resource = new ClassPathResource("templates/sample.html");
       String html = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
-      builder.withHtmlContent(html, "/");
-
+      builder.withW3cDocument(new W3CDom().fromJsoup(Jsoup.parse(html)), "/");
       builder.run();
 
 //      content = os.toByteArray();

@@ -7,12 +7,15 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.W3CDom;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.w3c.dom.Document;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +36,9 @@ public class PdfGenerator {
           .getLocation()
           .toString();
 
-      builder.withHtmlContent(replaceHtmlTag(templateEngine.process(template, new Context(locale, variables))), baseUrl);
+      String html = templateEngine.process(template, new Context(locale, variables));
+      Document document = new W3CDom().fromJsoup(Jsoup.parse(html));
+      builder.withW3cDocument(document, baseUrl);
       builder.run();
       return new ByteArrayResource(os.toByteArray());
     } catch (IOException e) {
@@ -47,10 +52,6 @@ public class PdfGenerator {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  private String replaceHtmlTag(String html) {
-    return html.replace("<br>", "<br/>");
   }
 
 }
