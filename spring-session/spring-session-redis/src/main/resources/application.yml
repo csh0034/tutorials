@@ -2,6 +2,7 @@ spring:
   session:
     redis:
       configure-action: none
+      namespace: sample-redis:session
   security:
     user:
       name: admin
