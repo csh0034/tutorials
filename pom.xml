@@ -66,6 +66,7 @@
     <module>spring-thymeleaf</module>
     <module>spring-tiles</module>
     <module>spring-pdf</module>
+    <module>spring-session</module>
   </modules>
 
   <properties>
