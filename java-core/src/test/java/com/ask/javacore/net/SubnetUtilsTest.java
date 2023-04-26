@@ -10,8 +10,13 @@ import org.junit.jupiter.api.Test;
 class SubnetUtilsTest {
 
   /**
-   * CIDR Signature:	[192.168.112.0/24] <br> Netmask: [255.255.255.0] <br> Network: [192.168.112.0] <br> Broadcast:
-   * [192.168.112.255] <br> First address: [192.168.112.0] <br> Last address: [192.168.112.255] <br> Address Count: [256]
+   * CIDR Signature: [192.168.112.0/24] <br>
+   * Netmask: [255.255.255.0] <br>
+   * Network: [192.168.112.0] <br>
+   * Broadcast: [192.168.112.255] <br>
+   * First address: [192.168.112.0] <br>
+   * Last address: [192.168.112.255] <br>
+   * Address Count: [256]
    */
   @Test
   void subnet() {
