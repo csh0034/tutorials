@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
-import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.Session;
+import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 @Configuration
@@ -36,8 +36,7 @@ public class SecurityConfig {
    * @see ConcurrentSessionFilter
    */
   @Bean
-  public SpringSessionBackedSessionRegistry<? extends Session> sessionRegistry(
-      FindByIndexNameSessionRepository<? extends Session> sessionRepository) {
+  public SessionRegistry sessionRegistry(RedisIndexedSessionRepository sessionRepository) {
     return new SpringSessionBackedSessionRegistry<>(sessionRepository);
   }
 
