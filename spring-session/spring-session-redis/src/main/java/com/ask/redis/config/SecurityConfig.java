@@ -26,7 +26,7 @@ public class SecurityConfig {
             .antMatchers("/login").permitAll()
             .anyRequest().authenticated())
         .formLogin(form -> form
-            .loginPage("/login").permitAll()
+            .loginPage("/login") //.permitAll() 을 할 경우 loginPage, loginProcessingUrl, failureUrl 에 대해 permitAll 이 등록된다.
             .defaultSuccessUrl("/"))
         .build();
   }
