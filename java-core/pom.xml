@@ -59,7 +59,16 @@
       <artifactId>commons-net</artifactId>
       <version>3.9.0</version>
     </dependency>
-
+    <dependency>
+      <groupId>com.fasterxml.uuid</groupId>
+      <artifactId>java-uuid-generator</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.f4b6a3</groupId>
+      <artifactId>tsid-creator</artifactId>
+      <version>5.2.4</version>
+    </dependency>
   </dependencies>
 
 </project>
