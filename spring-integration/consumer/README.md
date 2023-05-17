@@ -70,6 +70,14 @@ DefaultConfiguringBeanFactoryPostProcessor registerErrorChannel 에서 기본적
 또한 LoggingHandler 를 Bean 으로 등록한후에 `errorChannel` subscribe 한다.  
 따라서 수동으로 설정해야 할 경우 반드시 `errorChannel` 을 bean 으로 등록해야 LoggingHandler 가 자동 등록 되지 않는다.
 
+### MQTT error channel
+
+MqttPahoMessageDrivenChannelAdapter 사용시에 error channel 세팅을 하지 않을 경우  
+예외 발생시 커넥션이 잠깐 끊기게 된다. (그동안 메세지 못받음)
+
+error channel 을 등록하면 예외를 채널로 보내서 예외를 throw 하지 않으므로 커넥션이  
+끊기지 않게된다.
+
 ### 수동 error channel 설정
 
 ```java
