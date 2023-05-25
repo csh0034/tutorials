@@ -1,5 +1,6 @@
 package com.ask.springjpacore;
 
+import com.ask.springjpacore.entity.TsidUser;
 import com.ask.springjpacore.entity.auto.Auto;
 import com.ask.springjpacore.entity.table.Notice;
 import javax.persistence.EntityManager;
@@ -22,6 +23,9 @@ public class InitializeRunner implements ApplicationRunner {
     entityManager.persist(new Auto());
     entityManager.persist(new Notice());
     entityManager.persist(new Notice());
+
+    entityManager.persist(new TsidUser());
+    entityManager.persist(new TsidUser());
   }
 
 }
