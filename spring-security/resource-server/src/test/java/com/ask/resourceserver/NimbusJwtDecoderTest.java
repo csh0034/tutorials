@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -67,5 +68,13 @@ class NimbusJwtDecoderTest {
   private byte[] getKeySpec(String keyValue) {
     keyValue = keyValue.replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
     return Base64.getMimeDecoder().decode(keyValue);
+  }
+
+  @Disabled("apple 토큰이 없어 disabled 처리")
+  @Test
+  void jwk() {
+    JwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri("https://appleid.apple.com/auth/keys").build();
+    Jwt jwt = jwtDecoder.decode("invalid-token");
+    log.info("jwt: {}", jwt);
   }
 }
