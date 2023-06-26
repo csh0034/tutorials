@@ -67,6 +67,7 @@
     <module>spring-tiles</module>
     <module>spring-pdf</module>
     <module>spring-session</module>
+    <module>spring-websocket</module>
   </modules>
 
   <properties>
