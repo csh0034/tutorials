@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>chat</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="col-6">
+    <h1>name..</h1>
+  </div>
+  <div>
+    <div id="msgArea" class="col"></div>
+    <div class="col-6">
+      <div class="input-group mb-3">
+        <input type="text" id="msg" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="col-6"></div>
+</div>
+</body>
+
+<script>
+  $(document).ready(function () {
+    var sockJs = new SockJS("/ws/chat");
+    var stomp = Stomp.over(sockJs);
+
+    var roomId = '[[${param.roomId}]]'
+    var username = '[[${param.username}]]'
+
+    stomp.connect({}, function () {
+      stomp.subscribe("/topic/room", function (chat) {
+        var content = JSON.parse(chat.body);
+
+        console.log(chat)
+
+        var writer = content.writer;
+        var message = content.message;
+        var str = '';
+
+        if (writer === username) {
+          str = "<div class='col-6'>";
+          str += "<div class='alert alert-secondary'>";
+          str += "<b>" + writer + " : " + message + "</b>";
+          str += "</div></div>";
+        } else {
+          str = "<div class='col-6'>";
+          str += "<div class='alert alert-warning'>";
+          str += "<b>" + writer + " : " + message + "</b>";
+          str += "</div></div>";
+        }
+        $("#msgArea").append(str);
+      });
+
+      stomp.send('/app/room', {}, JSON.stringify({roomId: roomId, message: "join...", writer: username}))
+    });
+
+    $("#msg").on("keyup", function (e) {
+      if (e.keyCode !== 13) {
+        return
+      }
+      var msg = document.getElementById("msg");
+      stomp.send('/app/room', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username}));
+      msg.value = '';
+    });
+  });
+</script>
+</html>
