@@ -34,7 +34,7 @@
     var roomId = '[[${param.roomId}]]'
     var username = '[[${param.username}]]'
 
-    stomp.connect({}, function () {
+    stomp.connect({"Authorization": username}, function () {
       stomp.subscribe("/topic/room", function (chat) {
         var content = JSON.parse(chat.body);
 
