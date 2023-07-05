@@ -2,3 +2,7 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+logging:
+  level:
+    "[org.springframework.messaging.simp.broker.SimpleBrokerMessageHandler]": debug
