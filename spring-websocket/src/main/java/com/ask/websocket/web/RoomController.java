@@ -2,16 +2,22 @@ package com.ask.websocket.web;
 
 import java.util.Map;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class RoomController {
+
+  private final SimpMessagingTemplate messagingTemplate;
 
   @GetMapping("/room")
   public String room() {
@@ -23,6 +29,13 @@ public class RoomController {
   public Object handle(Map<String, Object> message) {
     log.info("message: {}", message);
     return message;
+  }
+
+  @GetMapping("/direct")
+  @ResponseBody
+  public String direct(String username, String message) {
+    messagingTemplate.convertAndSendToUser(username, "/queue/message" ,message);
+    return "ok";
   }
 
   @Getter

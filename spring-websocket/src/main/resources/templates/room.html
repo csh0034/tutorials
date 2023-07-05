@@ -35,6 +35,8 @@
     var username = '[[${param.username}]]'
 
     stomp.connect({"Authorization": username}, function () {
+      console.log(sockJs._transport.url);
+
       stomp.subscribe("/topic/room", function (chat) {
         var content = JSON.parse(chat.body);
 
@@ -58,7 +60,13 @@
         $("#msgArea").append(str);
       });
 
+      stomp.subscribe("/user/queue/message", function(chat) {
+        console.log(chat)
+      });
+
       stomp.send('/app/room', {}, JSON.stringify({roomId: roomId, message: "join...", writer: username}))
+
+      // stomp.send('/topic/room', {}, JSON.stringify({roomId: roomId, message: "토픽에 직접 보냄", writer: username}))
     });
 
     $("#msg").on("keyup", function (e) {

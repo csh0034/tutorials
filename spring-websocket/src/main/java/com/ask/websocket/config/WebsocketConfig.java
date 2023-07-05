@@ -48,7 +48,6 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
         if (accessor.getCommand() == StompCommand.CONNECT) {
           String authToken = accessor.getFirstNativeHeader("Authorization");
-          log.info("authToken: {}", authToken);
 
           Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(authToken, authToken,
               List.of(new SimpleGrantedAuthority("ROLE_USER")));
