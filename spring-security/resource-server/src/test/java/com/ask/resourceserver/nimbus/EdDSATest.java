@@ -11,6 +11,7 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.Ed25519Signer;
 import com.nimbusds.jose.crypto.Ed25519Verifier;
 import com.nimbusds.jose.jwk.Curve;
+import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyType;
 import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
@@ -168,6 +169,13 @@ class EdDSATest {
         "eyJraWQiOiIxMjMiLCJ0eXAiOiJKV1QiLCJhbGciOiJFZERTQSJ9.eyJzdWIiOiJIZWxsbyBOaW1idXMiLCJpYXQiOjE2NTI4NDg5OTN9.6riChwDae9F401-P3RNtmIaEit2U6goOzQx-QpbsiFeF5NZ-v8A7wC8JlgoezzCaHqa1UtpFsAKBnyOTir6jBQ");
 
     assertThat(signedJWT.verify(new Ed25519Verifier(publicKey))).isFalse();
+  }
+
+  @DisplayName("jwks 생성")
+  @Test
+  void jwks() {
+    JWKSet jwkSet = new JWKSet(keyPair);
+    log.info("jwk: {}", jwkSet);
   }
 
 }
