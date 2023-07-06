@@ -8,6 +8,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.Ed25519Signer;
 import com.nimbusds.jose.crypto.Ed25519Verifier;
 import com.nimbusds.jose.jwk.Curve;
@@ -18,9 +19,11 @@ import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -176,6 +179,18 @@ class EdDSATest {
   void jwks() {
     JWKSet jwkSet = new JWKSet(keyPair);
     log.info("jwk: {}", jwkSet);
+  }
+
+  @Disabled
+  @Test
+  void jwkVerify() throws Exception {
+    JWKSet jwks = JWKSet.load(new URL("http://localhost:8080/jwk"));
+    OctetKeyPair octetKeyPair = jwks.getKeys().get(0).toOctetKeyPair();
+
+    JWSVerifier verifier = new Ed25519Verifier(octetKeyPair);
+
+    boolean verify = SignedJWT.parse("eyJ0eXAiOiJKV1QiLCJhbGciOiJFZERTQSJ9.eyJ1aSI6InVzZXItMDEiLCJhdSI6IlVTRVIiLCJjaSI6ImNvbXBhbnktMDEiLCJpc3MiOiJ4ci5yc3VwcG9ydC5jb20iLCJ1biI6InVzZXIwMUByc3VwcG9ydC5jb20iLCJleHAiOjE2NTI5MzA0MTIsImlhdCI6MTY1Mjk3MzYxMn0.Ygp0NDkTo93t9uB7ug7_1RCkXKNq73yeXqEHPz-VynpfFQ_fMBcNAOg0H7oFxCtfXtI5dKQAXo3hnNQvOi9HCA").verify(verifier);
+    assertThat(verify).isTrue();
   }
 
 }
