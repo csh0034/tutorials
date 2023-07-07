@@ -71,7 +71,7 @@
       stomp.send('/app/room', {}, JSON.stringify({roomId: roomId, message: "join...", writer: username}))
 
       // stomp.send('/app/queue/reply', {}, JSON.stringify({roomId: roomId, message: "reply...", writer: username}))
-      // stomp.send('/topic/room', {}, JSON.stringify({roomId: roomId, message: "토픽에 직접 보냄", writer: username}))
+      stomp.send('/topic/room', {}, JSON.stringify({roomId: roomId, message: "토픽에 직접 보냄", writer: username}))
     });
 
     $("#msg").on("keyup", function (e) {
