@@ -1,0 +1,98 @@
+def project_version
+
+pipeline {
+  agent any
+
+  parameters {
+    string(name: 'branch', defaultValue: 'develop', description: 'Git Branch')
+  }
+
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-jenkins')
+    DOCKERHUB_REGISTRY = 'name/project' // registry name
+  }
+
+  stages {
+    stage('Logs') {
+      steps {
+        sh 'echo Target Branch: $branch'
+        sh 'echo Registry: $DOCKERHUB_REGISTRY'
+      }
+    }
+
+    stage('Git Checkout') {
+      steps {
+        git (
+          url: '',
+          credentialsId: 'build-git',
+          branch: '$branch'
+        )
+      }
+    }
+
+    stage('Build Gradle') {
+      tools {
+        jdk 'openjdk 17'
+      }
+      steps {
+        script {
+          project_version = sh (
+            script: "./gradlew properties -q | grep '^version:' | awk '{print \$2}'",
+            returnStdout: true
+          ).trim()
+        }
+
+        sh 'java -version'
+        sh './gradlew clean build --no-daemon'
+      }
+      post {
+        success {
+          echo 'gradle build success'
+        }
+        failure {
+          error 'gradle build fail'
+        }
+      }
+    }
+
+    stage('Docker Login') {
+      steps{
+        script {
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        }
+      }
+    }
+
+    stage('Docker Build And Deploy') {
+      steps {
+        script {
+          def dockerfile = """
+            FROM ubuntu:latest
+            FROM eclipse-temurin:17-jre as builder
+            WORKDIR application
+            COPY build/libs/*.jar application.jar
+            RUN java -Djarmode=layertools -jar application.jar extract
+
+            FROM eclipse-temurin:17-jre
+            WORKDIR application
+            COPY --from=builder application/dependencies/ ./
+            COPY --from=builder application/spring-boot-loader/ ./
+            COPY --from=builder application/snapshot-dependencies/ ./
+            COPY --from=builder application/application/ ./
+            ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+          """
+
+          writeFile file: 'Dockerfile', text: dockerfile
+
+          sh "docker buildx build --push --platform linux/amd64,linux/arm64 -t $DOCKERHUB_REGISTRY:$project_version-$BUILD_NUMBER ."
+        }
+      }
+    }
+
+    stage('Docker Logout') {
+      steps {
+        sh 'docker logout'
+      }
+    }
+  }
+}
