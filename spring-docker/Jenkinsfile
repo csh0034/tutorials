@@ -46,17 +46,8 @@ pipeline {
       }
       post {
         success {
-          echo 'gradle build success'
+          junit '**/test-results/test/*.xml'
         }
-        failure {
-          error 'gradle build fail'
-        }
-      }
-    }
-
-    stage('Test Results') {
-      steps {
-        junit '**/test-results/test/*.xml'
       }
     }
 
