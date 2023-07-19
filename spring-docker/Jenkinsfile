@@ -35,15 +35,14 @@ pipeline {
         jdk 'openjdk 17'
       }
       steps {
+        sh 'java -version'
+        sh './gradlew clean build'
         script {
           project_version = sh (
             script: "./gradlew properties -q | grep '^version:' | awk '{print \$2}'",
             returnStdout: true
           ).trim()
         }
-
-        sh 'java -version'
-        sh './gradlew clean build --no-daemon'
       }
       post {
         success {
@@ -52,6 +51,12 @@ pipeline {
         failure {
           error 'gradle build fail'
         }
+      }
+    }
+
+    stage('Test Results') {
+      steps {
+        junit '**/test-results/test/*.xml'
       }
     }
 
