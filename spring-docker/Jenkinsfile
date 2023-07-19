@@ -1,15 +1,16 @@
-def project_version
+def registryName = "rsupweb1/xr-websocket"
+def projectVersion
 
 pipeline {
   agent any
 
   parameters {
     string(name: 'branch', defaultValue: 'develop', description: 'Git Branch')
+    choice(name: 'deploy', choices: ['N', 'Y'], description: 'deploy 여부')
   }
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-jenkins')
-    DOCKERHUB_REGISTRY = 'name/project' // registry name
+    DOCKERHUB_CREDENTIALS = credentials('rsupbackend-dockerhub-jenkins')
   }
 
   stages {
@@ -38,7 +39,7 @@ pipeline {
         sh 'java -version'
         sh './gradlew clean build'
         script {
-          project_version = sh (
+          projectVersion = sh (
             script: "./gradlew properties -q | grep '^version:' | awk '{print \$2}'",
             returnStdout: true
           ).trim()
@@ -80,7 +81,7 @@ pipeline {
 
           writeFile file: 'Dockerfile', text: dockerfile
 
-          sh "docker buildx build --push --platform linux/amd64,linux/arm64 -t $DOCKERHUB_REGISTRY:$project_version-$BUILD_NUMBER ."
+          sh "docker buildx build --push --platform linux/amd64,linux/arm64 -t $registryName:$projectVersion-$BUILD_NUMBER ."
         }
       }
     }
@@ -88,6 +89,13 @@ pipeline {
     stage('Docker Logout') {
       steps {
         sh 'docker logout'
+      }
+    }
+
+    stage('Deploy') {
+      when { expression { deploy == 'Y' } }
+      steps {
+        build job: 'docker-dev-deploy', parameters: [string(name: 'tag', value: "$projectVersion-$BUILD_NUMBER")]
       }
     }
   }
