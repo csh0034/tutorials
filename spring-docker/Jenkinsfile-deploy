@@ -1,0 +1,67 @@
+def ssh = "ssh -o StrictHostKeyChecking=no sample@1.2.3.4 -p 40022 "
+def containerName = "name"
+def registryName = "docker/$containerName"
+
+def containerId
+
+pipeline {
+  agent any
+
+  parameters {
+    string(name: 'tag', defaultValue: '', description: 'docker registry image tag')
+  }
+
+  stages {
+    stage('Check') {
+      steps {
+        script {
+          sh "echo tag: $tag"
+
+          sshagent (credentials: ['ssh-agent-key']) {
+            containerId = sh (
+              script: "$ssh sudo docker ps -a | grep $containerName | awk '{print \$1}'",
+              returnStdout: true
+            ).trim()
+
+            if (containerId) {
+              sh "echo containerId: $containerId"
+            } else {
+              sh "echo $containerName is not running"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Stop') {
+      when { expression { containerId } }
+      steps {
+        sshagent (credentials: ['ssh-agent-key']) {
+          sh "$ssh sudo docker stop $containerName"
+        }
+      }
+    }
+
+    stage('Remove') {
+      when { expression { containerId } }
+      steps {
+        sshagent (credentials: ['ssh-agent-key']) {
+          sh "$ssh sudo docker rm $containerName"
+        }
+      }
+    }
+
+    stage('Run') {
+      steps {
+        sshagent (credentials: ['ssh-agent-key']) {
+          sh """
+            $ssh sudo docker run -d --name $containerName \
+              -p 8081:8080 \
+              --restart=always \
+              $registryName:$tag --spring.cloud.config.uri=http://1.2.3.4:8888
+            """
+        }
+      }
+    }
+  }
+}
