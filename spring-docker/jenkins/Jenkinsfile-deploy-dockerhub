@@ -33,19 +33,11 @@ pipeline {
       }
     }
 
-    stage('Stop') {
+    stage('Stop And Remove') {
       when { expression { containerId } }
       steps {
         sshagent (credentials: ['ssh-agent-key']) {
           sh "$ssh sudo docker stop $containerName"
-        }
-      }
-    }
-
-    stage('Remove') {
-      when { expression { containerId } }
-      steps {
-        sshagent (credentials: ['ssh-agent-key']) {
           sh "$ssh sudo docker rm $containerName"
         }
       }

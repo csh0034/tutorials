@@ -1,0 +1,118 @@
+def projectVersion
+
+pipeline {
+  agent any
+
+  parameters {
+    string(name: 'branch', defaultValue: 'develop', description: 'Git Branch')
+    choice(name: 'deploy', choices: ['N', 'Y'], description: 'deploy 여부')
+  }
+
+  environment {
+    APPLICATION_NAME = 'websocket'
+
+    // ecr env
+    REGISTRY = ''
+    REGION = 'ap-northeast-2'
+    CREDENTIAL = 'aws-credentials'
+
+    // spring build env
+    SPRING_REDIS_HOST = ''
+    SPRING_REDIS_PORT = '6379'
+  }
+
+  stages {
+    stage('Logs') {
+      steps {
+        sh "echo Target Branch: $branch"
+        sh "echo Application Name: $APPLICATION_NAME"
+      }
+    }
+
+    stage('Git Checkout') {
+      steps {
+        git (
+          url: 'git',
+          credentialsId: 'build-gitlab',
+          branch: '$branch'
+        )
+      }
+    }
+
+    stage('Build Gradle') {
+      tools {
+        jdk 'openjdk 17'
+      }
+      steps {
+        sh 'java -version'
+        sh './gradlew clean build'
+        script {
+          projectVersion = sh (
+            script: "./gradlew properties -q | grep '^version:' | awk '{print \$2}'",
+            returnStdout: true
+          ).trim()
+        }
+      }
+      post {
+        success {
+          junit '**/test-results/test/*.xml'
+        }
+      }
+    }
+
+    stage('Docker Build') {
+      steps {
+        script {
+          def dockerfile = """
+            FROM ubuntu:latest
+            FROM eclipse-temurin:17-jre as builder
+            WORKDIR application
+            COPY build/libs/*.jar application.jar
+            RUN java -Djarmode=layertools -jar application.jar extract
+
+            FROM eclipse-temurin:17-jre
+            WORKDIR application
+            COPY --from=builder application/dependencies/ ./
+            COPY --from=builder application/spring-boot-loader/ ./
+            COPY --from=builder application/snapshot-dependencies/ ./
+            COPY --from=builder application/application/ ./
+            ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+          """
+
+          writeFile file: 'Dockerfile', text: dockerfile
+
+          sh "docker buildx build --load --platform linux/arm64 -t $APPLICATION_NAME:$projectVersion ."
+          sh "docker images -a | grep $APPLICATION_NAME"
+        }
+      }
+    }
+
+    stage('Push Image') {
+      steps {
+        script {
+          docker.withRegistry("https://$REGISTRY", "ecr:$REGION:$CREDENTIAL") {
+            def image = docker.image("$APPLICATION_NAME:$projectVersion")
+
+            image.push("$projectVersion")
+            image.push('latest')
+          }
+        }
+      }
+    }
+
+    stage('Remove Image') {
+      steps {
+        script {
+            sh 'docker rmi -f $(docker images $APPLICATION_NAME -q)'
+        }
+      }
+    }
+
+    stage('Deploy') {
+      when { expression { deploy == 'Y' } }
+      steps {
+        build job: 'docker-dev-deploy', parameters: [string(name: 'tag', value: "latest")]
+      }
+    }
+  }
+}

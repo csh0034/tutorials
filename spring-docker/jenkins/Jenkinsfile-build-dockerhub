@@ -1,4 +1,4 @@
-def registryName = "rsupweb1/xr-websocket"
+def registryName = "dockerhub/websocket"
 def projectVersion
 
 pipeline {
@@ -10,7 +10,7 @@ pipeline {
   }
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('rsupbackend-dockerhub-jenkins')
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-jenkins')
   }
 
   stages {
@@ -82,6 +82,7 @@ pipeline {
           writeFile file: 'Dockerfile', text: dockerfile
 
           sh "docker buildx build --push --platform linux/amd64,linux/arm64 -t $registryName:$projectVersion-$BUILD_NUMBER ."
+          sh "docker buildx build --push --platform linux/amd64,linux/arm64 -t $registryName:latest ."
         }
       }
     }
@@ -95,7 +96,7 @@ pipeline {
     stage('Deploy') {
       when { expression { deploy == 'Y' } }
       steps {
-        build job: 'docker-dev-deploy', parameters: [string(name: 'tag', value: "$projectVersion-$BUILD_NUMBER")]
+        build job: 'docker-dev-deploy', parameters: [string(name: 'tag', value: "latest")]
       }
     }
   }
