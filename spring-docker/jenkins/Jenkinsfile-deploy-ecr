@@ -70,4 +70,13 @@ pipeline {
       }
     }
   }
+
+  post {
+    success {
+      slackSend (channel: '#slack_jenkins', color: '#00FF00', message: "Deploy Success - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Open>)")
+    }
+    failure {
+      slackSend (channel: '#slack_jenkins', color: '#FF0000', message: "Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Open>)")
+    }
+  }
 }
