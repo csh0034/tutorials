@@ -73,10 +73,24 @@ pipeline {
 
   post {
     success {
-      slackSend (channel: '#slack_jenkins', color: '#00FF00', message: "Deploy Success - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Open>)")
+      script {
+        wrap([$class: 'BuildUser']) {
+          def userId = slackUserIdFromEmail email: "${BUILD_USER_EMAIL}", botUser: true, tokenCredentialId: 'jenkins-slack-noti-bot-user'
+          def mention = (userId) ? "<@${userId}>" : ""
+          def message = slackSend channel: '#slack_jenkins', color: '#00FF00', message: "$mention Deploy Success - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Open>)", botUser: true, tokenCredentialId: 'jenkins-slack-noti-bot-user'
+          message.addReaction("carlton")
+        }
+      }
     }
     failure {
-      slackSend (channel: '#slack_jenkins', color: '#FF0000', message: "Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Open>)")
+      script {
+        wrap([$class: 'BuildUser']) {
+          def userId = slackUserIdFromEmail email: "${BUILD_USER_EMAIL}", botUser: true, tokenCredentialId: 'jenkins-slack-noti-bot-user'
+          def mention = (userId) ? "<@${userId}>" : ""
+          def message = slackSend channel: '#slack_jenkins', color: '#FF0000', message: "$mention Deploy Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.JOB_URL}|Open>)", botUser: true, tokenCredentialId: 'jenkins-slack-noti-bot-user'
+          message.addReaction("mat_face_palm")
+        }
+      }
     }
   }
 }
