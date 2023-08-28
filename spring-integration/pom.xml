@@ -21,6 +21,7 @@
     <module>consumer</module>
     <module>spring-integration-amqp</module>
     <module>spring-integration-mqtt</module>
+    <module>spring-integration-redis</module>
   </modules>
 
 </project>
