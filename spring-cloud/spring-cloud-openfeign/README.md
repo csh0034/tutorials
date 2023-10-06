@@ -69,6 +69,17 @@ public Logger.Level feignLoggerLevel() {
 
 이 작업이 완료될 때까지 [feign-reactive](https://github.com/Playtika/feign-reactive) 사용을 추천한다.
 
+### RequestInterceptor 설정시 주의사항
+
+RequestInterceptor 의 경우 등록시 Map<Bean 이름, RequestInterceptor> 로 처리되므로 Bean 이름이 같을 경우  
+하나만 처리된다 따라서 Bean 이름을 다르게 해야한다.
+
+FeignClientFactoryBean, 206 line
+```java
+Map<String, RequestInterceptor> requestInterceptors = getInheritedAwareInstances(context, 
+    RequestInterceptor.class);
+```
+
 ## Troubleshooting
 
 ### resilience4j 적용 이후 Retry 시도 1초 넘어가면 오류 발생
