@@ -1,6 +1,7 @@
 package com.ask.springjpaenvers.entity;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -28,7 +29,7 @@ public abstract class BaseEntity implements Serializable {
 
   @CreatedDate
   @Column(updatable = false)
-  private LocalDateTime createdDate;
+  private Instant createdAt;
 
   @LastModifiedDate
   private LocalDateTime lastModifiedDate;

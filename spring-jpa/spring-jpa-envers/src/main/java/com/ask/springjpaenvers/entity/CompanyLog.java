@@ -48,7 +48,7 @@ public class CompanyLog extends BaseEntity implements Persistable<String> {
 
   @Override
   public boolean isNew() {
-    return getCreatedDate() == null;
+    return getCreatedAt() == null;
   }
 
   public enum LogType {
