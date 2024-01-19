@@ -77,6 +77,10 @@ scrape_configs:
           - "localhost:9090"
 ```
 
+### Custom Metrics
+
+[Registering Custom Metrics](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.metrics.registering-custom)
+
 ## 참조
 
 - [Docs, Prometheus Docker](https://prometheus.io/docs/prometheus/latest/installation/#using-docker)
