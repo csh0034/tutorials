@@ -1,17 +1,23 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
+    url: jdbc:mariadb://127.0.0.1:3306/db_jpa_lock?createDatabaseIfNotExist=true
+    username: root
+    password: 111111
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: false
         format_sql: true
     open-in-view: false
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
 logging:
   level:
