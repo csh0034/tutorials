@@ -31,6 +31,17 @@ public class RoomMessageService {
     roomMember.setMessageLastReadId(roomMessageId);
   }
 
+  public void saveWithPessimisticLock(String message, String senderId) {
+    RoomMember roomMember = roomMemberRepository.findForUpdateById(senderId).orElseThrow(RuntimeException::new);
+
+    RoomMessage roomMessage = new RoomMessage();
+    roomMessage.setMessage(message);
+    roomMessage.setSender(roomMember);
+    String roomMessageId = roomMessageRepository.save(roomMessage).getId();
+
+    roomMember.setMessageLastReadId(roomMessageId);
+  }
+
   public void saveWithoutDeadlock(String message, String senderId) {
     RoomMember roomMember = roomMemberRepository.findById(senderId).orElseThrow(RuntimeException::new);
     RoomMessage roomMessage = new RoomMessage();

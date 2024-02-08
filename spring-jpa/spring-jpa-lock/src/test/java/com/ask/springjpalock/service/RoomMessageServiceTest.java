@@ -14,19 +14,37 @@ class RoomMessageServiceTest {
   @Autowired
   private RoomMessageService roomMessageService;
 
+  private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
   /**
    * 1. roomMessage insert 시에 외래키로 인해 roomMember 의 S lock 획득 <br> 2. roomMember update 시에 X lock 획득하려하지만 이미 S lock 이 있어 데드락 발생
    */
   @DisplayName("데드락 발생")
   @Test
   void save() {
-    ExecutorService executorService = Executors.newFixedThreadPool(2);
-
     while (true) {
       Future<?> submit1 = executorService.submit(
           () -> roomMessageService.save("book01", "rm01"));
       Future<?> submit2 = executorService.submit(
           () -> roomMessageService.save("book01", "rm01"));
+      try {
+        submit1.get();
+        submit2.get();
+      } catch (Exception e) {
+        executorService.shutdown();
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  @DisplayName("비관적 락을 사용하여 데드락 발생안함")
+  @Test
+  void saveWithPessimisticWrite() {
+    for (int i = 0; i < 10; i++) {
+      Future<?> submit1 = executorService.submit(
+          () -> roomMessageService.saveWithPessimisticLock("book01", "rm01"));
+      Future<?> submit2 = executorService.submit(
+          () -> roomMessageService.saveWithPessimisticLock("book01", "rm01"));
       try {
         submit1.get();
         submit2.get();
@@ -44,8 +62,6 @@ class RoomMessageServiceTest {
   @DisplayName("데드락 발생안함")
   @Test
   void saveWithoutDeadlock() {
-    ExecutorService executorService = Executors.newFixedThreadPool(2);
-
     for (int i = 0; i < 10; i++) {
       Future<?> submit1 = executorService.submit(
           () -> roomMessageService.saveWithoutDeadlock("book01", "rm01"));
