@@ -50,5 +50,38 @@ SimpleMessageListenerContainer listenerContainer = rabbitListenerContainerFactor
 listenerContainer.setQueueNames(QueueConstants.TEST_QUEUE_NAME);
 ```
 
+### amqp integration flow 사용시 thread pool 지정
 
+기본적으론 `Amqp.inboundAdapter` 에 의해 생성되거나 주입된 SimpleMessageListenerContainer 의 thread pool 을 사용함
 
+`AbstractMessageListenerContainer.initialize()` 를 보면 매번 스레드 생성
+
+```java
+public void initialize() {
+  // ...
+  if (!this.taskExecutorSet && StringUtils.hasText(getListenerId())) {
+    this.taskExecutor = new SimpleAsyncTaskExecutor(getListenerId() + "-");
+    this.taskExecutorSet = true;
+  }
+  // ...
+}
+```
+
+#### executor 세팅 방법
+
+1. SimpleRabbitListenerContainerFactory 를 사용한다면 하단과 같이 등록
+
+```java
+@Bean
+public ContainerCustomizer<SimpleMessageListenerContainer> containerCustomizer(ThreadPoolTaskExecutor executor) {
+  return container -> {
+    container.setTaskExecutor(executor);
+  };
+}
+```
+2. ingeration flow 에 connectionFactory 를 사용 하는 경우
+
+```java
+Amqp.inboundAdapter(connectionFactory, QueueConstants.TEST_QUEUE_NAME)
+  .configureContainer(spec -> spec.taskExecutor(taskExecutor))
+```

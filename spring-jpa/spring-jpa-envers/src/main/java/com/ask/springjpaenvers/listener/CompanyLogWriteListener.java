@@ -72,6 +72,6 @@ public class CompanyLogWriteListener implements PostInsertEventListener, PostUpd
 
   @Override
   public boolean requiresPostCommitHanding(EntityPersister entityPersister) {
-    return true;
+    return true; //true 면 예외시 롤백
   }
 }

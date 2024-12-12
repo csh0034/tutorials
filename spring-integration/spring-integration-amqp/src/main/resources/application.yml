@@ -1,3 +1,7 @@
 logging:
   level:
     "[com.ask]": debug
+spring:
+  task:
+    execution:
+      thread-name-prefix: "async-task-"
