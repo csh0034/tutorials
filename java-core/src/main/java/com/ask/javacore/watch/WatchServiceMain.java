@@ -48,10 +48,22 @@ public class WatchServiceMain {
       while ((key = watchService.poll(timeoutSeconds, TimeUnit.SECONDS)) != null) {
         for (WatchEvent<?> event : key.pollEvents()) {
           Kind<?> kind = event.kind();
-          Path fileName = (Path) event.context();
+
+          if (kind == StandardWatchEventKinds.OVERFLOW) {
+            log("Overflow event ignored.");
+            continue;
+          }
+
+          Object context = event.context();
+          if (!(context instanceof Path)) {
+            log("Invalid event context, skipping.");
+            continue;
+          }
+
+          Path fileName = (Path) context;
           log("Event kind: " + kind.name() + ", File: " + fileName);
 
-          if (fileName.toString().equals("test.txt")) {
+          if ("test.txt".equals(fileName.toString())) {
             log("Detected target file, exiting.");
             return;
           }
