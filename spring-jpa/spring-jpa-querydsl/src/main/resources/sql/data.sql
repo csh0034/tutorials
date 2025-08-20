@@ -17,3 +17,8 @@ INSERT INTO tb_statistics (statistics_id, year, month, day, data, view_count) VA
 INSERT INTO tb_statistics (statistics_id, year, month, day, data, view_count) VALUES ('statistics05', '2021', '12', '05', 'data5', 5);
 INSERT INTO tb_statistics (statistics_id, year, month, day, data, view_count) VALUES ('statistics06', '2021', '12', '06', 'data6', 6);
 INSERT INTO tb_statistics (statistics_id, year, month, day, data, view_count) VALUES ('statistics07', '2021', '12', '07', 'data7', 7);
+
+INSERT INTO tb_parent (id, total_count, status) VALUES ('p01', 100, 'START');
+
+INSERT INTO tb_child (id, total_count, processed_count, parent_id) VALUES ('c1', 50, 0, 'p01');
+INSERT INTO tb_child (id, total_count, processed_count, parent_id) VALUES ('c2', 50, 0, 'p01');
