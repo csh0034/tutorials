@@ -115,6 +115,13 @@ OSIV 사용시 트랜잭션 범위 밖에서도 세션을 유지하므로 하단
 3. 별도 트랜잭션 시작후 종료 후 > flush 호출
 4. 1번에서 조회된 엔티티 변경감지 동작
 
+## PostActionEventListener 와 TransactionSynchronizationManager.registerSynchronization 호출 순서
+
+1. PostActionEventListener
+    - hibernate 코드이며 JpaTransactionManager.doCommit 에서 tx.commit 시점에 처리됨
+2. TransactionSynchronizationManager.registerSynchronization
+    - spring tx 코드이며 JpaTransactionManager.doCommit 이후에 triggerAfterCommit 에서 처리됨
+
 ### 참조
 - [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
 - [validate entities with hibernate validator](https://thorben-janssen.com/automatically-validate-entities-with-hibernate-validator/)
